@@ -1,5 +1,5 @@
 .headerWrapper
-    height: 100px
+    height: 120px
     background: var(--primary)
     display: flex
     position: sticky
@@ -10,6 +10,10 @@
     form
         display: grid
         grid-template-columns: 1fr 1fr
+        row-gap: 10px
+        height: 100%
+        align-items: center
+        position: relative
 
         label
             font-size: 1.1rem
@@ -27,3 +31,14 @@
             
             &:disabled
                 background: #63648f
+        button
+            &[type='submit']
+                grid-column: 1/span 2
+                justify-self: center
+                padding: 5px
+                width: 30%
+                border-radius: 5px
+                border: none
+                position: absolute
+                bottom: 10px
+                

@@ -5,11 +5,16 @@ import { useState } from 'react';
 
 function App() {
   const [userInfo, setUserInfo] = useState({});
+  function submitValues(e){
+    e.preventDefault();
+    console.log(userInfo);
+  }
   return (
     <div className="App">
       <Header 
         setUserInfo={setUserInfo} 
         userInfo={userInfo}
+        submitValues={submitValues}
       />
       <Body 
         userInfo={userInfo}
