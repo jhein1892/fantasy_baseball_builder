@@ -1,0 +1,7 @@
+.headerWrapper {
+  height: 100px;
+  background: blue;
+  display: flex;
+  position: sticky;
+  top: 0;
+}/*# sourceMappingURL=header.modules.css.map */
