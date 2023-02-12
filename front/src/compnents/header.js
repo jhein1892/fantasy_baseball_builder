@@ -19,7 +19,7 @@ export default function Header({setUserInfo, userInfo})
                     <input name='league_id'></input>
                 </div>
                 <div>
-                    <label>Team Name: </label>
+                    <label>Team Names: </label>
                     <input name='team_name' disabled={userInfo['league_id'] ? false : true}></input>
                 </div>
             </form>
