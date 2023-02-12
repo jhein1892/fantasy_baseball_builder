@@ -1,7 +1,29 @@
 .headerWrapper
     height: 100px
-    background: blue
+    background: var(--primary)
     display: flex
     position: sticky
     top: 0
-    
+    align-items: center
+    justify-content: center
+
+    form
+        display: grid
+        grid-template-columns: 1fr 1fr
+
+        label
+            font-size: 1.1rem
+            color: var(--secondary)
+        input
+            text-align: center
+            background: var(--primary-light)
+            border-radius: 5px
+            padding: 3px
+            box-shadow: none
+            border: none
+
+            &:focus-visible
+                outline: 2px solid var(--secondary)
+            
+            &:disabled
+                background: #63648f
