@@ -1,6 +1,30 @@
 .wrapper {
-  height: 500px;
+  min-height: calc(100vh - 120px);
+  display: grid;
+  grid-template: repeat(5, 1fr)/repeat(3, 1fr);
 }
-.wrapper h1 {
-  margin-top: 0;
+.wrapper .rosterSection {
+  background: green;
+  grid-column: 2/span 3;
+  grid-row: 2/span 4;
+}
+.wrapper .leagueSection {
+  background: yellow;
+  grid-row: 1/span 2;
+  grid-column: 1;
+}
+.wrapper .freeAgentSection {
+  background: red;
+  grid-column: 1;
+  grid-row: 3/span 4;
+}
+.wrapper .matchupSection {
+  background: blue;
+  grid-row: 1;
+  grid-column: 2/span 3;
+}
+.wrapper .tradeSection {
+  background: purple;
+  grid-row: 5;
+  grid-column: 1/span 3;
 }/*# sourceMappingURL=body.modules.css.map */

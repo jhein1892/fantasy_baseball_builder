@@ -5,21 +5,19 @@ export default function Body({userInfo})
 {
     return (
         <div className='wrapper'>
-            <div>
+            <div className='rosterSection'>
                 <p>My Team Roster</p>
-                <p>League_ID: {userInfo.league_id ? userInfo.league_id : "" }</p>
-                <p>Team Name: {userInfo.team_name ? userInfo.team_name : "" }</p>
             </div>
-            <div>
+            <div className='leagueSection'>
                 <p>League Standing</p>
             </div>
-            <div>
+            <div className='freeAgentSection'>
                 <p>Free Agents/Waivers</p>
             </div>
-            <div>
+            <div className='matchupSection'>
                 <p>This Weeks matchups</p>
             </div>
-            <div>
+            <div className='tradeSection'>
                 <p>Proposed Trades</p>
             </div>
         </div>
