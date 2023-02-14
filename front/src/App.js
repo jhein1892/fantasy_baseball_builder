@@ -18,22 +18,9 @@ function App() {
     .catch((error) => {
       console.log(error)
     })
-    // // console.log(userInfo);
+
   }
 
-  // useEffect(() => {
-  //   axios.put(`${process.env.REACT_APP_API_ENDPOINT}/`, {user:"user"})
-  //   .then((response) => {
-  //     console.log(response);
-  //   }) 
-  //   .catch((error) => {
-  //     console.log(error)
-  //   })
-  //   // axios.get(`${process.env.REACT_APP_API_ENDPOINT}/`)
-  //   // .then((response) => {
-  //   //   console.log(response)
-  //   // })
-  // },[])
   return (
     <div className="App">
       <Header 
