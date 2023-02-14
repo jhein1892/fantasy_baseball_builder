@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../styles/body.modules.css';
 
-export default function Body({userInfo})
-{
+export default function Body({userInfo}) {
+    
+    useEffect(() => {
+        // Will be a main route, used to generate all of the data being passed down to these components
+    },[])
+
     return (
         <div className='wrapper'>
             <div className='rosterSection'>
