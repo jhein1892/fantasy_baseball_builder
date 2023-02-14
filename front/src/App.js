@@ -1,7 +1,9 @@
 import './App.css';
 import Header from './compnents/header';
 import Body from './compnents/body';
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+
 
 function App() {
   const [userInfo, setUserInfo] = useState({});
@@ -9,6 +11,13 @@ function App() {
     e.preventDefault();
     console.log(userInfo);
   }
+
+  useEffect(() => {
+    axios.get('http://0.0.0.0:8080/')
+      .then((response) => {
+        console.log(response);
+      }) 
+  },[])
   return (
     <div className="App">
       <Header 
