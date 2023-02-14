@@ -23,7 +23,7 @@ export default function Header({setUserInfo, userInfo, submitValues})
                     <label>Team Name: </label>
                     <input name='team_name' disabled={userInfo['league_id'] ? false : true}></input>
                 </div>
-                <button type='submit'>Submit</button>
+                <button type='submit' disabled={(userInfo['league_id'] && userInfo['team_name']) ? false : true}>Submit</button>
             </form>
         </div>
     )
