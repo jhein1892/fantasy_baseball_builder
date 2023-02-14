@@ -13,7 +13,7 @@ function App() {
   }
 
   useEffect(() => {
-    axios.get('http://0.0.0.0:8080/')
+    axios.get(`${process.env.REACT_APP_API_ENDPOINT}/`)
       .then((response) => {
         console.log(response);
       }) 
