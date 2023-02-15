@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import '../styles/body.modules.css';
+import TeamRoster from './teamRoster';
 
 export default function Body({userInfo}) {
     
@@ -11,6 +12,7 @@ export default function Body({userInfo}) {
         <div className='wrapper'>
             <div className='rosterSection'>
                 <p>My Team Roster</p>
+                <TeamRoster />
             </div>
             <div className='leagueSection'>
                 <p>League Standing</p>
