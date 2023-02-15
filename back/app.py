@@ -33,7 +33,7 @@ myPlayer = [
  'eligible_positions': ['C'], 'selected_position': 'C',
  'status': ''},
     {'player_id': 9961, 'name': 'Bobby Witt Jr', 'position_type': 'B',
- 'eligible_positions': ['3B', 'SS'], 'selected_position':'util', 'status': ''},
+ 'eligible_positions': ['3B', 'SS'], 'selected_position':'Util', 'status': ''},
 
     # Pitchers
 
