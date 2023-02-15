@@ -6,14 +6,17 @@ import { useState } from 'react';
 
 
 function App() {
+  // league_id and team_name
   const [userInfo, setUserInfo] = useState({});
+  // Information about the roster for the team
+  const [rosterData, setRosterData] = useState([]);
 
   function submitValues(e){
     e.preventDefault();
 
     axios.put(`${process.env.REACT_APP_API_ENDPOINT}/`, userInfo)
     .then((response) => {
-      console.log(response);
+      setRosterData(response.data);
     }) 
     .catch((error) => {
       console.log(error)
@@ -30,6 +33,7 @@ function App() {
       />
       <Body 
         userInfo={userInfo}
+        rosterData={rosterData}
       />
     </div>
   );

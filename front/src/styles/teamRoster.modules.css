@@ -1,0 +1,17 @@
+.rosterWrapper {
+  background: green;
+  height: calc(100% - 10px);
+  width: calc(100% - 10px);
+  padding: 5px;
+}
+.rosterWrapper .positionSlot {
+  background: yellow;
+  display: flex;
+  flex-direction: row;
+  margin: 5px;
+  padding: 2px;
+}
+.rosterWrapper .positionSlot p {
+  margin: 0;
+  font-size: 0.8rem;
+}/*# sourceMappingURL=teamRoster.modules.css.map */
