@@ -9,18 +9,34 @@ export default function TeamRoster({data, setData}){
     function generatePositions(positionSet){
         let tempData = data
         return positionSet.map((position, index) => {
-            let elegibleBatter = tempData.filter((x) => x.selected_position === position);
+            let elegiblePlayer = tempData.filter((x) => x.selected_position === position);
 
-            if(elegibleBatter.length > 0){
-                elegibleBatter = elegibleBatter[0];
-                let newTempData = tempData.filter((x) => x.player_id !== elegibleBatter.player_id);
+            if(elegiblePlayer.length > 0){
+                elegiblePlayer = elegiblePlayer[0];
+                let newTempData = tempData.filter((x) => x.player_id !== elegiblePlayer.player_id);
                 tempData = newTempData;
             }
+            // Fix secondary position options
             return(
-                <div className='positionSlot' key={`${position}-${index}`}>
-                    <p className='positionTitle'>{position}</p>
-                    <p className='playerName'>{elegibleBatter.name ? elegibleBatter.name : 'empty' }</p>
-                </div>
+                <tr className='positionSlot' key={`${position}-${index}`}>
+                    <td className='positionTitle'>{position}</td>
+                    <td className='playerName'>{elegiblePlayer.name ? elegiblePlayer.name : 'empty' }</td>
+                    <td>14</td>
+                    <td>14</td>
+                    <td>14</td>
+                    <td>14</td>
+                    <td>14</td>
+                    <td>14</td>
+                    <td>14</td>
+                    <td>14</td>
+                    <td>14</td>
+                    <td>14</td>
+                    <td>
+                        <select>
+                            <option>1B</option> 
+                        </select>
+                    </td>
+                </tr>
             )
         })
     }
@@ -28,9 +44,51 @@ export default function TeamRoster({data, setData}){
     return (
         <div className='rosterWrapper'>
             <h3>Batters:</h3>
-            {generatePositions(batterPositions)}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>Name</th>
+                        <th>(R)</th>
+                        <th>(H)</th>
+                        <th>(HR)</th>
+                        <th>(RBI)</th>
+                        <th>(SB)</th>
+                        <th>(BB)</th>
+                        <th>(IBB)</th>
+                        <th>(HBP)</th>
+                        <th>(OPS)</th>
+                        <th>(CI)</th>
+                        <th>Secondary Positions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {generatePositions(batterPositions)}
+                </tbody>
+            </table>
             <h3>Pitchers:</h3>
-            {generatePositions(pitcherPositions)}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Position</th>
+                        <th>Name</th>
+                        <th>(W)</th>
+                        <th>(L)</th>
+                        <th>(CG)</th>
+                        <th>(K)</th>
+                        <th>(BLK)</th>
+                        <th>(GIDP)</th>
+                        <th>(ERA)</th>
+                        <th>(WHIP)</th>
+                        <th>(PICK)</th>
+                        <th>(SV+H)</th>
+                        <th>Secondary Positions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {generatePositions(pitcherPositions)}
+                </tbody>
+            </table>
             <h3>Bench/IL:</h3>
             {generatePositions(additionalPositions)}
         </div>
