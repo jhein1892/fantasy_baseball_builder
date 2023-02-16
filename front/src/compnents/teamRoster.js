@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import rosterStyles from '../styles/teamRoster.modules.css'
 
-export default function TeamRoster({id, data, setData}){
+export default function TeamRoster({data, setData}){
     const positionsToBeFilled = ['C', '1B', '2B', '3B', 'SS','OF','OF','OF','Util','SP','SP','SP','RP','RP','P','P','P','BN','BN','BN','IL','IL','IL','IL','NA']
 
     function generateRosterPositions(){
@@ -18,11 +18,11 @@ export default function TeamRoster({id, data, setData}){
                     let newTempData = tempData.filter((x) => x.name !== elegiblePlayer.name);
                     tempData = newTempData
                 }
-
+                console.log(elegiblePlayer.name)
                 return (
                     <div className='positionSlot' key={`${position}-${index}`}>
-                        <p>{position}</p>
-                        <p>{elegiblePlayer ? elegiblePlayer.name : '' }</p>
+                        <p className='positionTitle'>{position}</p>
+                        <p className='playerName'>{elegiblePlayer.name ? elegiblePlayer.name : 'empty' }</p>
                     </div>
                 )
 
