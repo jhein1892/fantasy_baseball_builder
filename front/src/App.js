@@ -34,6 +34,7 @@ function App() {
       <Body 
         userInfo={userInfo}
         rosterData={rosterData}
+        setRosterData={setRosterData}
       />
     </div>
   );

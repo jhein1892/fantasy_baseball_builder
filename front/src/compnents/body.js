@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import '../styles/body.modules.css';
 import TeamRoster from './teamRoster';
 
-export default function Body({userInfo, rosterData}) {
+export default function Body({userInfo, rosterData, setRosterData}) {
     
     useEffect(() => {
         // Will be a main route, used to generate all of the data being passed down to these components
@@ -11,7 +11,7 @@ export default function Body({userInfo, rosterData}) {
     return (
         <div className='bodyWrapper'>
             <div className='rosterSection'>
-                <TeamRoster data={rosterData} />
+                <TeamRoster data={rosterData} setData={setRosterData} />
             </div>
             <div className='leagueSection'>
                 <p>League Standing</p>
