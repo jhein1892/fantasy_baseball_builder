@@ -9,12 +9,13 @@ export default function TeamRoster({data, setData}){
     function generatePositions(positionSet, type){
         let tempData = data.filter((x) => x.position_type === type)
         positionSet = positionSet.concat(additionalPositions)
-        // positionSet = [positionSet + "," + additionalPositions];
-         console.log(positionSet)
+
         return positionSet.map((position, index) => {
+            // Find players assigned to current positions
             let elegiblePlayer = tempData.filter((x) => x.selected_position === position);
             let eligiblePositionsString = "";
 
+            // Pick first element and remove from data set for future positions.
             if(elegiblePlayer.length > 0){
                 elegiblePlayer = elegiblePlayer[0];
                 let newTempData = tempData.filter((x) => x.player_id !== elegiblePlayer.player_id);
@@ -35,7 +36,8 @@ export default function TeamRoster({data, setData}){
             if(additionalPositions.includes(position) && elegiblePlayer.length === 0){
                 return;
             }
-            
+
+            // else return table row with data
             return(
                 <tr className='positionSlot' key={`${position}-${index}`}>
                     <td className='positionTitle'>{position}</td>
@@ -108,8 +110,6 @@ export default function TeamRoster({data, setData}){
                     {generatePositions(pitcherPositions, 'P')}
                 </tbody>
             </table>
-            <h3>Bench/IL:</h3>
-            {/* {generatePositions(additionalPositions)} */}
         </div>
     )
 }
