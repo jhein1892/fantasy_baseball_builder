@@ -4,6 +4,10 @@
   width: calc(100% - 10px);
   padding: 5px;
 }
+.rosterWrapper h3 {
+  text-align: left;
+  margin: 10px 5px;
+}
 .rosterWrapper .positionSlot {
   background: lightgrey;
   display: flex;
