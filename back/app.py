@@ -57,8 +57,8 @@ myPlayer = [
     # Bench
     {'player_id': 18, 'name': 'Mike Trout', 'position_type': 'B',
  'eligible_positions': ['OF'], 'selected_position':'BN', 'status': ''},
-    {'player_id': 19, 'name': 'Matt Olson', 'position_type': 'B',
- 'eligible_positions': ['1B'], 'selected_position':'BN', 'status': ''},
+    {'player_id': 19, 'name': 'Matt Olson', 'position_type': 'P',
+ 'eligible_positions': ['SP'], 'selected_position':'BN', 'status': ''},
     {'player_id': 20, 'name': 'Jose Altuve', 'position_type': 'B',
  'eligible_positions': ['2B'], 'selected_position':'BN', 'status': ''},
 
@@ -67,7 +67,7 @@ myPlayer = [
  'eligible_positions': ['1B'], 'selected_position':'IL', 'status': 'DTD'},
     {'player_id': 22, 'name': 'Michael Harris II', 'position_type': 'B',
  'eligible_positions': ['OF'], 'selected_position':'IL', 'status': 'DTD'},
-    {'player_id': 23, 'name': 'Dylan Cease', 'position_type': 'B',
+    {'player_id': 23, 'name': 'Dylan Cease', 'position_type': 'P',
  'eligible_positions': ['SP'], 'selected_position':'IL', 'status': 'DTD'},
 
  ]

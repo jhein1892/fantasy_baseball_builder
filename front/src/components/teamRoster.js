@@ -6,8 +6,11 @@ export default function TeamRoster({data, setData}){
     const pitcherPositions = ['SP','SP','SP','RP','RP','P','P','P'];                // Roster Positions for Pitchers
     const additionalPositions = ['BN','BN','BN','IL','IL','IL','IL','NA'];          // Additonal Roster Spots
 
-    function generatePositions(positionSet){
-        let tempData = data
+    function generatePositions(positionSet, type){
+        let tempData = data.filter((x) => x.position_type === type)
+        positionSet = positionSet.concat(additionalPositions)
+        // positionSet = [positionSet + "," + additionalPositions];
+         console.log(positionSet)
         return positionSet.map((position, index) => {
             let elegiblePlayer = tempData.filter((x) => x.selected_position === position);
             let eligiblePositionsString = "";
@@ -26,16 +29,13 @@ export default function TeamRoster({data, setData}){
                         
                     }
                 }
-
-                // for(let position of elegiblePlayer.eligible_positions){
-                //     console.log(position)
-
-                
-                // }
             }
-            console.log(elegiblePlayer)
 
-            // 2) Figure out how I'm going to deal with bench players
+            // If there are no players to fill additional position return no row
+            if(additionalPositions.includes(position) && elegiblePlayer.length === 0){
+                return;
+            }
+            
             return(
                 <tr className='positionSlot' key={`${position}-${index}`}>
                     <td className='positionTitle'>{position}</td>
@@ -82,7 +82,7 @@ export default function TeamRoster({data, setData}){
                     </tr>
                 </thead>
                 <tbody>
-                    {generatePositions(batterPositions)}
+                    {generatePositions(batterPositions, 'B')}
                 </tbody>
             </table>
             <h3>Pitchers:</h3>
@@ -105,7 +105,7 @@ export default function TeamRoster({data, setData}){
                     </tr>
                 </thead>
                 <tbody>
-                    {generatePositions(pitcherPositions)}
+                    {generatePositions(pitcherPositions, 'P')}
                 </tbody>
             </table>
             <h3>Bench/IL:</h3>
