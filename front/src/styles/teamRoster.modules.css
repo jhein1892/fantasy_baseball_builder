@@ -24,7 +24,7 @@
   border-radius: 2px;
 }
 .rosterWrapper .positionSlot:hover {
-  background: #b0ceb0;
+  background: var(--hover-green);
 }
 .rosterWrapper .positionSlot td {
   margin: 0;

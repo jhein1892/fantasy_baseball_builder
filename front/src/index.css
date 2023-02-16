@@ -3,7 +3,9 @@
   --primary-light: #9292b9;
 
 
-  --secondary: #bca737
+  --secondary: #bca737;
+
+  --hover-green: #b0ceb0
 }
 body {
   margin: 0;

@@ -1,6 +1,6 @@
 import './App.css';
-import Header from './compnents/header';
-import Body from './compnents/body';
+import Header from './components/header';
+import Body from './components/body';
 import axios from 'axios';
 import { useState } from 'react';
 
