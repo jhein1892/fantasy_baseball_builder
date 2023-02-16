@@ -25,7 +25,7 @@ myPlayer = [
     {'player_id': 5, 'name': 'Jose Ramirez', 'position_type': 'B',
  'eligible_positions': ['3B'], 'selected_position':'3B', 'status': ''},
     {'player_id': 6, 'name': 'Mookie Betts', 'position_type': 'B',
- 'eligible_positions': ['OF, 2B'], 'selected_position':'2B', 'status': ''},
+ 'eligible_positions': ['OF', '2B'], 'selected_position':'2B', 'status': ''},
     {'player_id': 7, 'name': 'Vladamir Guerrero Jr.', 'position_type': 'B',
  'eligible_positions': ['1B'], 'selected_position': '1B',
  'status': ''},

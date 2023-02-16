@@ -11,8 +11,12 @@
 .rosterWrapper table {
   width: 100%;
 }
+.rosterWrapper table thead {
+  background: var(--primary-light);
+}
 .rosterWrapper table thead th {
   font-size: 0.8rem;
+  padding: 5px;
 }
 .rosterWrapper table tbody {
   width: 100%;
@@ -35,5 +39,10 @@
   font-weight: bold;
 }
 .rosterWrapper .positionSlot .playerName {
-  margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
+}
+.rosterWrapper .positionSlot .playerName span {
+  color: #3e3e3e;
+  font-size: 0.7rem;
 }/*# sourceMappingURL=teamRoster.modules.css.map */

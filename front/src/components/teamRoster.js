@@ -10,17 +10,36 @@ export default function TeamRoster({data, setData}){
         let tempData = data
         return positionSet.map((position, index) => {
             let elegiblePlayer = tempData.filter((x) => x.selected_position === position);
+            let eligiblePositionsString = "";
 
             if(elegiblePlayer.length > 0){
                 elegiblePlayer = elegiblePlayer[0];
                 let newTempData = tempData.filter((x) => x.player_id !== elegiblePlayer.player_id);
                 tempData = newTempData;
+
+                for(let i = 0; i < elegiblePlayer.eligible_positions.length; i++){
+                    let position = elegiblePlayer.eligible_positions[i]
+                    if(i === 0){
+                        eligiblePositionsString += position + ""
+                    } else {
+                        eligiblePositionsString += ", " + position
+                        
+                    }
+                }
+
+                // for(let position of elegiblePlayer.eligible_positions){
+                //     console.log(position)
+
+                
+                // }
             }
-            // Fix secondary position options
+            console.log(elegiblePlayer)
+
+            // 2) Figure out how I'm going to deal with bench players
             return(
                 <tr className='positionSlot' key={`${position}-${index}`}>
                     <td className='positionTitle'>{position}</td>
-                    <td className='playerName'>{elegiblePlayer.name ? elegiblePlayer.name : 'empty' }</td>
+                    <td className='playerName'>{elegiblePlayer.name ? elegiblePlayer.name : 'empty' } - <span>{eligiblePositionsString}</span></td>
                     <td>14</td>
                     <td>14</td>
                     <td>14</td>
@@ -49,16 +68,16 @@ export default function TeamRoster({data, setData}){
                     <tr>
                         <th>Position</th>
                         <th>Name</th>
-                        <th>(R)</th>
-                        <th>(H)</th>
-                        <th>(HR)</th>
-                        <th>(RBI)</th>
-                        <th>(SB)</th>
-                        <th>(BB)</th>
-                        <th>(IBB)</th>
-                        <th>(HBP)</th>
-                        <th>(OPS)</th>
-                        <th>(CI)</th>
+                        <th>R</th>
+                        <th>H</th>
+                        <th>HR</th>
+                        <th>RBI</th>
+                        <th>SB</th>
+                        <th>BB</th>
+                        <th>IBB</th>
+                        <th>HBP</th>
+                        <th>OPS</th>
+                        <th>CI</th>
                         <th>Secondary Positions</th>
                     </tr>
                 </thead>
@@ -90,7 +109,7 @@ export default function TeamRoster({data, setData}){
                 </tbody>
             </table>
             <h3>Bench/IL:</h3>
-            {generatePositions(additionalPositions)}
+            {/* {generatePositions(additionalPositions)} */}
         </div>
     )
 }
