@@ -118,6 +118,10 @@ export default function TeamRoster({data, setData}){
                     {generatePositions(pitcherPositions, 'P')}
                 </tbody>
             </table>
+            <div className={rosterStyles.buttonWrapper}>
+                <button type='submit'>Submit</button>
+                <button className={rosterStyles.calibrateButton}>Calibrate Team</button>
+            </div>
         </div>
     )
 }
