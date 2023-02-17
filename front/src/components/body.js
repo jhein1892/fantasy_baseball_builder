@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import '../styles/body.modules.css';
+import bodyStyles from '../styles/body.module.sass';
 import TeamRoster from './teamRoster';
 
 export default function Body({userInfo, rosterData, setRosterData}) {
@@ -9,20 +9,20 @@ export default function Body({userInfo, rosterData, setRosterData}) {
     },[])
 
     return (
-        <div className='bodyWrapper'>
-            <div className='rosterSection'>
+        <div className={bodyStyles.bodyWrapper}>
+            <div className={bodyStyles.rosterSection}>
                 <TeamRoster data={rosterData} setData={setRosterData} />
             </div>
-            <div className='leagueSection'>
+            <div className={bodyStyles.leagueSection}>
                 <p>League Standing</p>
             </div>
-            <div className='freeAgentSection'>
+            <div className={bodyStyles.freeAgentSection}>
                 <p>Free Agents/Waivers</p>
             </div>
-            <div className='matchupSection'>
+            <div className={bodyStyles.matchupSection}>
                 <p>This Weeks matchups</p>
             </div>
-            <div className='tradeSection'>
+            <div className={bodyStyles.tradeSection}>
                 <p>Proposed Trades</p>
             </div>
         </div>

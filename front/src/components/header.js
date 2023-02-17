@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/header.modules.css';
+import headerStyles from '../styles/header.module.sass';
 
 export default function Header({setUserInfo, userInfo, submitValues})
 {
@@ -10,7 +10,7 @@ export default function Header({setUserInfo, userInfo, submitValues})
         setUserInfo(prev => ({...prev, [`${name}`]: value}))
     }
     return (
-        <div className='headerWrapper'>
+        <div className={headerStyles.headerWrapper}>
             <form 
                 onChange={(e) => onChangeHandler(e)}
                 onSubmit={submitValues}

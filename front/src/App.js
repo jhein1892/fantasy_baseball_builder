@@ -1,9 +1,8 @@
-import './App.css';
 import Header from './components/header';
 import Body from './components/body';
 import axios from 'axios';
-import { useState } from 'react';
-
+import React, { useState } from 'react';
+import config from './config';
 
 function App() {
   // league_id and team_name
@@ -14,7 +13,7 @@ function App() {
   function submitValues(e){
     e.preventDefault();
 
-    axios.put(`${process.env.REACT_APP_API_ENDPOINT}/`, userInfo)
+    axios.put(`${config.REACT_APP_API_ENDPOINT}/`, userInfo)
     .then((response) => {
       setRosterData(response.data);
     }) 

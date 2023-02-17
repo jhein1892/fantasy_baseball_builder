@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import rosterStyles from '../styles/teamRoster.modules.css'
+import rosterStyles from '../styles/teamRoster.module.sass'
+
+
+// import styles from '../styles/teamRoster.modules.css';
 
 export default function TeamRoster({data, setData}){
     const batterPositions = ['C', '1B', '2B', '3B', 'SS','OF','OF','OF','Util'];    // Roster Positions for Batters 
@@ -7,22 +10,22 @@ export default function TeamRoster({data, setData}){
     const additionalPositions = ['BN','BN','BN','IL','IL','IL','IL','NA'];          // Additonal Roster Spots
 
     function generatePositions(positionSet, type){
-        let tempData = data.filter((x) => x.position_type === type)
+        let tempData = data ?  data.filter((x) => x.position_type === type) : [];
         positionSet = positionSet.concat(additionalPositions)
 
         return positionSet.map((position, index) => {
             // Find players assigned to current positions
-            let elegiblePlayer = tempData.filter((x) => x.selected_position === position);
+            let eligiblePlayer = tempData.filter((x) => x.selected_position === position);
             let eligiblePositionsString = "";
 
             // Pick first element and remove from data set for future positions.
-            if(elegiblePlayer.length > 0){
-                elegiblePlayer = elegiblePlayer[0];
-                let newTempData = tempData.filter((x) => x.player_id !== elegiblePlayer.player_id);
+            if(eligiblePlayer.length > 0){
+                eligiblePlayer = eligiblePlayer[0];
+                let newTempData = tempData.filter((x) => x.player_id !== eligiblePlayer.player_id);
                 tempData = newTempData;
 
-                for(let i = 0; i < elegiblePlayer.eligible_positions.length; i++){
-                    let position = elegiblePlayer.eligible_positions[i]
+                for(let i = 0; i < eligiblePlayer.eligible_positions.length; i++){
+                    let position = eligiblePlayer.eligible_positions[i]
                     if(i === 0){
                         eligiblePositionsString += position + ""
                     } else {
@@ -33,15 +36,20 @@ export default function TeamRoster({data, setData}){
             }
 
             // If there are no players to fill additional position return no row
-            if(additionalPositions.includes(position) && elegiblePlayer.length === 0){
-                return;
+            // if(additionalPositions.includes(position) && eligiblePlayer.length === 0){
+            //     return;
+            // }
+
+            if(additionalPositions.includes(position) && eligiblePlayer.length === 0) {
+                return null;
             }
+
 
             // else return table row with data
             return(
-                <tr className='positionSlot' key={`${position}-${index}`}>
-                    <td className='positionTitle'>{position}</td>
-                    <td className='playerName'>{elegiblePlayer.name ? elegiblePlayer.name : 'empty' } - <span>{eligiblePositionsString}</span></td>
+                <tr className={rosterStyles.positionSlot} key={`${position}-${index}`}>
+                    <td className={rosterStyles.positionTitle}>{position}</td>
+                    <td className={rosterStyles.playerName}>{eligiblePlayer.name ? eligiblePlayer.name : 'empty' } - <span>{eligiblePositionsString}</span></td>
                     <td>14</td>
                     <td>14</td>
                     <td>14</td>
@@ -63,7 +71,7 @@ export default function TeamRoster({data, setData}){
     }
 
     return (
-        <div className='rosterWrapper'>
+        <div className={rosterStyles.rosterWrapper}>
             <h3>Batters:</h3>
             <table>
                 <thead>
