@@ -13,3 +13,20 @@ test('renders all position slots', async () => {
     expect(positionSlots.length).toBe(19);
   });
 });
+
+test('renders additional position slot with additional players', async() => {
+  const data =[
+    {'player_id': 19, 'name': 'Matt Olson', 'position_type': 'P',
+    'eligible_positions': ['SP'], 'selected_position':'BN', 'status': ''},
+    {'player_id': 20, 'name': 'Jose Altuve', 'position_type': 'B',
+    'eligible_positions': ['2B'], 'selected_position':'BN', 'status': ''},
+  ]
+
+  render(<TeamRoster data={data}/>);
+
+  await waitFor(() => {
+    const positionSlots = screen.getAllByRole('row');
+    expect(positionSlots.length).toBe(21)
+  })
+
+})

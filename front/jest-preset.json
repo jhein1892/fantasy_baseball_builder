@@ -4,6 +4,9 @@
     "moduleNameMapper": {
       "\\.(css|scss)$": "<rootDir>/__mocks__/styleMock.js"
     },
+    "setupFilesAfterEnv": [
+      "<rootDir>/__tests__/setupTests.js"
+    ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/node_modules/",
       "<rootDir>/src/index.js"
