@@ -9,7 +9,7 @@ export default function Body({userInfo, rosterData, setRosterData}) {
     },[])
 
     return (
-        <div className={bodyStyles.bodyWrapper}>
+        <div className={bodyStyles.bodyWrapper} onScroll={() => console.log('scrolling')}>
             <div className={bodyStyles.rosterSection}>
                 <TeamRoster data={rosterData} setData={setRosterData} />
             </div>

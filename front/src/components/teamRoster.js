@@ -58,8 +58,7 @@ export default function TeamRoster({data, setData}){
             if(additionalPositions.includes(position) && eligiblePlayer.length === 0) {
                 return null;
             }
-
-            console.log(eligiblePlayer.eligible_positions)
+            
             let eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['BN', 'IL', 'NA']) : [];
             // else return table row with data
             return(
