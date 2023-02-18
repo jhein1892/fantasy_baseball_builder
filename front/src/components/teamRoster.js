@@ -8,6 +8,21 @@ export default function TeamRoster({data, setData}){
     const batterPositions = ['C', '1B', '2B', '3B', 'SS','OF','OF','OF','Util'];    // Roster Positions for Batters 
     const pitcherPositions = ['SP','SP','SP','RP','RP','P','P','P'];                // Roster Positions for Pitchers
     const additionalPositions = ['BN','BN','BN','IL','IL','IL','IL','NA'];          // Additonal Roster Spots
+    const availablePositions = {
+        "C": 1,
+        "1B": 1, 
+        "2B": 1,
+        "3B": 1,
+        "SS": 1,
+        "OF": 3,
+        "Util": 1,
+        "SP": 3,
+        "RP": 2,
+        "P": 3,
+        "BN": 3,
+        "IL": 4,
+        "NA": 1
+    }
 
     function generatePositions(positionSet, type){
         let tempData = data ?  data.filter((x) => x.position_type === type) : [];
@@ -44,7 +59,8 @@ export default function TeamRoster({data, setData}){
                 return null;
             }
 
-
+            console.log(eligiblePlayer.eligible_positions)
+            let eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['BN', 'IL', 'NA']) : [];
             // else return table row with data
             return(
                 <tr className={rosterStyles.positionSlot} key={`${position}-${index}`}>
@@ -62,7 +78,19 @@ export default function TeamRoster({data, setData}){
                     <td>14</td>
                     <td>
                         <select>
-                            <option>1B</option> 
+                            {eligiblePlayer.eligible_positions ?
+                                <>
+                                <option>{eligiblePlayer.selected_position}</option>
+                                {eligible_positions.map((position) => {
+                                    if(position === eligiblePlayer.selected_position) return;
+                                    return (
+                                        <option>{position}</option>
+                                    )
+                                })}
+                                </>
+                                :
+                                <option></option>
+                            }
                         </select>
                     </td>
                 </tr>
@@ -88,7 +116,7 @@ export default function TeamRoster({data, setData}){
                         <th>HBP</th>
                         <th>OPS</th>
                         <th>CI</th>
-                        <th>Secondary Positions</th>
+                        <th>Switch Positions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -111,7 +139,7 @@ export default function TeamRoster({data, setData}){
                         <th>(WHIP)</th>
                         <th>(PICK)</th>
                         <th>(SV+H)</th>
-                        <th>Secondary Positions</th>
+                        <th>Switch Positions</th>
                     </tr>
                 </thead>
                 <tbody>
