@@ -2,9 +2,6 @@ import React, { useEffect, useState } from 'react'
 import rosterStyles from '../styles/teamRoster.module.sass';
 import classNames from 'classnames';
 
-
-// import styles from '../styles/teamRoster.modules.css';
-
 export default function TeamRoster({data, setData}){
     const [localData, setLocalData] = useState();
     const batterPositions = ['C', '1B', '2B', '3B', 'SS','OF','OF','OF','Util'];    // Roster Positions for Batters 
@@ -30,7 +27,7 @@ export default function TeamRoster({data, setData}){
         batterLineup: false, 
         pitcherLineup: false
     })
-
+    
     function handlePositionChange(e, type){
         setError(prev => ({...prev, ['batterLineup']: false, ['pitcherLineup']: false}))
         let id = e.target.name;
@@ -116,6 +113,7 @@ export default function TeamRoster({data, setData}){
                         <select
                             name={eligiblePlayer.player_id}
                             onChange={(e) => handlePositionChange(e, type)}
+                            value={eligiblePlayer.selected_position}
                         >
                             {eligiblePlayer.eligible_positions ?
                                 <>
