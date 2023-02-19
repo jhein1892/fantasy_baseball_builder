@@ -24,6 +24,7 @@ export default function TeamRoster({data, setData}){
         "IL": 4,
         "NA": 1
     }
+
     const [error, setError] = useState({
         batterLineup: false, 
         pitcherLineup: false
@@ -33,20 +34,59 @@ export default function TeamRoster({data, setData}){
         let id = e.target.name;
         let value = e.target.value;
         let tempLocalData = localData;
+        // let moveAllowed = true;
+        // When we are dealing with bench positions, we should allow as many players as we want to be placed on the bench, but there should be an error that shows up saying that there are too many players on the bench and we don't have a complete lineup.
+
 
         // Check if there is already a player at that position
-        if(tempLocalData.some(obj => obj['selected_position'] === value)){
-            setError(prev => ({...prev, ['batterLineup'] : true}))
-        } else { // If there is no player in the position
-            tempLocalData.every((player) => {
-                if(player.player_id == id){
-                    player.selected_position = value;
-                    return false;
-                }
-                return true;
-            })
-            setLocalData([...tempLocalData]);
+
+        if(availablePositions[value] === 1){
+            // If the availablePositions[value] === 1, then if the position already exists throw error.
+            if(tempLocalData.some(player => player['selected_position'] === value)){
+                console.log('error!')
+            } else {
+                console.log('not error')
+            }
+        } else if (availablePositions[value] > 1){
+            // If the availablePositions[value] > 1, then if the length of the filter is already the availablePositions[value] throw error. 
+            let playersInPosition = tempLocalData.filter((player) => player.selected_position === value);
+            if(playersInPosition.length === availablePositions[value]){
+                console.log('error!')
+            } else {
+                console.log('not error')
+            }
         }
+
+
+
+
+
+
+
+
+
+
+
+
+        // if(!additionalPositions.includes(value) && tempLocalData.some(player => player['selected_position'] === value)){
+        //     // Set my error state to true
+        //     setError(prev => ({...prev, ['batterLineup'] : true}))
+            
+        //     // update the class for this row to show an error.
+            
+            
+            
+        // } else { // If there is no player in the position
+        //     setError(prev => ({...prev, ['batterLineup'] : false}))
+        //     tempLocalData.every((player) => {
+        //         if(player.player_id == id){
+        //             player.selected_position = value;
+        //             return false;
+        //         }
+        //         return true;
+        //     })
+        //     setLocalData([...tempLocalData]);
+        // }
     }
 
     function generatePositions(positionSet, type){
