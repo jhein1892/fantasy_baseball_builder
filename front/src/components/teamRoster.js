@@ -30,33 +30,42 @@ export default function TeamRoster({data, setData}){
         pitcherLineup: false
     })
 
-    function handlePositionChange(e){
+    function handlePositionChange(e, type){
+        setError(prev => ({...prev, ['batterLineup']: false, ['pitcherLineup']: false}))
         let id = e.target.name;
         let value = e.target.value;
         let tempLocalData = localData;
-        // let moveAllowed = true;
+        let moveAllowed = true;
+        let positionType = type === 'P' ? 'pitcherLineup' : 'batterLineup';
         // When we are dealing with bench positions, we should allow as many players as we want to be placed on the bench, but there should be an error that shows up saying that there are too many players on the bench and we don't have a complete lineup.
-
-
-        // Check if there is already a player at that position
 
         if(availablePositions[value] === 1){
             // If the availablePositions[value] === 1, then if the position already exists throw error.
             if(tempLocalData.some(player => player['selected_position'] === value)){
                 console.log('error!')
-            } else {
-                console.log('not error')
+                moveAllowed = false;
+                setError(prev => ({...prev, [positionType] : true}))
             }
         } else if (availablePositions[value] > 1){
             // If the availablePositions[value] > 1, then if the length of the filter is already the availablePositions[value] throw error. 
             let playersInPosition = tempLocalData.filter((player) => player.selected_position === value);
             if(playersInPosition.length === availablePositions[value]){
                 console.log('error!')
-            } else {
-                console.log('not error')
-            }
+                moveAllowed = false; 
+                setError(prev => ({...prev, [positionType] : true}))
+            } 
         }
 
+        if(moveAllowed){
+            tempLocalData.every((player) => {
+                if(player.player_id == id){
+                    player.selected_position = value;
+                    return false;
+                }
+                return true;
+            })
+            setLocalData([...tempLocalData]);
+        }
 
 
 
@@ -77,15 +86,8 @@ export default function TeamRoster({data, setData}){
             
             
         // } else { // If there is no player in the position
-        //     setError(prev => ({...prev, ['batterLineup'] : false}))
-        //     tempLocalData.every((player) => {
-        //         if(player.player_id == id){
-        //             player.selected_position = value;
-        //             return false;
-        //         }
-        //         return true;
-        //     })
-        //     setLocalData([...tempLocalData]);
+            
+       
         // }
     }
 
@@ -142,7 +144,7 @@ export default function TeamRoster({data, setData}){
                     <td>
                         <select
                             name={eligiblePlayer.player_id}
-                            onChange={handlePositionChange}
+                            onChange={(e) => handlePositionChange(e, type)}
                         >
                             {eligiblePlayer.eligible_positions ?
                                 <>
@@ -216,6 +218,11 @@ export default function TeamRoster({data, setData}){
                 </tbody>
             </table>
             <h3>Pitchers:</h3>
+            <div>
+                {error.pitcherLineup &&
+                    <p>Error Player already in position</p>
+                }
+            </div>
             <table>
                 <thead>
                     <tr>
