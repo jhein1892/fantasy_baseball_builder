@@ -5,6 +5,7 @@ import rosterStyles from '../styles/teamRoster.module.sass'
 // import styles from '../styles/teamRoster.modules.css';
 
 export default function TeamRoster({data, setData}){
+    const [localData, setLocalData] = useState([]);
     const batterPositions = ['C', '1B', '2B', '3B', 'SS','OF','OF','OF','Util'];    // Roster Positions for Batters 
     const pitcherPositions = ['SP','SP','SP','RP','RP','P','P','P'];                // Roster Positions for Pitchers
     const additionalPositions = ['BN','BN','BN','IL','IL','IL','IL','NA'];          // Additonal Roster Spots
@@ -24,8 +25,14 @@ export default function TeamRoster({data, setData}){
         "NA": 1
     }
 
+    function handlePositionChange(e){
+        console.log(e.target.value)
+        console.log(e.target.name)
+    }
+
+
     function generatePositions(positionSet, type){
-        let tempData = data ?  data.filter((x) => x.position_type === type) : [];
+        let tempData = localData ?  localData.filter((x) => x.position_type === type) : [];
         positionSet = positionSet.concat(additionalPositions)
 
         return positionSet.map((position, index) => {
@@ -50,11 +57,6 @@ export default function TeamRoster({data, setData}){
                 }
             }
 
-            // If there are no players to fill additional position return no row
-            // if(additionalPositions.includes(position) && eligiblePlayer.length === 0){
-            //     return;
-            // }
-
             if(additionalPositions.includes(position) && eligiblePlayer.length === 0) {
                 return null;
             }
@@ -76,14 +78,28 @@ export default function TeamRoster({data, setData}){
                     <td>14</td>
                     <td>14</td>
                     <td>
-                        <select>
+                        <select
+                            name={eligiblePlayer.player_id}
+                            onChange={handlePositionChange}
+                        >
                             {eligiblePlayer.eligible_positions ?
                                 <>
-                                <option>{eligiblePlayer.selected_position}</option>
+                                <option
+                                    key={`${eligiblePlayer.player_id}-${eligiblePlayer.selected_position}`}
+                                    value={eligiblePlayer.selected_position}
+                                >
+                                    {eligiblePlayer.selected_position}
+                                </option>
+
                                 {eligible_positions.map((position) => {
                                     if(position === eligiblePlayer.selected_position) return;
                                     return (
-                                        <option>{position}</option>
+                                        <option
+                                            value={position}
+                                            key={`${eligiblePlayer.player_id}-${position}`}
+                                        >
+                                            {position}
+                                        </option>
                                     )
                                 })}
                                 </>
@@ -96,6 +112,12 @@ export default function TeamRoster({data, setData}){
             )
         })
     }
+
+    useEffect(() => {
+        if(data.length > 0){
+            setLocalData(data)
+        }
+    },[data])
 
     return (
         <div className={rosterStyles.rosterWrapper}>

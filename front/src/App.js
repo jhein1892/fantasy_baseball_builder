@@ -11,7 +11,7 @@ function App() {
   const [rosterData, setRosterData] = useState([]);
 
   const [scrolled, setScrolled] = useState(false);
-
+  // 
   function submitValues(e){
     e.preventDefault();
 
@@ -24,6 +24,17 @@ function App() {
     })
 
   }
+
+  //  Temporary UseEffect for development of teamRoster component
+  useEffect(() => {
+    axios.put(`${config.REACT_APP_API_ENDPOINT}/`, userInfo)
+    .then((response) => {
+      setRosterData(response.data);
+    }) 
+    .catch((error) => {
+      console.log(error)
+    })
+  },[])
 
 
   useEffect(() => {
@@ -43,7 +54,7 @@ function App() {
   })
 
   return (
-    <div onClick={() => console.log('clicked App')} onScroll={() => console.log('scrolled IN App')}>
+    <div onScroll={() => console.log('scrolled IN App')}>
       <Header 
         setUserInfo={setUserInfo} 
         userInfo={userInfo}
