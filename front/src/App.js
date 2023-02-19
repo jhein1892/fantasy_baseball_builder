@@ -54,7 +54,7 @@ function App() {
   })
 
   return (
-    <div onScroll={() => console.log('scrolled IN App')}>
+    <div>
       <Header 
         setUserInfo={setUserInfo} 
         userInfo={userInfo}
