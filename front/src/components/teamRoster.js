@@ -24,28 +24,35 @@ export default function TeamRoster({data, setData}){
         "IL": 4,
         "NA": 1
     }
+    const [error, setError] = useState({
+        batterLineup: false, 
+        pitcherLineup: false
+    })
 
     function handlePositionChange(e){
         let id = e.target.name;
         let value = e.target.value;
         let tempLocalData = localData;
 
-        tempLocalData.every((player) => {
-            if(player.player_id == id){
-                player.selected_position = value;
-                return false;
-            }
-            return true;
-        })
-
-        setLocalData([...tempLocalData]);
+        // Check if there is already a player at that position
+        if(tempLocalData.some(obj => obj['selected_position'] === value)){
+            setError(prev => ({...prev, ['batterLineup'] : true}))
+        } else { // If there is no player in the position
+            tempLocalData.every((player) => {
+                if(player.player_id == id){
+                    player.selected_position = value;
+                    return false;
+                }
+                return true;
+            })
+            setLocalData([...tempLocalData]);
+        }
     }
-
 
     function generatePositions(positionSet, type){
         let tempData = localData ?  localData.filter((x) => x.position_type === type) : [];
         positionSet = positionSet.concat(additionalPositions)
-
+        console.log(tempData)
         return positionSet.map((position, index) => {
             // Find players assigned to current positions
             let eligiblePlayer = tempData.filter((x) => x.selected_position === position);
@@ -128,91 +135,6 @@ export default function TeamRoster({data, setData}){
         })
     }
 
-    // function generatePositions(positionSet, type, localData, additionalPositions, handlePositionChange) {
-    //     const memoizedHandler = useCallback(() => {
-    //       let tempData = localData ? localData.filter((x) => x.position_type === type) : [];
-    //       positionSet = positionSet.concat(additionalPositions);
-      
-    //       return positionSet.map((position, index) => {
-    //         // Find players assigned to current positions
-    //         let eligiblePlayer = tempData.filter((x) => x.selected_position === position);
-    //         let eligiblePositionsString = "";
-      
-    //         // Pick first element and remove from data set for future positions.
-    //         if (eligiblePlayer.length > 0) {
-    //           eligiblePlayer = eligiblePlayer[0];
-    //           let newTempData = tempData.filter((x) => x.player_id !== eligiblePlayer.player_id);
-    //           tempData = newTempData;
-      
-    //           for (let i = 0; i < eligiblePlayer.eligible_positions.length; i++) {
-    //             let position = eligiblePlayer.eligible_positions[i];
-    //             if (i === 0) {
-    //               eligiblePositionsString += position + "";
-    //             } else {
-    //               eligiblePositionsString += ", " + position;
-    //             }
-    //           }
-    //         }
-      
-    //         if (additionalPositions.includes(position) && eligiblePlayer.length === 0) {
-    //           return null;
-    //         }
-      
-    //         let eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['BN', 'IL', 'NA']) : [];
-    //         // else return table row with data
-    //         return (
-    //           <tr className={rosterStyles.positionSlot} key={`${position}-${index}`}>
-    //             <td className={rosterStyles.positionTitle}>{position}</td>
-    //             <td className={rosterStyles.playerName}>{eligiblePlayer.name ? eligiblePlayer.name : 'empty'} - <span>{eligiblePositionsString}</span></td>
-    //             <td>14</td>
-    //             <td>14</td>
-    //             <td>14</td>
-    //             <td>14</td>
-    //             <td>14</td>
-    //             <td>14</td>
-    //             <td>14</td>
-    //             <td>14</td>
-    //             <td>14</td>
-    //             <td>14</td>
-    //             <td>
-    //               <select
-    //                 name={eligiblePlayer.player_id}
-    //                 onChange={handlePositionChange}
-    //               >
-    //                 {eligiblePlayer.eligible_positions ?
-    //                   <>
-    //                     <option
-    //                       key={`${eligiblePlayer.player_id}-${eligiblePlayer.selected_position}`}
-    //                       value={eligiblePlayer.selected_position}
-    //                     >
-    //                       {eligiblePlayer.selected_position}
-    //                     </option>
-      
-    //                     {eligible_positions.map((position) => {
-    //                       if (position === eligiblePlayer.selected_position) return;
-    //                       return (
-    //                         <option
-    //                           value={position}
-    //                           key={`${eligiblePlayer.player_id}-${position}`}
-    //                         >
-    //                           {position}
-    //                         </option>
-    //                       )
-    //                     })}
-    //                   </>
-    //                   :
-    //                   <option></option>
-    //                 }
-    //               </select>
-    //             </td>
-    //           </tr>
-    //         )
-    //       })
-    //     }, [positionSet, type, localData, additionalPositions, handlePositionChange]);
-      
-    //     return memoizedHandler();
-    //   }
-
     useEffect(() => {
         if(data.length > 0){
             setLocalData(data)
@@ -226,6 +148,11 @@ export default function TeamRoster({data, setData}){
     return (
         <div className={rosterStyles.rosterWrapper}>
             <h3>Batters:</h3>
+            <div>
+                {error.batterLineup &&
+                    <p>Error Player already in position</p>
+                }
+            </div>
             <table>
                 <thead>
                     <tr>
