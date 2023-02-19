@@ -8,9 +8,25 @@
         text-align: left
         margin: 10px 5px
 
+    .errorWrapper
+        visibility: hidden
+        height: 25px
+        background: var(--primary)
+        width: -webkit-fill-available
+        display: flex
+        align-items: center
+        padding-left: 10px
+        margin-bottom: 5px
+
+        p
+            margin: 0
+    .errorEnabled
+        visibility: visible
+
     table
         width: 100%
-
+        border-spacing: initial
+        row-gap: 5px
         thead
             background: var(--primary-light)
             th
@@ -21,12 +37,12 @@
 
     .positionSlot
         background: lightgrey
-        // display: flex
-        // flex-direction: row
-        margin: 5px
-        padding: 4px
+        height: 25px
         border-radius: 2px
         text-align: center
+        &:nth-of-type(odd)
+            background: #e2e2e2
+        
         &:hover
             background: var(--hover-green)
 

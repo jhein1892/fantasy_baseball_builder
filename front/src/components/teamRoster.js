@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import rosterStyles from '../styles/teamRoster.module.sass'
+import rosterStyles from '../styles/teamRoster.module.sass';
+import classNames from 'classnames';
 
 
 // import styles from '../styles/teamRoster.modules.css';
@@ -37,22 +38,15 @@ export default function TeamRoster({data, setData}){
         let tempLocalData = localData;
         let moveAllowed = true;
         let positionType = type === 'P' ? 'pitcherLineup' : 'batterLineup';
-        // When we are dealing with bench positions, we should allow as many players as we want to be placed on the bench, but there should be an error that shows up saying that there are too many players on the bench and we don't have a complete lineup.
 
         if(availablePositions[value] === 1){
-            // If the availablePositions[value] === 1, then if the position already exists throw error.
             if(tempLocalData.some(player => player['selected_position'] === value)){
-                console.log('error!')
                 moveAllowed = false;
-                setError(prev => ({...prev, [positionType] : true}))
             }
         } else if (availablePositions[value] > 1){
-            // If the availablePositions[value] > 1, then if the length of the filter is already the availablePositions[value] throw error. 
             let playersInPosition = tempLocalData.filter((player) => player.selected_position === value);
             if(playersInPosition.length === availablePositions[value]){
-                console.log('error!')
                 moveAllowed = false; 
-                setError(prev => ({...prev, [positionType] : true}))
             } 
         }
 
@@ -65,30 +59,7 @@ export default function TeamRoster({data, setData}){
                 return true;
             })
             setLocalData([...tempLocalData]);
-        }
-
-
-
-
-
-
-
-
-
-
-
-        // if(!additionalPositions.includes(value) && tempLocalData.some(player => player['selected_position'] === value)){
-        //     // Set my error state to true
-        //     setError(prev => ({...prev, ['batterLineup'] : true}))
-            
-        //     // update the class for this row to show an error.
-            
-            
-            
-        // } else { // If there is no player in the position
-            
-       
-        // }
+        } else setError(prev => ({...prev, [positionType] : value}));
     }
 
     function generatePositions(positionSet, type){
@@ -183,16 +154,21 @@ export default function TeamRoster({data, setData}){
         }
     },[data])
 
-    useEffect(() => {
-        console.log('local data changed', localData)
-    }, [localData])
+    // Some styles that are based off of states
+    const batterErrorClasses = classNames(rosterStyles.errorWrapper, {
+        [rosterStyles.errorEnabled]:error.batterLineup
+    });
+    
+    const pitcherErrorClasses = classNames(rosterStyles.errorWrapper, {
+        [rosterStyles.errorEnabled]:error.pitcherLineup
+    });
 
     return (
         <div className={rosterStyles.rosterWrapper}>
             <h3>Batters:</h3>
-            <div>
+            <div className={batterErrorClasses}>
                 {error.batterLineup &&
-                    <p>Error Player already in position</p>
+                    <p>Error Player already in position: {error.batterLineup}</p>
                 }
             </div>
             <table>
@@ -218,9 +194,9 @@ export default function TeamRoster({data, setData}){
                 </tbody>
             </table>
             <h3>Pitchers:</h3>
-            <div>
+            <div className={pitcherErrorClasses}>
                 {error.pitcherLineup &&
-                    <p>Error Player already in position</p>
+                    <p>Error Player already in position: {error.pitcherLineup}</p>
                 }
             </div>
             <table>
