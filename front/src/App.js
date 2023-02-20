@@ -22,19 +22,18 @@ function App() {
     .catch((error) => {
       console.log(error)
     })
-
   }
 
   //  Temporary UseEffect for development of teamRoster component
-  useEffect(() => {
-    axios.put(`${config.REACT_APP_API_ENDPOINT}/`, userInfo)
-    .then((response) => {
-      setRosterData(response.data);
-    }) 
-    .catch((error) => {
-      console.log(error)
-    })
-  },[])
+  // useEffect(() => {
+  //   axios.put(`${config.REACT_APP_API_ENDPOINT}/`, userInfo)
+  //   .then((response) => {
+  //     setRosterData(response.data);
+  //   }) 
+  //   .catch((error) => {
+  //     console.log(error)
+  //   })
+  // },[])
 
 
   useEffect(() => {
@@ -64,7 +63,7 @@ function App() {
       <Body 
         userInfo={userInfo}
         rosterData={rosterData}
-        setRosterData={setRosterData}
+        // setRosterData={setRosterData}
       />
     </div>
   );

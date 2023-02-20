@@ -93,5 +93,13 @@ def signIn():
     response = make_response(myPlayer)
     return response
 
+@app.route("/updateRoster", methods=["PUT"])
+def updateRoster():
+    data = request.get_json()
+    
+    print(data)
+    response = make_response({"status": 200})
+    return response
+
 if __name__ == "__main__":
     app.run()

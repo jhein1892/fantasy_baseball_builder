@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import rosterStyles from '../styles/teamRoster.module.sass';
 import classNames from 'classnames';
+import axios from 'axios';
+import config from '../config';
 
-export default function TeamRoster({data, setData}){
+export default function TeamRoster({data}){
     const [localData, setLocalData] = useState();
     const batterPositions = ['C', '1B', '2B', '3B', 'SS','OF','OF','OF','Util'];    // Roster Positions for Batters 
     const pitcherPositions = ['SP','SP','SP','RP','RP','P','P','P'];                // Roster Positions for Pitchers
@@ -27,6 +29,19 @@ export default function TeamRoster({data, setData}){
         batterLineup: false, 
         pitcherLineup: false
     })
+
+    function handleSubmit(e){
+        e.preventDefault();
+
+        console.log(localData);
+        axios.put(`${config.REACT_APP_API_ENDPOINT}/updateRoster`, localData)
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+    }
     
     function handlePositionChange(e, type){
         setError(prev => ({...prev, ['batterLineup']: false, ['pitcherLineup']: false}))
@@ -146,6 +161,8 @@ export default function TeamRoster({data, setData}){
         })
     }
 
+
+
     useEffect(() => {
         if(data.length > 0){
             setLocalData(data)
@@ -220,7 +237,7 @@ export default function TeamRoster({data, setData}){
                 </tbody>
             </table>
             <div className={rosterStyles.buttonWrapper}>
-                <button type='submit'>Submit</button>
+                <button type='submit' onClick={handleSubmit}>Submit</button>
                 <button className={rosterStyles.calibrateButton}>Calibrate Team</button>
             </div>
         </div>

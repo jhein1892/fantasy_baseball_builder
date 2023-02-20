@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import bodyStyles from '../styles/body.module.sass';
 import TeamRoster from './teamRoster';
 
-export default function Body({userInfo, rosterData, setRosterData}) {
+export default function Body({userInfo, rosterData}) {
     
     useEffect(() => {
         // Will be a main route, used to generate all of the data being passed down to these components
@@ -11,7 +11,9 @@ export default function Body({userInfo, rosterData, setRosterData}) {
     return (
         <div className={bodyStyles.bodyWrapper} onScroll={() => console.log('scrolling')}>
             <div className={bodyStyles.rosterSection}>
-                <TeamRoster data={rosterData} setData={setRosterData} />
+                <TeamRoster data={rosterData} 
+                // setData={setRosterData} 
+                />
             </div>
             <div className={bodyStyles.leagueSection}>
                 <p>League Standing</p>
