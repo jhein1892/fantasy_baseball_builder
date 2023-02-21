@@ -161,8 +161,6 @@ export default function TeamRoster({data}){
         })
     }
 
-
-
     useEffect(() => {
         if(data.length > 0){
             setLocalData(data)

@@ -93,11 +93,15 @@ def signIn():
     response = make_response(myPlayer)
     return response
 
+# FILE CALLED: teamRoster.js
+# Updated Roster being sent here
 @app.route("/updateRoster", methods=["PUT"])
 def updateRoster():
+    # Updated Roster set being passed through here
     data = request.get_json()
     
     print(data)
+
     response = make_response({"status": 200})
     return response
 
