@@ -10,4 +10,4 @@ I'm hoping that this backend is going to be python based, allowing me to utilize
 ## To Run
 Once you've installed all the dependent python packages, run the command:
 
-    app:app --bind 0.0.0.0:8080
+    gunicorn app:app --bind 0.0.0.0:8080
