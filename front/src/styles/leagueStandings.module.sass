@@ -8,19 +8,20 @@
         border-spacing: initial
         row-gap: 5px
         thead
-            background: var(--primary-light)
+            // background: var(--primary-light)
+            background: lightgrey
             th
                 font-size:0.8rem
                 padding: 5px
         tbody
             width: 100%
             tr
-                background: lightgrey
+                // background: lightgrey
                 height: 25px
                 border-radius: 2px
                 text-align: center
                 &:nth-of-type(odd)
-                    background: #e2e2e2
+                    // background: #e2e2e2
                 
                 &:hover
                     background: var(--hover-green)
@@ -28,4 +29,11 @@
                 td
                     margin: 0
                     font-size:0.8rem
+                
+                .firstPlace
+                    background: gold
+                .secondPlace
+                    background: silver
+                .thirdPlace
+                    background: sandybrown
         

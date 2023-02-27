@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import standingsStyles from '../styles/leagueStandings.module.sass';
+import classNames from 'classnames';
 
 export default function Standings({data}){
 
@@ -15,9 +16,15 @@ export default function Standings({data}){
         return data.map((team) => {
             let outcomes = team.outcome_totals
             let record = `${outcomes.wins}-${outcomes.losses}-${outcomes.ties}`
+            const teamStandingClass = classNames({
+                [standingsStyles.firstPlace]:team.rank === 1, 
+                [standingsStyles.secondPlace]: team.rank === 2,
+                [standingsStyles.thirdPlace]: team.rank === 3
+            });
+            
             return(
                 <tr>
-                    <td>{team.rank}</td>
+                    <td className={teamStandingClass}>{team.rank}</td>
                     <td>{team.name}</td>
                     <td>{record}</td>
                     <td>{outcomes.percentage}</td>
