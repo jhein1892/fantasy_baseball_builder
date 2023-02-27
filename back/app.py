@@ -72,6 +72,89 @@ myPlayer = [
 
  ]
 
+
+leagueStandings = [
+    {'team_key': '388.l.27081.t.5',
+ 'name': 'Lumber Kings',
+ 'rank': 1,
+ 'playoff_seed': '5',
+ 'outcome_totals': {'wins': '121',
+  'losses': '116',
+  'ties': '15',
+  'percentage': '.510'},
+ 'games_back': '19'},
+
+     {'team_key': '388.l.27081.t.5',
+ 'name': 'Team 2',
+ 'rank': 6,
+ 'playoff_seed': '5',
+ 'outcome_totals': {'wins': '98',
+  'losses': '146',
+  'ties': '12',
+  'percentage': '.340'},
+ 'games_back': '50'},
+
+     {'team_key': '388.l.27081.t.5',
+ 'name': 'Big Boys',
+ 'rank': 3,
+ 'playoff_seed': '5',
+ 'outcome_totals': {'wins': '121',
+  'losses': '116',
+  'ties': '15',
+  'percentage': '.510'},
+ 'games_back': '19'},
+
+     {'team_key': '388.l.27081.t.5',
+ 'name': 'Liver Kings',
+ 'rank': 7,
+ 'playoff_seed': '5',
+ 'outcome_totals': {'wins': '121',
+  'losses': '116',
+  'ties': '15',
+  'percentage': '.510'},
+ 'games_back': '19'},
+
+     {'team_key': '388.l.27081.t.5',
+ 'name': 'Lumber Kings',
+ 'rank': 2,
+ 'playoff_seed': '5',
+ 'outcome_totals': {'wins': '121',
+  'losses': '116',
+  'ties': '15',
+  'percentage': '.510'},
+ 'games_back': '19'},
+
+     {'team_key': '388.l.27081.t.5',
+ 'name': 'Team 2',
+ 'rank': 5,
+ 'playoff_seed': '5',
+ 'outcome_totals': {'wins': '121',
+  'losses': '116',
+  'ties': '15',
+  'percentage': '.510'},
+ 'games_back': '19'},
+
+     {'team_key': '388.l.27081.t.5',
+ 'name': 'Big Boys',
+ 'rank': 4,
+ 'playoff_seed': '5',
+ 'outcome_totals': {'wins': '121',
+  'losses': '116',
+  'ties': '15',
+  'percentage': '.510'},
+ 'games_back': '19'},
+
+     {'team_key': '388.l.27081.t.5',
+ 'name': 'Liver Kings',
+ 'rank': 8,
+ 'playoff_seed': '5',
+ 'outcome_totals': {'wins': '121',
+  'losses': '116',
+  'ties': '15',
+  'percentage': '.510'},
+ 'games_back': '19'},
+
+]
 app = Flask(__name__)
 CORS(app, origins=['http://localhost:3000'], methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
@@ -90,7 +173,7 @@ def signIn():
 
     # Call yahoo_fantasy_api with league_id and team_id to get roster data
     # For now, calling local object of fake team for reference on front
-    response = make_response(myPlayer)
+    response = make_response({'roster': myPlayer, 'standings': leagueStandings})
     return response
 
 # FILE CALLED: teamRoster.js

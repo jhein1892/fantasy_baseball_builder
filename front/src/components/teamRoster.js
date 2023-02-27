@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import axios from 'axios';
 import config from '../config';
 
-export default function TeamRoster({data}){
+export default function TeamRoster({ data }){
     const [localData, setLocalData] = useState();
     const batterPositions = ['C', '1B', '2B', '3B', 'SS','OF','OF','OF','Util'];    // Roster Positions for Batters 
     const pitcherPositions = ['SP','SP','SP','RP','RP','P','P','P'];                // Roster Positions for Pitchers
@@ -114,16 +114,16 @@ export default function TeamRoster({data}){
                 <tr className={rosterStyles.positionSlot} key={`${position}-${index}`}>
                     <td className={rosterStyles.positionTitle}>{position}</td>
                     <td className={rosterStyles.playerName}>{eligiblePlayer.name ? eligiblePlayer.name : 'empty' } - <span>{eligiblePositionsString}</span></td>
-                    <td>14</td>
-                    <td>14</td>
-                    <td>14</td>
-                    <td>14</td>
-                    <td>14</td>
-                    <td>14</td>
-                    <td>14</td>
-                    <td>14</td>
-                    <td>14</td>
-                    <td>14</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
                     <td>
                         <select
                             name={eligiblePlayer.player_id}
@@ -162,7 +162,7 @@ export default function TeamRoster({data}){
     }
 
     useEffect(() => {
-        if(data.length > 0){
+        if(data){
             setLocalData(data)
         }
     },[data])

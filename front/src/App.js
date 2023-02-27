@@ -8,8 +8,7 @@ function App() {
   // league_id and team_name
   const [userInfo, setUserInfo] = useState({});
   // Information about the roster for the team
-  const [rosterData, setRosterData] = useState([]);
-
+  const [teamData, setTeamData] = useState({})
   const [scrolled, setScrolled] = useState(false);
   // 
   function submitValues(e){
@@ -17,7 +16,8 @@ function App() {
 
     axios.put(`${config.REACT_APP_API_ENDPOINT}/`, userInfo)
     .then((response) => {
-      setRosterData(response.data);
+      let data = response.data
+      setTeamData(data)
     }) 
     .catch((error) => {
       console.log(error)
@@ -38,9 +38,6 @@ function App() {
 
   useEffect(() => {
     const handleScroll=()=>{
-      // console.log('Scrolling',window.scrollY)
-      // let element = document.getElementById('header');
-      // console.log(element)
       if(window.scrollY > 15 && !scrolled){
         setScrolled(true);
       } else if(window.scrollY < 15 && scrolled) {
@@ -62,8 +59,7 @@ function App() {
       />
       <Body 
         userInfo={userInfo}
-        rosterData={rosterData}
-        // setRosterData={setRosterData}
+        data={teamData}
       />
     </div>
   );
