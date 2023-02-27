@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
+import standingsStyles from '../styles/leagueStandings.module.sass';
 
 export default function Standings({data}){
 
@@ -27,8 +28,7 @@ export default function Standings({data}){
     }
 
     return (
-        <div>
-            <h1>Standings</h1>
+        <div className={standingsStyles.standingsWrapper}>
             <table>
                 <thead>
                     <tr>

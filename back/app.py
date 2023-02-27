@@ -154,6 +154,17 @@ leagueStandings = [
   'percentage': '.510'},
  'games_back': '19'},
 
+   {'team_key': '388.l.27081.t.5',
+ 'name': 'Last Place',
+ 'rank': 9,
+ 'playoff_seed': '5',
+ 'outcome_totals': {'wins': '121',
+  'losses': '116',
+  'ties': '15',
+  'percentage': '.510'},
+ 'games_back': '19'},
+
+
 ]
 app = Flask(__name__)
 CORS(app, origins=['http://localhost:3000'], methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
