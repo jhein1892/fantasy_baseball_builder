@@ -25,15 +25,16 @@ function App() {
   }
 
   //  Temporary UseEffect for development of teamRoster component
-  // useEffect(() => {
-  //   axios.put(`${config.REACT_APP_API_ENDPOINT}/`, userInfo)
-  //   .then((response) => {
-  //     setRosterData(response.data);
-  //   }) 
-  //   .catch((error) => {
-  //     console.log(error)
-  //   })
-  // },[])
+  useEffect(() => {
+    axios.put(`${config.REACT_APP_API_ENDPOINT}/`, userInfo)
+    .then((response) => {
+      let data = response.data
+      setTeamData(data)
+    }) 
+    .catch((error) => {
+      console.log(error)
+    })
+  },[])
 
 
   useEffect(() => {

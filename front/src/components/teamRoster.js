@@ -77,7 +77,6 @@ export default function TeamRoster({ data }){
     function generatePositions(positionSet, type){
         let tempData = localData ?  localData.filter((x) => x.position_type === type) : [];
         positionSet = positionSet.concat(additionalPositions)
-        console.log(tempData)
         return positionSet.map((position, index) => {
             // Find players assigned to current positions
             let eligiblePlayer = tempData.filter((x) => x.selected_position === position);

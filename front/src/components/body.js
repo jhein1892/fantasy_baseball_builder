@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import bodyStyles from '../styles/body.module.sass';
 import TeamRoster from './teamRoster';
+import Standings from './standings';
 
 export default function Body({userInfo, data}) {
     
@@ -16,7 +17,7 @@ export default function Body({userInfo, data}) {
                 />
             </div>
             <div className={bodyStyles.leagueSection}>
-                <p>League Standing</p>
+                <Standings data={data.standings}/>
             </div>
             <div className={bodyStyles.freeAgentSection}>
                 <p>Free Agents/Waivers</p>
