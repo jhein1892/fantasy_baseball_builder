@@ -16,14 +16,21 @@ export default function Standings({data}){
         return data.map((team) => {
             let outcomes = team.outcome_totals
             let record = `${outcomes.wins}-${outcomes.losses}-${outcomes.ties}`
+
             const teamStandingClass = classNames({
                 [standingsStyles.firstPlace]:team.rank === 1, 
                 [standingsStyles.secondPlace]: team.rank === 2,
                 [standingsStyles.thirdPlace]: team.rank === 3
             });
+
+            const teamInfoClass = classNames(standingsStyles.teamInfo, {
+                [standingsStyles.topSpot]:team.rank === 1, 
+                // [standingsStyles.secondPlace]: team.rank === 2,
+                // [standingsStyles.thirdPlace]: team.rank === 3
+            })
             
             return(
-                <tr>
+                <tr className={teamInfoClass}>
                     <td className={teamStandingClass}>{team.rank}</td>
                     <td>{team.name}</td>
                     <td>{record}</td>

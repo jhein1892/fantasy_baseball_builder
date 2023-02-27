@@ -15,25 +15,24 @@
                 padding: 5px
         tbody
             width: 100%
-            tr
+            .teamInfo
                 // background: lightgrey
                 height: 25px
                 border-radius: 2px
-                text-align: center
-                &:nth-of-type(odd)
-                    // background: #e2e2e2
-                
-                &:hover
-                    background: var(--hover-green)
+                text-align: center                
 
                 td
                     margin: 0
                     font-size:0.8rem
-                
+                //  Switch this so we have th class on the row, and then we do first instance of td is background
                 .firstPlace
                     background: gold
                 .secondPlace
                     background: silver
                 .thirdPlace
                     background: sandybrown
+            .topSpot
+                &:hover
+                    background: #ffd70054
+            
         
