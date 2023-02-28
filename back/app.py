@@ -1,12 +1,6 @@
 from flask import Flask, make_response, request, jsonify
 from flask_cors import CORS
-
-# player_id: the is for the specific player
-# name: name of player
-# position_type: B for batter, P for pitcher
-# eligible_positions: eligable positions for the player
-# selected_position: the selected position for the player
-# status: injury status
+import ssl
 
 myPlayer = [
     #Position Players
@@ -166,6 +160,9 @@ leagueStandings = [
 
 
 ]
+context = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
+context.load_cert_chain('./SSL/cert.pem', './SSL/key.pem')
+
 app = Flask(__name__)
 CORS(app, origins=['http://localhost:3000'], methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
@@ -200,4 +197,4 @@ def updateRoster():
     return response
 
 if __name__ == "__main__":
-    app.run()
+    app.run(ssl_context=context)

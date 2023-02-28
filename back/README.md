@@ -11,3 +11,6 @@ I'm hoping that this backend is going to be python based, allowing me to utilize
 Once you've installed all the dependent python packages, run the command:
 
     gunicorn app:app --bind 0.0.0.0:8080
+
+
+Make sure you've generated cert and pem keys
