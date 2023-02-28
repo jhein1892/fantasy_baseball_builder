@@ -12,9 +12,7 @@ export default function Body({userInfo, data}) {
     return (
         <div className={bodyStyles.bodyWrapper} onScroll={() => console.log('scrolling')}>
             <div className={bodyStyles.rosterSection}>
-                <TeamRoster data={data.roster} 
-                // setData={setRosterData} 
-                />
+                <TeamRoster data={data.roster}/>
             </div>
             <div className={bodyStyles.leagueSection}>
                 <Standings data={data.standings}/>
