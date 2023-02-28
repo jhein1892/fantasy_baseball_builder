@@ -1,5 +1,6 @@
 from flask import Flask, make_response, request, jsonify
 from flask_cors import CORS
+from flask_sslify import SSLify
 import ssl
 
 myPlayer = [
@@ -160,11 +161,13 @@ leagueStandings = [
 
 
 ]
-context = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
-context.load_cert_chain('./SSL/cert.pem', './SSL/key.pem')
+# context = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
+# context.load_cert_chain('./SSL/cert.pem', './SSL/key.pem')
 
 app = Flask(__name__)
-CORS(app, origins=['http://localhost:3000'], methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
+sslify = SSLify(app)
+
+CORS(app, origins=['https://localhost:3000'], methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
 # This route sends values to the front when called
 @app.route("/")
@@ -197,4 +200,4 @@ def updateRoster():
     return response
 
 if __name__ == "__main__":
-    app.run(ssl_context=context)
+    app.run()

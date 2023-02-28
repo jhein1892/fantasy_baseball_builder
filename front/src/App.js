@@ -1,8 +1,13 @@
 import Header from './components/header';
 import Body from './components/body';
 import axios from 'axios';
+// import https from 'https';
 import React, { useState, useEffect } from 'react';
 import config from './config';
+
+// const agent= new https.Agent({
+//   rejectUnauthorized:false
+// })
 
 function App() {
   // league_id and team_name
@@ -13,7 +18,6 @@ function App() {
   // 
   function submitValues(e){
     e.preventDefault();
-
     axios.put(`${config.REACT_APP_API_ENDPOINT}/`, userInfo)
     .then((response) => {
       let data = response.data
@@ -26,7 +30,7 @@ function App() {
 
   //  Temporary UseEffect for development of teamRoster component
   useEffect(() => {
-    axios.put(`${config.REACT_APP_API_ENDPOINT}/`, userInfo)
+    axios.put('https://127.0.0.1:5000/', userInfo)
     .then((response) => {
       let data = response.data
       setTeamData(data)

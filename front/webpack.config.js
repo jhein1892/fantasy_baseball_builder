@@ -2,12 +2,12 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  mode:'development',
+  mode: 'development',
   entry: './src/index.js',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath:'/'
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -15,9 +15,9 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
-            presets: ["@babel/preset-env", "@babel/preset-react"]
+            presets: ['@babel/preset-env', '@babel/preset-react']
           }
         }
       },
@@ -25,8 +25,8 @@ module.exports = {
         test: /\.s[ac]ss$/i,
         use: [
           MiniCssExtractPlugin.loader,
-          "css-loader",
-          "sass-loader"
+          'css-loader',
+          'sass-loader'
         ]
       },
       {
@@ -35,12 +35,26 @@ module.exports = {
           'style-loader',
           'css-loader'
         ]
+      },
+      {
+        test: /\.https$/,
+        use: 'xhr-loader'
       }
     ]
   },
   plugins: [
     new MiniCssExtractPlugin({
-        filename: 'style.css',
-    }),
+      filename: 'style.css'
+    })
   ],
+  resolve: {
+    fallback: {
+      path: require.resolve('path-browserify'),
+      https: require.resolve('https-browserify'),
+      stream: require.resolve('stream-browserify'),
+      util: require.resolve('util/'),
+      buffer: require.resolve('buffer/'),
+      crypto: require.resolve('crypto-browserify')
+    }
+  }
 };
