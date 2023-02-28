@@ -25,14 +25,18 @@
                     margin: 0
                     font-size:0.8rem
                 //  Switch this so we have th class on the row, and then we do first instance of td is background
-                .firstPlace
-                    background: gold
-                .secondPlace
-                    background: silver
-                .thirdPlace
-                    background: sandybrown
             .topSpot
+                td:first-of-type
+                    background: gold
                 &:hover
                     background: #ffd70054
-            
-        
+            .secondSpot
+                td:first-of-type
+                    background: silver
+                &:hover
+                    background: #c0c0c061
+            .thirdSpot
+                td:first-of-type
+                    background: sandybrown
+                &:hover
+                    background: #f4a46066
