@@ -13,6 +13,8 @@ with open('oauth2.json', 'w') as f:
 oauth = OAuth2(None, None, from_file='oauth2.json')
 gm = yfa.Game(oauth, 'mlb')
 
+lg = gm.to_league('422.l.21846')
+
 # lg = league.League(sc=oauth, league_id=21846)
 
 # currentWeek = lg.current_week()

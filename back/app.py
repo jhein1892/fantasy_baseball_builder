@@ -157,7 +157,7 @@ leagueStandings = [
 from flask import Flask, make_response, request, jsonify
 from flask_cors import CORS
 from flask_sslify import SSLify
-from yahoo_api import gm
+from yahoo_api import lg, gm
 import ssl
 
 app = Flask(__name__)
@@ -178,6 +178,7 @@ def signIn():
     data = request.get_json()
     print(data)
     print(gm.league_ids(year=2023))
+    print(lg.settings())
 
     # Call yahoo_fantasy_api with league_id and team_id to get roster data
     # For now, calling local object of fake team for reference on front
