@@ -1,8 +1,3 @@
-from flask import Flask, make_response, request, jsonify
-from flask_cors import CORS
-from flask_sslify import SSLify
-import ssl
-
 myPlayer = [
     #Position Players
     {'player_id': 1, 'name': 'Ronald Acuna Jr.', 'position_type': 'B',
@@ -64,9 +59,7 @@ myPlayer = [
  'eligible_positions': ['OF'], 'selected_position':'IL', 'status': 'DTD'},
     {'player_id': 23, 'name': 'Dylan Cease', 'position_type': 'P',
  'eligible_positions': ['SP'], 'selected_position':'IL', 'status': 'DTD'},
-
- ]
-
+]
 
 leagueStandings = [
     {'team_key': '388.l.27081.t.5',
@@ -159,10 +152,13 @@ leagueStandings = [
   'percentage': '.510'},
  'games_back': '19'},
 
+ ]
 
-]
-# context = ssl.create_default_context(purpose=ssl.Purpose.CLIENT_AUTH)
-# context.load_cert_chain('./SSL/cert.pem', './SSL/key.pem')
+from flask import Flask, make_response, request, jsonify
+from flask_cors import CORS
+from flask_sslify import SSLify
+from yahoo_api import gm
+import ssl
 
 app = Flask(__name__)
 sslify = SSLify(app)
@@ -181,6 +177,7 @@ def home():
 def signIn():
     data = request.get_json()
     print(data)
+    print(gm.league_ids(year=2023))
 
     # Call yahoo_fantasy_api with league_id and team_id to get roster data
     # For now, calling local object of fake team for reference on front
