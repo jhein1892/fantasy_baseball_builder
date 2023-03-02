@@ -24,7 +24,7 @@ export default function Standings({data}){
             })
             
             return(
-                <tr className={teamInfoClass}>
+                <tr className={teamInfoClass} key={`${team.name}-${team.games_back}`}>
                     <td>{team.rank}</td>
                     <td>{team.name}</td>
                     <td>{record}</td>

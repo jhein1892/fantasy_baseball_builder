@@ -5,9 +5,9 @@ export default function Matchups({data}){
     const [statID, setStatID] = useState()
     useEffect(() => {
         if(data){
-            console.log(data)
-            // let relevantData = data[1]['scoreboard'][0]['matchups']
-            // console.log(relevantData)
+            let relevantData = data[1]['scoreboard'][0]['matchups']
+            let statIDData = data[2]['stat_categories'] 
+            setStatID(statIDData)
             setMatchupData(relevantData)
         }
     },[data])
@@ -19,8 +19,11 @@ export default function Matchups({data}){
             if(key !== 'count'){
                 let singleMatchupData = availableData[key].matchup
                 let teamsData = singleMatchupData[0].teams
-                let statData = singleMatchupData['stat_winners'] 
-                console.log(teamsData)
+                let team1 = teamsData[0]['team']
+                let team2 = teamsData[1]['team']
+                let statData = singleMatchupData['stat_winners']
+
+                console.log(team1, team2)
             }
         })
     }
