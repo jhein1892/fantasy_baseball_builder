@@ -2,14 +2,15 @@ import React, { useEffect } from 'react';
 import bodyStyles from '../styles/body.module.sass';
 import TeamRoster from './teamRoster';
 import Standings from './standings';
+import Matchups from './matchups';
 
 export default function Body({userInfo, data}) {
     
-    useEffect(() => {
-        if(data)
-            console.log(data)
-        // Will be a main route, used to generate all of the data being passed down to these components
-    },[data])
+    // useEffect(() => {
+    //     if(data)
+    //         console.log(data)
+    //     // Will be a main route, used to generate all of the data being passed down to these components
+    // },[data])
 
     return (
         <div className={bodyStyles.bodyWrapper} onScroll={() => console.log('scrolling')}>
@@ -23,7 +24,7 @@ export default function Body({userInfo, data}) {
                 <p>Free Agents/Waivers</p>
             </div>
             <div className={bodyStyles.matchupSection}>
-                <p>This Weeks matchups</p>
+                <Matchups data={data.matchups}/>
             </div>
             <div className={bodyStyles.tradeSection}>
                 <p>Proposed Trades</p>

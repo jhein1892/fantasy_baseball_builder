@@ -179,6 +179,7 @@ def signIn():
    print(data)
    standings = lg.standings()
    matchups = lg.matchups()
+   matchups = matchups['fantasy_content']['league']
    roster = tm.roster()
    # Call yahoo_fantasy_api with league_id and team_id to get roster data
 
