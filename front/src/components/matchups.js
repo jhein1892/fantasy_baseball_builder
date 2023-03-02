@@ -2,9 +2,11 @@ import React, {useEffect, useState} from 'react'
 
 export default function Matchups({data}){
     const [matchupData, setMatchupData] = useState()
+    const [statID, setStatID] = useState()
     useEffect(() => {
         if(data){
-            let relevantData = data[1]['scoreboard'][0]['matchups']
+            console.log(data)
+            // let relevantData = data[1]['scoreboard'][0]['matchups']
             // console.log(relevantData)
             setMatchupData(relevantData)
         }
