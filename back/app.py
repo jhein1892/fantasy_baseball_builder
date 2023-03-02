@@ -176,9 +176,10 @@ def home():
 @app.route("/", methods=["PUT"])
 def signIn():
    data = request.get_json()
-   print(data)
+
    standings = lg.standings()
    matchups = lg.matchups()
+   print(dir(gm))
    matchups = matchups['fantasy_content']['league']
    roster = tm.roster()
    # Call yahoo_fantasy_api with league_id and team_id to get roster data
