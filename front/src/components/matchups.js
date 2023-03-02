@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import matchupStyles from '../styles/matchup.module.sass'
 
 export default function Matchups({data}){
     const [matchupData, setMatchupData] = useState()
@@ -15,7 +16,7 @@ export default function Matchups({data}){
     function generateMatchups(){
         let availableData = matchupData ? matchupData : {}
         let dataKeys = Object.keys(availableData)
-        dataKeys.map((key) => {
+        return dataKeys.map((key) => {
             if(key !== 'count'){
                 let singleMatchupData = availableData[key].matchup
                 let teamsData = singleMatchupData[0].teams
@@ -23,14 +24,21 @@ export default function Matchups({data}){
                 let team2 = teamsData[1]['team']
                 let statData = singleMatchupData['stat_winners']
 
-                console.log(team1, team2)
+                console.log(team1)
+                return (
+                    <div className={matchupStyles.matchupContainer}>
+                        <p>{team1[0][2]['name']}</p>
+                        <p>vs</p>
+                        <p>{team2[0][2]['name']}</p>
+                    </div>
+                )
             }
         })
     }
 
     return(
-        <div>
-        {generateMatchups()}
+        <div className={matchupStyles.matchupWrapper}>
+                {generateMatchups()}
         </div>
     )
 }
