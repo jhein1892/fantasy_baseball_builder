@@ -157,7 +157,7 @@ leagueStandings = [
 from flask import Flask, make_response, request, jsonify
 from flask_cors import CORS
 from flask_sslify import SSLify
-from yahoo_api import lg, gm
+from yahoo_api import lg, gm, tm
 import ssl
 
 app = Flask(__name__)
@@ -175,15 +175,15 @@ def home():
 # Used to get league_id and team_name
 @app.route("/", methods=["PUT"])
 def signIn():
-    data = request.get_json()
-    print(data)
-    print(gm.league_ids(year=2023))
-    print(lg.settings())
+   data = request.get_json()
+   print(data)
+   standings = lg.standings()
+   matchups = lg.matchups()
+   roster = tm.roster()
+   # Call yahoo_fantasy_api with league_id and team_id to get roster data
 
-    # Call yahoo_fantasy_api with league_id and team_id to get roster data
-    # For now, calling local object of fake team for reference on front
-    response = make_response({'roster': myPlayer, 'standings': leagueStandings})
-    return response
+   response = make_response({'roster': myPlayer, 'standings': standings, 'matchups': matchups})
+   return response
 
 # FILE CALLED: teamRoster.js
 # Updated Roster being sent here

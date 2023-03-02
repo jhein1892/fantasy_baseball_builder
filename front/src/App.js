@@ -21,6 +21,7 @@ function App() {
     axios.put(`${config.REACT_APP_API_ENDPOINT}/`, userInfo)
     .then((response) => {
       let data = response.data
+
       setTeamData(data)
     }) 
     .catch((error) => {
@@ -33,6 +34,7 @@ function App() {
     axios.put('https://127.0.0.1:5000/', userInfo)
     .then((response) => {
       let data = response.data
+      console.log(data)
       setTeamData(data)
     }) 
     .catch((error) => {

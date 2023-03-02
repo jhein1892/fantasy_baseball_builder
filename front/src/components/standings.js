@@ -4,11 +4,11 @@ import classNames from 'classnames';
 
 export default function Standings({data}){
 
-    useEffect(() => {
-        if(data){
-            console.log(data)
-        }
-    },[data])
+    // useEffect(() => {
+    //     if(data){
+    //         console.log(data)
+    //     }
+    // },[data])
 
     function generateLeagueStandings(){
         

@@ -15,27 +15,4 @@ gm = yfa.Game(oauth, 'mlb')
 
 lg = gm.to_league('422.l.21846')
 
-# lg = league.League(sc=oauth, league_id=21846)
-
-# currentWeek = lg.current_week()
-# print(currentWeek)
-# Check if there is a saved token
-# oauth = OAuth2(creds['consumer_key'], creds['consumer_secret'], from_file='oauth2.json')
-
-# # If there is no saved token, get one
-# if not oauth.token_is_valid():
-#     oauth.refresh_access_token()
-
-# # Save the token for future use
-
-
-# # Instantiate the YHandler object
-# yh = league.YHandler(oauth)
-
-# # Instantiate the League object using the YHandler object and league ID
-# lg = league.League(yhandler=yh, league_id=21846)
-
-# # Call the settings method on the League object to get league settings
-# league_settings = lg.settings()
-
-
+tm = lg.to_team('422.l.21846.t.11')

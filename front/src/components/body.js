@@ -6,8 +6,10 @@ import Standings from './standings';
 export default function Body({userInfo, data}) {
     
     useEffect(() => {
+        if(data)
+            console.log(data)
         // Will be a main route, used to generate all of the data being passed down to these components
-    },[])
+    },[data])
 
     return (
         <div className={bodyStyles.bodyWrapper} onScroll={() => console.log('scrolling')}>
