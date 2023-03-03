@@ -4,13 +4,14 @@ import classNames from 'classnames';
 
 export default function Matchups({data}){
     const [matchupData, setMatchupData] = useState()
-    const [statID, setStatID] = useState()
+    const [statID, setStatID] = useState([])
     const [currentMatchup, setCurrentMatchup] = useState(0)
     useEffect(() => {
         if(data){
             let relevantData = data[1]['scoreboard'][0]['matchups']
             let statIDData = data[2]['stat_categories'] 
             setStatID(statIDData)
+            console.log(statIDData)
             setMatchupData(relevantData)
         }
     },[data])
@@ -55,6 +56,23 @@ export default function Matchups({data}){
 
     }
 
+    function generateStats(key){
+        let statData = matchupData[key].matchup['stat_winners']
+        console.log(statData)
+        return statData.map((category) => {
+            let stat_id = category['stat_winner']['stat_id']
+            let displayName = statID.find(el => el.stat_id == stat_id)
+            let dataType = displayName['position_types'][0]
+            console.log(dataType)
+
+            displayName = displayName['display_name']
+            return (
+                <p>{displayName}</p>
+            )
+
+        })
+    }
+
     function generateCard(){
         let availableData = matchupData ? matchupData : {}
         let dataKeys = Object.keys(availableData)
@@ -65,10 +83,11 @@ export default function Matchups({data}){
                 let team1 = teamsData[0]['team']
                 let team2 = teamsData[1]['team']
                 let statData = singleMatchupData['stat_winners']
-                console.log(statData)
+
                 const matchupClass = classNames(matchupStyles.matchupContainer, {
                     [matchupStyles.display]:currentMatchup == key, 
                 })
+
                 return (
                     <div className={matchupClass}>
                         <div>
@@ -76,6 +95,7 @@ export default function Matchups({data}){
                         </div>
                         <div>
                             <p>vs</p>
+                            {generateStats(key)}
                         </div>
                         <div>
                             {generateTeam(team2)}
