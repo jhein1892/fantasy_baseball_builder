@@ -1,9 +1,23 @@
 .matchupWrapper
-    overflow-x: scroll
-    white-space: nowrap
+    display: grid
+    grid-template-columns: 1fr 2fr
+    height: 100%
 
-    .matchupContainer
-        background: green
-        min-width: 450px
-        margin: 15px
-        padding: 10px
+    .listWrapper
+        grid-column: 1
+        // background: yellow
+        border-right: 2px solid black
+        text-align: center
+
+        .listRow
+            display: grid
+            grid-template-columns:1fr 35px 1fr 
+            justify-items: center
+            font-size: 0.8rem
+            &:nth-of-type(odd)
+                background: #e2e2e2
+
+    
+    .individualWrapper
+        grid-column: 2
+        background: red
