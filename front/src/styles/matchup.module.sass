@@ -45,11 +45,25 @@
                     align-items: center
                     justify-content: center
                     border-radius: 50%
+
                     img
                         width: 75px
                         border-radius: 50%
             h3
                 font-size: 0.8rem
+            
+            & > div
+                display: grid
+                grid-template-rows: 1fr repeat(10, 27px)
+                width: 100%
+                text-align: center
+                align-items: center
+                & > p
+                    margin: 0
+                
+
         
         .display
             display: grid
+        
+

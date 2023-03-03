@@ -63,12 +63,14 @@ export default function Matchups({data}){
             let stat_id = category['stat_winner']['stat_id']
             let displayName = statID.find(el => el.stat_id == stat_id)
             let dataType = displayName['position_types'][0]
-            console.log(dataType)
-
             displayName = displayName['display_name']
-            return (
-                <p>{displayName}</p>
-            )
+
+            console.log(dataType)
+            if(dataType == 'B'){
+                return (
+                    <p>{displayName}</p>
+                )
+            }
 
         })
     }
@@ -94,7 +96,7 @@ export default function Matchups({data}){
                             {generateTeam(team1)}
                         </div>
                         <div>
-                            <p>vs</p>
+                            <h2>vs</h2>
                             {generateStats(key)}
                         </div>
                         <div>
