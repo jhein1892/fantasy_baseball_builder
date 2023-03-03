@@ -48,6 +48,7 @@ export default function Matchups({data}){
         // console.log(team)
         return (
             <div className={matchupStyles.teamWrapper}>
+                
                 <div className={matchupStyles.imageWrapper}>
                     <img src={imageURL} alt={`${team[0][2]['name']}_logo`}/>
                 </div>
