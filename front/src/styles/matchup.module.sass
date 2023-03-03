@@ -17,7 +17,18 @@
             &:nth-of-type(odd)
                 background: #e2e2e2
 
+            &:hover
+                background: var(--hover-green)
+
     
     .individualWrapper
         grid-column: 2
         background: red
+        display: grid
+        grid-template-columns: 1fr 6fr 1fr
+
+        .matchupContainer
+            display: none
+        
+        .display
+            display: flex
