@@ -25,8 +25,12 @@ export default function Matchups({data}){
                 let team1 = teamsData[0]['team']
                 let team2 = teamsData[1]['team']
 
+                const listClass = classNames(matchupStyles.listRow, {
+                    [matchupStyles.active]:currentMatchup == key, 
+                })
+
                 return (
-                    <div className={matchupStyles.listRow}>
+                    <div className={listClass}>
                         <p>{team1[0][2]['name']}</p>
                         <p>vs</p>
                         <p>{team2[0][2]['name']}</p>
@@ -34,6 +38,21 @@ export default function Matchups({data}){
                 )
             }
         })
+    }
+
+
+    function generateTeam(team){
+        // console.log(team)
+        let imageURL = team[0][5]['team_logos'][0]['team_logo']['url']
+        return (
+            <div className={matchupStyles.teamWrapper}>
+                <div className={matchupStyles.imageWrapper}>
+                    <img src={imageURL} alt={`${team[0][2]['name']}_logo`}/>
+                </div>
+                <h3>{team[0][2]['name']}</h3>
+            </div>
+        )
+
     }
 
     function generateCard(){
@@ -47,26 +66,31 @@ export default function Matchups({data}){
                 let team2 = teamsData[1]['team']
                 let statData = singleMatchupData['stat_winners']
 
-                const matchupClas = classNames(matchupStyles.matchupContainer, {
+                const matchupClass = classNames(matchupStyles.matchupContainer, {
                     [matchupStyles.display]:currentMatchup == key, 
                 })
-                
-
                 return (
-                    <div className={matchupClas}>
-                        <p>{team1[0][2]['name']}</p>
-                        <p>vs</p>
-                        <p>{team2[0][2]['name']}</p>
+                    <div className={matchupClass}>
+                        <div>
+                            {generateTeam(team1)}
+                        </div>
+                        <div>
+                            <p>vs</p>
+                        </div>
+                        <div>
+                            {generateTeam(team2)}
+                        </div>
                     </div>
                 )
             }
         })
     }
 
+
+
     function handleCardChange(e){
         e.preventDefault();
         let direction = e.target.name
-        // let currentValue = currentMatchup
         let maxCount = matchupData.count
         if(direction === 'next'){
             if(currentMatchup == maxCount-1){
@@ -76,14 +100,11 @@ export default function Matchups({data}){
             }
         } else {
             if(currentMatchup === 0){
-                // console.log('here', typeof maxCount)
                 setCurrentMatchup(maxCount - 1)
             } else {
                 setCurrentMatchup(currentMatchup-1)
             }
         }
-        console.log(currentMatchup)
-        console.log(e.target.name)
     }
 
     return(
