@@ -32,34 +32,40 @@
             grid-template-columns: 2fr 1fr 2fr
             justify-items: center
 
-            .teamWrapper
-                padding: 10px
-                display: flex
-                flex-direction: column
-                align-items: center
-                .imageWrapper
-                    background: grey
-                    width: 75px
-                    height: 75px
-                    display: flex
-                    align-items: center
-                    justify-content: center
-                    border-radius: 50%
-
-                    img
-                        width: 75px
-                        border-radius: 50%
-            h3
-                font-size: 0.8rem
-            
-            & > div
+            .thirdContainer
                 display: grid
-                grid-template-rows: 1fr repeat(10, 27px)
+                grid-template-rows: 1fr repeat(11, 27px)
                 width: 100%
                 text-align: center
                 align-items: center
-                & > p
+                .topSection
+                    &>div
+                        display: flex
+                p 
                     margin: 0
+                
+
+
+                //For expanded team 
+                .teamWrapper
+                    padding: 10px
+                    display: flex
+                    flex-direction: column
+                    align-items: center
+                    .imageWrapper
+                        background: grey
+                        width: 75px
+                        height: 75px
+                        display: flex
+                        align-items: center
+                        justify-content: center
+                        border-radius: 50%
+
+                        img
+                            width: 75px
+                            border-radius: 50%
+                h3
+                    font-size: 0.8rem
                 
 
         

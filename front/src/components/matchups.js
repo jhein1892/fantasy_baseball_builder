@@ -6,6 +6,7 @@ export default function Matchups({data}){
     const [matchupData, setMatchupData] = useState()
     const [statID, setStatID] = useState([])
     const [currentMatchup, setCurrentMatchup] = useState(0)
+    const [displayStats, setDisplayStats] = useState('B')
     useEffect(() => {
         if(data){
             let relevantData = data[1]['scoreboard'][0]['matchups']
@@ -58,15 +59,12 @@ export default function Matchups({data}){
 
     function generateStats(key){
         let statData = matchupData[key].matchup['stat_winners']
-        console.log(statData)
         return statData.map((category) => {
             let stat_id = category['stat_winner']['stat_id']
             let displayName = statID.find(el => el.stat_id == stat_id)
             let dataType = displayName['position_types'][0]
             displayName = displayName['display_name']
-
-            console.log(dataType)
-            if(dataType == 'B'){
+            if(dataType == displayStats){
                 return (
                     <p>{displayName}</p>
                 )
@@ -84,7 +82,6 @@ export default function Matchups({data}){
                 let teamsData = singleMatchupData[0].teams
                 let team1 = teamsData[0]['team']
                 let team2 = teamsData[1]['team']
-                let statData = singleMatchupData['stat_winners']
 
                 const matchupClass = classNames(matchupStyles.matchupContainer, {
                     [matchupStyles.display]:currentMatchup == key, 
@@ -92,14 +89,20 @@ export default function Matchups({data}){
 
                 return (
                     <div className={matchupClass}>
-                        <div>
+                        <div className={matchupStyles.thirdContainer}>
                             {generateTeam(team1)}
                         </div>
-                        <div>
-                            <h2>vs</h2>
-                            {generateStats(key)}
+                        <div className={matchupStyles.thirdContainer}>
+                            <div className={matchupStyles.topSection}>
+                                <h2>vs</h2>
+                                <div>
+                                    <button onClick={() => setDisplayStats('P')}>Pitching</button>
+                                    <button onClick={() => setDisplayStats('B')}>Batting</button>
+                                </div>
+                            </div>
+                            {generateStats(key)}                            
                         </div>
-                        <div>
+                        <div className={matchupStyles.thirdContainer}>
                             {generateTeam(team2)}
                         </div>
                     </div>
