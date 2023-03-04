@@ -7,6 +7,7 @@ export default function Matchups({data}){
     const [statID, setStatID] = useState([])
     const [currentMatchup, setCurrentMatchup] = useState(0)
     const [displayStats, setDisplayStats] = useState('B')
+
     useEffect(() => {
         if(data){
             let relevantData = data[1]['scoreboard'][0]['matchups']
@@ -48,7 +49,7 @@ export default function Matchups({data}){
         // console.log(team)
         return (
             <div className={matchupStyles.teamWrapper}>
-                
+
                 <div className={matchupStyles.imageWrapper}>
                     <img src={imageURL} alt={`${team[0][2]['name']}_logo`}/>
                 </div>
@@ -88,6 +89,11 @@ export default function Matchups({data}){
                     [matchupStyles.display]:currentMatchup == key, 
                 })
 
+
+                const buttonClass = (name) => classNames(matchupStyles.tabButtons, {
+                    [matchupStyles.activeTab]: displayStats == name
+                })
+
                 return (
                     <div className={matchupClass}>
                         <div className={matchupStyles.thirdContainer}>
@@ -96,10 +102,12 @@ export default function Matchups({data}){
                         <div className={matchupStyles.thirdContainer}>
                             <div className={matchupStyles.topSection}>
                                 <h2>vs</h2>
-                                <div>
-                                    <button onClick={() => setDisplayStats('P')}>Pitching</button>
-                                    <button onClick={() => setDisplayStats('B')}>Batting</button>
+                                <div className={matchupStyles.buttonContainer}>
+                                    <button className={buttonClass('P')} name='P' onClick={() => {setDisplayStats('P');}}>Pitching</button>
+                                    <hr />
+                                    <button className={buttonClass('B')} name='B' onClick={() => {setDisplayStats('B');}}>Batting</button>
                                 </div>
+
                             </div>
                             {generateStats(key)}                            
                         </div>
