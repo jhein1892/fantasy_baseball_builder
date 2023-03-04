@@ -48,12 +48,23 @@ export default function Matchups({data}){
         let imageURL = team[0][5]['team_logos'][0]['team_logo']['url']
         // console.log(team)
         return (
-            <div className={matchupStyles.teamWrapper}>
-
-                <div className={matchupStyles.imageWrapper}>
-                    <img src={imageURL} alt={`${team[0][2]['name']}_logo`}/>
+            <div className={matchupStyles.thirdContainer}>
+                <div className={matchupStyles.topSection}>
+                    <div className={matchupStyles.imageWrapper}>
+                        <img src={imageURL} alt={`${team[0][2]['name']}_logo`}/>
+                    </div>
+                    <h3>{team[0][2]['name']}</h3>
                 </div>
-                <h3>{team[0][2]['name']}</h3>
+                <p>--</p>
+                <p>--</p>
+                <p>--</p>
+                <p>--</p>
+                <p>--</p>
+                <p>--</p>
+                <p>--</p>
+                <p>--</p>
+                <p>--</p>
+                <p>--</p>
             </div>
         )
 
@@ -80,7 +91,6 @@ export default function Matchups({data}){
                     <p className={statClass}>{displayName}</p>
                 )
             }
-
         })
     }
 
@@ -107,7 +117,7 @@ export default function Matchups({data}){
 
                 return (
                     <div className={matchupClass}>
-                        <div className={matchupStyles.thirdContainer}>
+                        <div style={{width: '100%'}}>
                             {generateTeam(team1)}
                         </div>
                         <div className={matchupStyles.thirdContainer}>
@@ -122,7 +132,7 @@ export default function Matchups({data}){
                             </div>
                             {generateStats(key)}                            
                         </div>
-                        <div className={matchupStyles.thirdContainer}>
+                        <div style={{width: '100%'}}>
                             {generateTeam(team2)}
                         </div>
                     </div>

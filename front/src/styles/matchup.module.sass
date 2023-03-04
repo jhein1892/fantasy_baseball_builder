@@ -34,11 +34,15 @@
 
             .thirdContainer
                 display: grid
-                grid-template-rows: 1fr repeat(11, 27px)
+                grid-template-rows: 1fr repeat(10, 25px)
                 width: 100%
                 text-align: center
                 align-items: center
+                padding: 10px 0 0 0
                 .topSection
+                    display: flex
+                    flex-direction: column
+                    align-items: center
                     .buttonContainer
                         display: flex
                         height: 35px
@@ -57,17 +61,6 @@
                             border-radius: 5px 0 0 5px
                         .battingTab
                             border-radius: 0 5px 5px 0
-                p 
-                    margin: 0
-                
-                .statTied
-                    color: green
-                //For expanded team 
-                .teamWrapper
-                    padding: 10px
-                    display: flex
-                    flex-direction: column
-                    align-items: center
                     .imageWrapper
                         background: grey
                         width: 75px
@@ -80,6 +73,26 @@
                         img
                             width: 75px
                             border-radius: 50%
+                p 
+                    margin: 0
+                    font-size: 0.8rem
+                    height: 25px
+                    display: flex
+                    align-items: center
+                    justify-content: center
+                    &:nth-of-type(odd)
+                        background: #e2e2e2
+                        
+                
+                .statTied
+                    color: greens
+                //For expanded team 
+                .teamWrapper
+                    padding: 10px
+                    display: flex
+                    flex-direction: column
+                    align-items: center
+                
                 h3
                     font-size: 0.8rem
                 
