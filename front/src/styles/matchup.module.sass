@@ -41,14 +41,22 @@
                 .topSection
                     .buttonContainer
                         display: flex
+                        height: 35px
                         .tabButtons
                             box-shadow: none
                             border: none
+                            color: grey
+                            width: 75px
+                            // padding: 0 10px
                         .activeTab
-                            background: green
-                        hr
-                            height: 20px
-                            margin: 5px
+                            background: var(--primary)
+                            border: 1px solid black
+                            box-shadow: inset 0px 0px 3px 0px black
+                            color: var(--secondary)
+                        .pitchingTab
+                            border-radius: 5px 0 0 5px
+                        .battingTab
+                            border-radius: 0 5px 5px 0
                 p 
                     margin: 0
                 

@@ -91,7 +91,9 @@ export default function Matchups({data}){
 
 
                 const buttonClass = (name) => classNames(matchupStyles.tabButtons, {
-                    [matchupStyles.activeTab]: displayStats == name
+                    [matchupStyles.activeTab]: displayStats == name,
+                    [matchupStyles.pitchingTab]: name == 'P',
+                    [matchupStyles.battingTab]: name == 'B'
                 })
 
                 return (
@@ -104,7 +106,7 @@ export default function Matchups({data}){
                                 <h2>vs</h2>
                                 <div className={matchupStyles.buttonContainer}>
                                     <button className={buttonClass('P')} name='P' onClick={() => {setDisplayStats('P');}}>Pitching</button>
-                                    <hr />
+                                    {/* <hr /> */}
                                     <button className={buttonClass('B')} name='B' onClick={() => {setDisplayStats('B');}}>Batting</button>
                                 </div>
 
