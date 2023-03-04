@@ -66,9 +66,18 @@ export default function Matchups({data}){
             let displayName = statID.find(el => el.stat_id == stat_id)
             let dataType = displayName['position_types'][0]
             displayName = displayName['display_name']
+            
+            let stat_value = category['stat_winner']
+            const statClass = classNames({
+                [matchupStyles.statTied]: stat_value['is_tied'] == 1
+            })
+
+
+            console.log(stat_value)
+
             if(dataType == displayStats){
                 return (
-                    <p>{displayName}</p>
+                    <p className={statClass}>{displayName}</p>
                 )
             }
 
