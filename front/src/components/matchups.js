@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import matchupStyles from '../styles/matchup.module.sass'
 import classNames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronCircleLeft, faChevronCircleRight } from '@fortawesome/free-solid-svg-icons'
 
 export default function Matchups({data}){
     const [matchupData, setMatchupData] = useState()
@@ -169,11 +171,11 @@ export default function Matchups({data}){
                 {matchupData && generateList()}
             </div>
             <div className={matchupStyles.individualWrapper}>
-                <button name='back' onClick={handleCardChange}>Back</button>
+                <button name='back' onClick={handleCardChange}><FontAwesomeIcon color='#5d5d87' size='4x' icon={faChevronCircleLeft}/></button>
                 <div>
                     {matchupData && generateCard()}
                 </div>
-                <button name='next' onClick={handleCardChange}>Next</button>
+                <button name='next' onClick={handleCardChange}><FontAwesomeIcon color='#5d5d87' size='4x' icon={faChevronCircleRight}/></button>
             </div>
         </div>
     )

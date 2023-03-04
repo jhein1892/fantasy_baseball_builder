@@ -39,6 +39,10 @@ module.exports = {
       {
         test: /\.https$/,
         use: 'xhr-loader'
+      },
+      {
+        test:/\.svg$/,
+        use:['@svgr/webpack']
       }
     ]
   },
