@@ -3,6 +3,7 @@ import bodyStyles from '../styles/body.module.sass';
 import TeamRoster from './teamRoster';
 import Standings from './standings';
 import Matchups from './matchups';
+import FreeAgents from './freeAgents';
 
 export default function Body({userInfo, data}) {
     
@@ -21,7 +22,8 @@ export default function Body({userInfo, data}) {
                 <Standings data={data.standings}/>
             </div>
             <div className={bodyStyles.freeAgentSection}>
-                <p>Free Agents/Waivers</p>
+                {/* <p>Free Agents/Waivers</p> */}
+                <FreeAgents />
             </div>
             <div className={bodyStyles.matchupSection}>
                 <Matchups data={data.matchups}/>

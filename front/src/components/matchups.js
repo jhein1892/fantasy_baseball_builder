@@ -4,6 +4,9 @@ import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronCircleLeft, faChevronCircleRight } from '@fortawesome/free-solid-svg-icons'
 
+
+// Once we get live Data, will need to work on showing whose winning categories
+
 export default function Matchups({data}){
     const [matchupData, setMatchupData] = useState()
     const [statID, setStatID] = useState([])
