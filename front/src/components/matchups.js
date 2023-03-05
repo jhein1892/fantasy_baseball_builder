@@ -15,7 +15,6 @@ export default function Matchups({data}){
             let relevantData = data[1]['scoreboard'][0]['matchups']
             let statIDData = data[2]['stat_categories'] 
             setStatID(statIDData)
-            console.log(statIDData)
             setMatchupData(relevantData)
         }
     },[data])
@@ -85,9 +84,6 @@ export default function Matchups({data}){
                 [matchupStyles.statTied]: stat_value['is_tied'] == 1
             })
 
-
-            console.log(stat_value)
-
             if(dataType == displayStats){
                 return (
                     <p className={statClass}>{displayName}</p>
@@ -147,6 +143,7 @@ export default function Matchups({data}){
 
     function handleCardChange(e){
         e.preventDefault();
+        console.log(e.target)
         let direction = e.target.name
         let maxCount = matchupData.count
         if(direction === 'next'){
