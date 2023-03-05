@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 
 export default function FreeAgents(){
     const positions = ['All Batters','All Pitchers', 'C','1B','2B','3B','SS','LF','CF','RF','SP','RP']
@@ -15,6 +16,14 @@ export default function FreeAgents(){
     function handleSubmit(e){
         e.preventDefault()
         console.log(searchValue)
+        axios.put('https://127.0.0.1:5000/freeAgents', {data:searchValue})
+        .then((response) => {
+          let data = response.data
+          console.log(data)
+        }) 
+        .catch((error) => {
+          console.log(error)
+        })
     }
 
 
