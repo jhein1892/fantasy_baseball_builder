@@ -15,7 +15,6 @@ export default function FreeAgents(){
 
     function handleSubmit(e){
         e.preventDefault()
-        console.log(searchValue)
         axios.put('https://127.0.0.1:5000/freeAgents', {data:searchValue})
         .then((response) => {
           let data = response.data
