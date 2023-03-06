@@ -33,12 +33,13 @@ export default function FreeAgents(){
         let numValues = freeAgentData ? freeAgentData.length : 0
         let numPages = Math.floor(numValues / 25)
         numPages = numValues%25 > 0 ? numPages+1: numPages
-        console.log(numPages)
-        for(let i = 0; i < numPages; i++){
+
+        return Array.from({length:numPages}, (_, index) => index + 1).map((num) => {
             return(
-                <p>{i}</p>
+                <p>{num}</p>
             )
-        }
+        })
+        
     }
 
     function handlePageChange(e){
@@ -72,7 +73,9 @@ export default function FreeAgents(){
                 <h3>Player response</h3>
                 <div>
                     <button name='back' onClick={handlePageChange}>prev</button>
-                    {generatePages()}
+                    <div>
+                        {generatePages()}
+                    </div>
                     <button name='next' onClick={handlePageChange}>next</button>
                 </div>
             </div>
