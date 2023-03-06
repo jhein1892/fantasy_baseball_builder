@@ -1154,8 +1154,8 @@ def signIn():
    standings = lg.standings()
    matchups = lg.matchups()
 
-   print(dir(lg))
-   print(lg.stat_categories_cache)
+   # print(dir(lg))
+   # print(lg.stat_categories_cache)
    matchups = matchups['fantasy_content']['league']
    matchups.append(stat_ids) 
 
@@ -1165,6 +1165,17 @@ def signIn():
    response = make_response({'roster': myPlayer, 'standings': standings, 'matchups': matchups})
    return response
 
+@app.route("/freeAgents", methods=["PUT"])
+def getFreeAgents():
+   data = request.get_json()
+   positionRequested = data['data']
+
+   freeAgents = lg.free_agents(positionRequested)
+
+   response = make_response({'availablePlayers': freeAgents})
+   
+   return response
+
 # FILE CALLED: teamRoster.js
 # Updated Roster being sent here
 @app.route("/updateRoster", methods=["PUT"])
@@ -1172,7 +1183,7 @@ def updateRoster():
     # Updated Roster set being passed through here
     data = request.get_json()
     
-    print(data)
+   #  print(data)
 
     response = make_response({"status": 200})
     return response

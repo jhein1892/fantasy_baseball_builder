@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import freeAgentStyles from '../styles/freeAgents.module.sass'
+import classNames from 'classnames';
 
 export default function FreeAgents(){
     const positions = ['All Batters','All Pitchers', 'C','1B','2B','3B','SS','LF','CF','RF','SP','RP']
 
     const [searchValue, setSearchValue] = useState('B')
+    const [freeAgentData, setFreeAgentsData] = useState([])
+    const [page, setPage] = useState(1)
 
     function handleChange(e){
         e.preventDefault()
@@ -15,20 +19,48 @@ export default function FreeAgents(){
 
     function handleSubmit(e){
         e.preventDefault()
-        console.log(searchValue)
         axios.put('https://127.0.0.1:5000/freeAgents', {data:searchValue})
         .then((response) => {
           let data = response.data
-          console.log(data)
+          console.log(data.availablePlayers)
+
+          setFreeAgentsData(data.availablePlayers)
         }) 
         .catch((error) => {
           console.log(error)
         })
     }
 
+    function generatePages(){
+        let numValues = freeAgentData ? freeAgentData.length : 0
+        let numPages = Math.floor(numValues / 25)
+        numPages = numValues%25 > 0 ? numPages+1: numPages
+
+        
+        return Array.from({length:numPages}, (_, index) => index + 1).map((num) => {
+            const pageNumStyles = classNames({
+                [freeAgentStyles.active]: num === page
+            })
+            return(
+                <p className={pageNumStyles}>{num}</p>
+            )
+        })
+        
+    }
+
+    function handlePageChange(e){
+        // Set some boundaries to make sure we stay within available pages
+        e.preventDefault()
+        let direction = e.target.name
+        if (direction === 'next'){
+            setPage(page+1)
+        } else {
+            setPage(page-1)
+        }
+    }
 
     return (
-        <div>
+        <div className ={freeAgentStyles.wrapper}>
             <h1>Free Agents</h1>
             <form onChange={handleChange} onSubmit={handleSubmit}>                
                 <select>
@@ -44,6 +76,18 @@ export default function FreeAgents(){
                 </select>
                 <button type='submit'>Check Market</button>
             </form>
+            <div className={freeAgentStyles.playerWrapper}>
+                <h3>Player response</h3>
+                <div className={freeAgentStyles.pageControl}>
+                    <button name='back' onClick={handlePageChange}>prev</button>
+                    <div className={freeAgentStyles.pageList}>
+                        {generatePages()}
+                    </div>
+                    <button name='next' onClick={handlePageChange}>next</button>
+                </div>
+            </div>
         </div>
     )
 }
+
+// Sort function, Search function
