@@ -9,6 +9,7 @@ export default function FreeAgents(){
     const [searchValue, setSearchValue] = useState('B')
     const [freeAgentData, setFreeAgentsData] = useState([])
     const [page, setPage] = useState(1)
+    const [pageLength, setPageLength] = useState(25)
 
     function handleChange(e){
         e.preventDefault()
@@ -33,8 +34,8 @@ export default function FreeAgents(){
 
     function generatePages(){
         let numValues = freeAgentData ? freeAgentData.length : 0
-        let numPages = Math.floor(numValues / 25)
-        numPages = numValues%25 > 0 ? numPages+1: numPages
+        let numPages = Math.floor(numValues / pageLength)
+        numPages = numValues % pageLength > 0 ? numPages+1: numPages
 
         
         return Array.from({length:numPages}, (_, index) => index + 1).map((num) => {
@@ -45,7 +46,26 @@ export default function FreeAgents(){
                 <p className={pageNumStyles}>{num}</p>
             )
         })
+    }
+
+    function generatePlayers() {
+        // We are going to find the players that are between page - 1 and page times pagelength
+        let startIndex = (page - 1) * pageLength
+        let endIndex = (page * pageLength)
         
+        let visiblePlayers = freeAgentData.slice(startIndex, endIndex)
+        
+        return visiblePlayers.map((player) => {
+            let positionList = player['eligible_positions'].join(', ')
+            return (
+                <tr className={freeAgentStyles.playerRow}>
+                    <td>{player.name}</td>
+                    <td>{positionList}</td>
+                    <td>{player.percent_owned}</td>
+                </tr>
+            )
+        })
+        // let players = 
     }
 
     function handlePageChange(e){
@@ -77,14 +97,27 @@ export default function FreeAgents(){
                 <button type='submit'>Check Market</button>
             </form>
             <div className={freeAgentStyles.playerWrapper}>
-                <h3>Player response</h3>
-                <div className={freeAgentStyles.pageControl}>
-                    <button name='back' onClick={handlePageChange}>prev</button>
-                    <div className={freeAgentStyles.pageList}>
-                        {generatePages()}
-                    </div>
-                    <button name='next' onClick={handlePageChange}>next</button>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Positions</th>
+                            <th>Percent Owned</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {freeAgentData.length > 0 && generatePlayers()}
+                    </tbody>
+                </table>
+                <div>
                 </div>
+            </div>
+            <div className={freeAgentStyles.pageControl}>
+                <button name='back' onClick={handlePageChange}>prev</button>
+                <div className={freeAgentStyles.pageList}>
+                    {generatePages()}
+                </div>
+                <button name='next' onClick={handlePageChange}>next</button>
             </div>
         </div>
     )

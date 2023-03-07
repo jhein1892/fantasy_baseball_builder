@@ -1,15 +1,58 @@
 .wrapper
+    height: 100%
+    position: relative
+    z-index: 0
     .playerWrapper
-        .pageControl
+        max-height: 80%
+        overflow: auto
+        margin: 10px 0
+        table
+            width: 100%
+            border-spacing: initial
+            row-gap: 5px
+            min-height: 500px
+            background: #e2e2e2
+            thead
+                background: var(--primary-light)
+                position: sticky
+                top: 0
+                th
+                    font-size:0.8rem
+                    padding: 5px
+            tbody
+                width: 100%
+                // max-height: 500px
+
+                .playerRow
+                    height: 24px
+                    font-size: 0.8rem
+                    text-align: center
+                    &:nth-of-type(odd)
+                        background: lightgrey
+
+
+
+
+
+
+    .pageControl
+        display: flex
+        justify-content: space-between
+        align-items: center
+        width: 90%
+        height: 50px
+        // margin: auto
+        position: absolute
+        left: 5%
+        bottom: 4%
+        button
+            height: 25px
+            width: 50px
+        .pageList
             display: flex
-            justify-content: space-between
-            width: 90%
-            margin: auto
-            .pageList
-                display: flex
-                justify-content: space-evenly
-                width: 80%
-                p
-                    padding: 5px, 9px
-                .active
-                    color: var(--secondary)
+            justify-content: space-evenly
+            width: 80%
+            p
+                padding: 5px, 9px
+            .active
+                color: var(--secondary)
