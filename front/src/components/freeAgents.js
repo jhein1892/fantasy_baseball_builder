@@ -56,8 +56,11 @@ export default function FreeAgents(){
         let visiblePlayers = freeAgentData.slice(startIndex, endIndex)
         
         return visiblePlayers.map((player) => {
+
             return (
-                <p>{player.name}</p>
+                <tr>
+                    <td>{player.name}</td>
+                </tr>
             )
         })
         // let players = 
@@ -93,16 +96,27 @@ export default function FreeAgents(){
             </form>
             <div className={freeAgentStyles.playerWrapper}>
                 <h3>Player response</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Positions</th>
+                            <th>Percent Owned</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {freeAgentData.length > 0 && generatePlayers()}
+                    </tbody>
+                </table>
                 <div>
-                    {freeAgentData.length > 0 && generatePlayers()}
                 </div>
-                <div className={freeAgentStyles.pageControl}>
-                    <button name='back' onClick={handlePageChange}>prev</button>
-                    <div className={freeAgentStyles.pageList}>
-                        {generatePages()}
-                    </div>
-                    <button name='next' onClick={handlePageChange}>next</button>
+            </div>
+            <div className={freeAgentStyles.pageControl}>
+                <button name='back' onClick={handlePageChange}>prev</button>
+                <div className={freeAgentStyles.pageList}>
+                    {generatePages()}
                 </div>
+                <button name='next' onClick={handlePageChange}>next</button>
             </div>
         </div>
     )

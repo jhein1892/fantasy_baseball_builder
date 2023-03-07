@@ -1,15 +1,34 @@
 .wrapper
+    height: 100%
+    position: relative
     .playerWrapper
-        .pageControl
+        table
+            width: 100%
+            border-spacing: initial
+            row-gap: 5px
+            min-height: 500px
+            background: var(--secondary)
+            thead
+                background: var(--primary-light)
+
+
+
+
+
+
+    .pageControl
+        display: flex
+        justify-content: space-between
+        width: 90%
+        margin: auto
+        position: absolute
+        left: 5%
+        bottom: 4%
+        .pageList
             display: flex
-            justify-content: space-between
-            width: 90%
-            margin: auto
-            .pageList
-                display: flex
-                justify-content: space-evenly
-                width: 80%
-                p
-                    padding: 5px, 9px
-                .active
-                    color: var(--secondary)
+            justify-content: space-evenly
+            width: 80%
+            p
+                padding: 5px, 9px
+            .active
+                color: var(--secondary)
