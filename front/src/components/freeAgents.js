@@ -50,8 +50,16 @@ export default function FreeAgents(){
 
     function generatePlayers() {
         // We are going to find the players that are between page - 1 and page times pagelength
-        console.log((page - 1) * pageLength, (page * pageLength) - 1)
-
+        let startIndex = (page - 1) * pageLength
+        let endIndex = (page * pageLength)
+        
+        let visiblePlayers = freeAgentData.slice(startIndex, endIndex)
+        
+        return visiblePlayers.map((player) => {
+            return (
+                <p>{player.name}</p>
+            )
+        })
         // let players = 
     }
 
