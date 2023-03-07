@@ -9,6 +9,7 @@ export default function FreeAgents(){
     const [searchValue, setSearchValue] = useState('B')
     const [freeAgentData, setFreeAgentsData] = useState([])
     const [page, setPage] = useState(1)
+    const [pageLength, setPageLength] = useState(25)
 
     function handleChange(e){
         e.preventDefault()
@@ -33,8 +34,8 @@ export default function FreeAgents(){
 
     function generatePages(){
         let numValues = freeAgentData ? freeAgentData.length : 0
-        let numPages = Math.floor(numValues / 25)
-        numPages = numValues%25 > 0 ? numPages+1: numPages
+        let numPages = Math.floor(numValues / pageLength)
+        numPages = numValues % pageLength > 0 ? numPages+1: numPages
 
         
         return Array.from({length:numPages}, (_, index) => index + 1).map((num) => {
@@ -45,7 +46,13 @@ export default function FreeAgents(){
                 <p className={pageNumStyles}>{num}</p>
             )
         })
-        
+    }
+
+    function generatePlayers() {
+        // We are going to find the players that are between page - 1 and page times pagelength
+        console.log((page - 1) * pageLength, (page * pageLength) - 1)
+
+        // let players = 
     }
 
     function handlePageChange(e){
@@ -78,6 +85,9 @@ export default function FreeAgents(){
             </form>
             <div className={freeAgentStyles.playerWrapper}>
                 <h3>Player response</h3>
+                <div>
+                    {freeAgentData.length > 0 && generatePlayers()}
+                </div>
                 <div className={freeAgentStyles.pageControl}>
                     <button name='back' onClick={handlePageChange}>prev</button>
                     <div className={freeAgentStyles.pageList}>
