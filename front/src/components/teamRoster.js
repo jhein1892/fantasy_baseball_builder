@@ -87,16 +87,7 @@ export default function TeamRoster({ data }){
                 eligiblePlayer = eligiblePlayer[0];
                 let newTempData = tempData.filter((x) => x.player_id !== eligiblePlayer.player_id);
                 tempData = newTempData;
-
-                for(let i = 0; i < eligiblePlayer.eligible_positions.length; i++){
-                    let position = eligiblePlayer.eligible_positions[i]
-                    if(i === 0){
-                        eligiblePositionsString += position + ""
-                    } else {
-                        eligiblePositionsString += ", " + position
-                        
-                    }
-                }
+                eligiblePositionsString = eligiblePlayer.eligible_positions.join(', ')
             }
 
             if(additionalPositions.includes(position) && eligiblePlayer.length === 0) {

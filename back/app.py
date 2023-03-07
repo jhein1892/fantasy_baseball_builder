@@ -1165,13 +1165,17 @@ def signIn():
    response = make_response({'roster': myPlayer, 'standings': standings, 'matchups': matchups})
    return response
 
+
+def percent_owned(e):
+    return e['percent_owned']
+
 @app.route("/freeAgents", methods=["PUT"])
 def getFreeAgents():
    data = request.get_json()
    positionRequested = data['data']
 
    freeAgents = lg.free_agents(positionRequested)
-
+   freeAgents.sort(reverse=True, key=percent_owned)
    response = make_response({'availablePlayers': freeAgents})
    
    return response
