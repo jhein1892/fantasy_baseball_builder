@@ -56,10 +56,12 @@ export default function FreeAgents(){
         let visiblePlayers = freeAgentData.slice(startIndex, endIndex)
         
         return visiblePlayers.map((player) => {
-
+            let positionList = player['eligible_positions'].join(', ')
             return (
-                <tr>
+                <tr className={freeAgentStyles.playerRow}>
                     <td>{player.name}</td>
+                    <td>{positionList}</td>
+                    <td>{player.percent_owned}</td>
                 </tr>
             )
         })
@@ -95,7 +97,6 @@ export default function FreeAgents(){
                 <button type='submit'>Check Market</button>
             </form>
             <div className={freeAgentStyles.playerWrapper}>
-                <h3>Player response</h3>
                 <table>
                     <thead>
                         <tr>
