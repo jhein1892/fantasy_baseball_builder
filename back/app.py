@@ -1166,6 +1166,16 @@ def signIn():
    return response
 
 
+@app.route("/playerStats", methods=["PUT"])
+def getPlayerStats():
+    data = request.get_json()
+    data = data['data']
+    playerStats = lg.player_stats(data, 'season', season=2019)
+
+    response = make_response({"player_stats": playerStats})
+    return response
+
+
 def percent_owned(e):
     return e['percent_owned']
 
@@ -1179,6 +1189,10 @@ def getFreeAgents():
    response = make_response({'availablePlayers': freeAgents})
    
    return response
+
+
+
+
 
 # FILE CALLED: teamRoster.js
 # Updated Roster being sent here
