@@ -10,6 +10,7 @@ export default function FreeAgents(){
     const [freeAgentData, setFreeAgentsData] = useState([])
     const [page, setPage] = useState(1)
     const [pageLength, setPageLength] = useState(25)
+    // const [playerIds, setPlayerIds] = useState([])
 
     function handleChange(e){
         e.preventDefault()
@@ -22,10 +23,10 @@ export default function FreeAgents(){
         e.preventDefault()
         axios.put('https://127.0.0.1:5000/freeAgents', {data:searchValue})
         .then((response) => {
-          let data = response.data
-          console.log(data.availablePlayers)
-
-          setFreeAgentsData(data.availablePlayers)
+            let data = response.data
+            console.log(data.availablePlayers)
+            
+            setFreeAgentsData(data.availablePlayers)
         }) 
         .catch((error) => {
           console.log(error)
@@ -54,18 +55,29 @@ export default function FreeAgents(){
         let endIndex = (page * pageLength)
         
         let visiblePlayers = freeAgentData.slice(startIndex, endIndex)
-        
-        return visiblePlayers.map((player) => {
+        let playerIds = visiblePlayers.map((player) => {return player['player_id']})
+
+        axios.put('https://127.0.0.1:5000/playerStats', {data: playerIds})
+        .then((response) => {
+            console.log(response.data.player_stats)
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+
+
+        let returnRows =  visiblePlayers.map((player) => {
             let positionList = player['eligible_positions'].join(', ')
             return (
                 <tr className={freeAgentStyles.playerRow}>
                     <td>{player.name}</td>
                     <td>{positionList}</td>
                     <td>{player.percent_owned}</td>
+                    <td><button>add</button></td>
                 </tr>
             )
         })
-        // let players = 
+        return returnRows
     }
 
     function handlePageChange(e){
@@ -103,6 +115,7 @@ export default function FreeAgents(){
                             <th>Name</th>
                             <th>Positions</th>
                             <th>Percent Owned</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
