@@ -77,10 +77,7 @@ export default function FreeAgents(){
                 </tr>
             )
         })
-
-
         return returnRows
-        
     }
 
     function handlePageChange(e){
