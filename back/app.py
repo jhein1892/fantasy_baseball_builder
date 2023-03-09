@@ -1171,7 +1171,6 @@ def getPlayerStats():
    data = request.get_json()
    data = data['data']
    playerStats = lg.player_stats(data, 'season', season=2022)
-   print(playerStats)
    response = make_response({"player_stats": playerStats})
    return response
 

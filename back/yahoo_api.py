@@ -15,4 +15,4 @@ gm = yfa.Game(oauth, 'mlb')
 
 
 lg = gm.to_league('422.l.21846')
-tm = lg.to_team('422.l.21846.t.11')
+tm = lg.to_team('422.l.21846.t.11') 

@@ -10,6 +10,7 @@ export default function FreeAgents(){
     const [freeAgentData, setFreeAgentsData] = useState([])
     const [page, setPage] = useState(1)
     const [pageLength, setPageLength] = useState(25)
+    const [playerStats, setPlayerStats] = useState([])
     // const [playerIds, setPlayerIds] = useState([])
 
     function handleChange(e){
@@ -31,6 +32,16 @@ export default function FreeAgents(){
         .catch((error) => {
           console.log(error)
         })
+    }
+
+    function handleRowClick(e, id){
+        e.preventDefault()
+        let playerInfo = freeAgentData.filter((x) => x.player_id === id)
+        let stats = playerStats.filter((x) => x.player_id === id)
+
+        console.log(playerInfo, stats)
+
+        console.log(id)
     }
 
     function generatePages(){
@@ -59,7 +70,9 @@ export default function FreeAgents(){
 
         axios.put('https://127.0.0.1:5000/playerStats', {data: playerIds})
         .then((response) => {
-            console.log(response.data.player_stats)
+            setPlayerStats(response.data.player_stats)
+
+            // console.log(response.data.player_stats)
         })
         .catch((error) => {
             console.log(error)
@@ -67,14 +80,20 @@ export default function FreeAgents(){
 
 
         let returnRows =  visiblePlayers.map((player) => {
+            // console.log(player.player_id)
             let positionList = player['eligible_positions'].join(', ')
             return (
-                <tr className={freeAgentStyles.playerRow}>
-                    <td>{player.name}</td>
-                    <td>{positionList}</td>
-                    <td>{player.percent_owned}</td>
-                    <td><button>add</button></td>
-                </tr>
+                <>
+                    {/* THis is going to be color coded based on comparision with current position player */}
+                    {/* Also add an onclick handler which would bring up all of th stat categories, with color coded breakdowns compared to current player in that position. If multiple players, then we drop down menu to choose one*/}
+                    <tr className={freeAgentStyles.playerRow} id={player.player_id}>
+                        <td>{player.name}</td>
+                        <td>{positionList}</td>
+                        <td>{player.percent_owned}</td>
+                        <td><button onClick={(e) => handleRowClick(e, player.player_id)}>View Stats</button></td>
+                        <td><button>add</button></td>
+                    </tr>
+                </>
             )
         })
         return returnRows
@@ -115,6 +134,7 @@ export default function FreeAgents(){
                             <th>Name</th>
                             <th>Positions</th>
                             <th>Percent Owned</th>
+                            <th>Stats</th>
                             <th></th>
                         </tr>
                     </thead>

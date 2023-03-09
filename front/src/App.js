@@ -14,7 +14,7 @@ function App() {
   const [userInfo, setUserInfo] = useState({});
   // Information about the roster for the team
   const [teamData, setTeamData] = useState({})
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(true);
   // 
   function submitValues(e){
     e.preventDefault();
@@ -42,18 +42,18 @@ function App() {
   },[])
 
 
-  useEffect(() => {
-    const handleScroll=()=>{
-      if(window.scrollY > 15 && !scrolled){
-        setScrolled(true);
-      } else if(window.scrollY < 15 && scrolled) {
-        setScrolled(false);
-      }
-    }
-    window.addEventListener('scroll', handleScroll);
+  // useEffect(() => {
+  //   const handleScroll=()=>{
+  //     if(window.scrollY > 15 && !scrolled){
+  //       setScrolled(true);
+  //     } else if(window.scrollY < 15 && scrolled) {
+  //       setScrolled(false);
+  //     }
+  //   }
+  //   window.addEventListener('scroll', handleScroll);
 
-    return () => window.removeEventListener("scroll", handleScroll);
-  })
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // })
 
   return (
     <div>
