@@ -14,7 +14,7 @@ function App() {
   const [userInfo, setUserInfo] = useState({});
   // Information about the roster for the team
   const [teamData, setTeamData] = useState({})
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(true);
   // 
   function submitValues(e){
     e.preventDefault();
