@@ -16,7 +16,12 @@ export default function Body({userInfo, data}) {
         console.log(player2)
         setViewComparison(true)
     }
-
+    function handleClick(e){
+        e.preventDefault()
+        if(e.target.id === 'outer'){
+            setViewComparison(false)
+        }
+    }
     return (
         <div className={bodyStyles.bodyWrapper} onScroll={() => console.log('scrolling')}>
             <div className={bodyStyles.rosterSection}>
@@ -36,9 +41,11 @@ export default function Body({userInfo, data}) {
                 <p>Proposed Trades</p>
             </div>
             {viewComparison &&
-                <div className={modalStyles.wrapper}>
+                <div id='outer' onClick={(e) => {handleClick(e)}} className={modalStyles.wrapper}>
                     <div className={modalStyles.innerWrapper}>
-                        <h1>inner Div</h1>
+                        <div><p>Player 1</p></div>
+                        <hr/>
+                        <div><p>Player 2</p></div>
                     </div>
                 </div>
             }

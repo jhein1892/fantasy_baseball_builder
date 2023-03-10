@@ -10,6 +10,12 @@
     justify-content: center
 
     .innerWrapper
+        z-index: 10
         height: 80%
         width: 80%
         background: var(--background-main)
+        display: grid
+        grid-template-columns: 1fr 15px 1fr
+        pointer-events: unset
+        >div
+            pointer-events: unset
