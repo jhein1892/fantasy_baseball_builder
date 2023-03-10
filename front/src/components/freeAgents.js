@@ -3,7 +3,7 @@ import axios from 'axios'
 import freeAgentStyles from '../styles/freeAgents.module.sass'
 import classNames from 'classnames';
 
-export default function FreeAgents(){
+export default function FreeAgents({generateComparison}){
     const positions = ['All Batters','All Pitchers', 'C','1B','2B','3B','SS','LF','CF','RF','SP','RP']
 
     const [searchValue, setSearchValue] = useState('B')
@@ -39,9 +39,9 @@ export default function FreeAgents(){
         let playerInfo = freeAgentData.filter((x) => x.player_id === id)
         let stats = playerStats.filter((x) => x.player_id === id)
 
-        console.log(playerInfo, stats)
+        // console.log(playerInfo, stats)
+        generateComparison({playerInfo, stats})
 
-        console.log(id)
     }
 
     function generatePages(){
