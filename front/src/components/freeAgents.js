@@ -10,7 +10,7 @@ export default function FreeAgents(){
     const [freeAgentData, setFreeAgentsData] = useState([])
     const [page, setPage] = useState(1)
     const [pageLength, setPageLength] = useState(25)
-    const [playerStats, setPlayerStats] = useState([])
+    const [playerStats, setPlayerStats] = useState()
     // const [playerIds, setPlayerIds] = useState([])
 
     function handleChange(e){
@@ -24,9 +24,7 @@ export default function FreeAgents(){
         e.preventDefault()
         axios.put('https://127.0.0.1:5000/freeAgents', {data:searchValue})
         .then((response) => {
-            let data = response.data
-            console.log(data.availablePlayers)
-            
+            let data = response.data            
             setFreeAgentsData(data.availablePlayers)
         }) 
         .catch((error) => {
@@ -36,6 +34,7 @@ export default function FreeAgents(){
 
     function handleRowClick(e, id){
         e.preventDefault()
+
         let playerInfo = freeAgentData.filter((x) => x.player_id === id)
         let stats = playerStats.filter((x) => x.player_id === id)
 
@@ -67,16 +66,17 @@ export default function FreeAgents(){
         
         let visiblePlayers = freeAgentData.slice(startIndex, endIndex)
         let playerIds = visiblePlayers.map((player) => {return player['player_id']})
-
-        axios.put('https://127.0.0.1:5000/playerStats', {data: playerIds})
-        .then((response) => {
-            setPlayerStats(response.data.player_stats)
-
-            // console.log(response.data.player_stats)
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+        if(!playerStats){
+            axios.put('https://127.0.0.1:5000/playerStats', {data: playerIds})
+            .then((response) => {
+                let playerData = response.data.player_stats
+                console.log(playerData)
+                setPlayerStats(playerData)
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+        }
 
 
         let returnRows =  visiblePlayers.map((player) => {
@@ -102,12 +102,14 @@ export default function FreeAgents(){
     function handlePageChange(e){
         // Set some boundaries to make sure we stay within available pages
         e.preventDefault()
+        setPlayerStats()
         let direction = e.target.name
         if (direction === 'next'){
             setPage(page+1)
         } else {
             setPage(page-1)
         }
+
     }
 
     return (
