@@ -16,6 +16,7 @@ export default function FreeAgents(){
     function handleChange(e){
         e.preventDefault()
         let value = e.target.value;
+        setPlayerStats()
         setSearchValue(value)
     }
 
