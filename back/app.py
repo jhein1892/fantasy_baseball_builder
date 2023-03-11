@@ -1150,19 +1150,16 @@ def home():
 @app.route("/", methods=["PUT"])
 def signIn():
    data = request.get_json()
-
    standings = lg.standings()
    matchups = lg.matchups()
-
-   # print(dir(lg))
-   # print(lg.stat_categories_cache)
+   categories = lg.stat_categories()
    matchups = matchups['fantasy_content']['league']
    matchups.append(stat_ids) 
 
    roster = tm.roster()
    # Call yahoo_fantasy_api with league_id and team_id to get roster data
 
-   response = make_response({'roster': myPlayer, 'standings': standings, 'matchups': matchups})
+   response = make_response({'roster': myPlayer, 'standings': standings, 'matchups': matchups, 'categories': categories, "stat_ids": stat_ids,})
    return response
 
 
@@ -1171,7 +1168,8 @@ def getPlayerStats():
    data = request.get_json()
    data = data['data']
    playerStats = lg.player_stats(data, 'season', season=2022)
-   response = make_response({"player_stats": playerStats})
+   playerDetails = lg.player_details(data)
+   response = make_response({"player_details": playerDetails})
    return response
 
 

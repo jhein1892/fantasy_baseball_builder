@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import axios from 'axios';
 import config from '../config';
 
-export default function TeamRoster({ data }){
+export default function TeamRoster({ data, categories }){
     const [localData, setLocalData] = useState();
     const batterPositions = ['C', '1B', '2B', '3B', 'SS','OF','OF','OF','Util'];    // Roster Positions for Batters 
     const pitcherPositions = ['SP','SP','SP','RP','RP','P','P','P'];                // Roster Positions for Pitchers

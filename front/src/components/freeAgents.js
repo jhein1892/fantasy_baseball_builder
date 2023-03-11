@@ -37,10 +37,9 @@ export default function FreeAgents({generateComparison}){
         e.preventDefault()
 
         let playerInfo = freeAgentData.filter((x) => x.player_id === id)
-        let stats = playerStats.filter((x) => x.player_id === id)
+        let playerDetails = playerStats.filter((x) => x.player_id == id)
 
-        // console.log(playerInfo, stats)
-        generateComparison({playerInfo, stats})
+        generateComparison({playerInfo, playerDetails})
 
     }
 
@@ -70,8 +69,10 @@ export default function FreeAgents({generateComparison}){
         if(!playerStats){
             axios.put('https://127.0.0.1:5000/playerStats', {data: playerIds})
             .then((response) => {
-                let playerData = response.data.player_stats
-                console.log(playerData)
+                let playerData = response.data.player_details
+                // console.log(response.data.stat_cat)
+                // console.log(playerData)
+                // console.log(response.data.player_details)
                 setPlayerStats(playerData)
             })
             .catch((error) => {

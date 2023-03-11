@@ -17,32 +17,25 @@ export default function Body({userInfo, data}) {
         setPlayer2Info(player2)
         setViewComparison(true)
     }
-    // function handleClick(e){
-    //     e.preventDefault()
-    //     if(e.target.id === 'outer'){
-    //         setViewComparison(false)
-    //     }
-    // }
     return (
         <div className={bodyStyles.bodyWrapper} onScroll={() => console.log('scrolling')}>
             <div className={bodyStyles.rosterSection}>
-                <TeamRoster data={data.roster}/>
+                <TeamRoster data={data.roster} categories={data.categories}/>
             </div>
             <div className={bodyStyles.leagueSection}>
                 <Standings data={data.standings}/>
             </div>
             <div className={bodyStyles.freeAgentSection}>
-                {/* <p>Free Agents/Waivers</p> */}
                 <FreeAgents generateComparison={generateComparison}/>
             </div>
             <div className={bodyStyles.matchupSection}>
-                <Matchups data={data.matchups}/>
+                <Matchups data={data.matchups} categories={data.categories}/>
             </div>
             <div className={bodyStyles.tradeSection}>
                 <p>Proposed Trades</p>
             </div>
             {viewComparison &&
-                <CompareModal player1={player1Info} player2={player2Info} setViewComparison={setViewComparison}/>
+                <CompareModal player1={player1Info} player2={player2Info} setViewComparison={setViewComparison} categories={data.categories} stat_ids={data.stat_ids}/>
             }
         </div>
     )
