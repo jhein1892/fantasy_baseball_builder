@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import bodyStyles from '../styles/body.module.sass';
-import modalStyles from '../styles/modal.module.sass';
+
 import TeamRoster from './teamRoster';
 import Standings from './standings';
 import Matchups from './matchups';
 import FreeAgents from './freeAgents';
+import CompareModal from './compareModal';
 
 export default function Body({userInfo, data}) {
     const [player1Info, setPlayer1Info] = useState()
@@ -12,16 +13,16 @@ export default function Body({userInfo, data}) {
     const [viewComparison, setViewComparison] = useState(false)
 
     function generateComparison(player1, player2 = data.roster){
-        console.log(player1)
-        console.log(player2)
+        setPlayer1Info(player1)
+        setPlayer2Info(player2)
         setViewComparison(true)
     }
-    function handleClick(e){
-        e.preventDefault()
-        if(e.target.id === 'outer'){
-            setViewComparison(false)
-        }
-    }
+    // function handleClick(e){
+    //     e.preventDefault()
+    //     if(e.target.id === 'outer'){
+    //         setViewComparison(false)
+    //     }
+    // }
     return (
         <div className={bodyStyles.bodyWrapper} onScroll={() => console.log('scrolling')}>
             <div className={bodyStyles.rosterSection}>
@@ -41,13 +42,7 @@ export default function Body({userInfo, data}) {
                 <p>Proposed Trades</p>
             </div>
             {viewComparison &&
-                <div id='outer' onClick={(e) => {handleClick(e)}} className={modalStyles.wrapper}>
-                    <div className={modalStyles.innerWrapper}>
-                        <div><p>Player 1</p></div>
-                        <hr/>
-                        <div><p>Player 2</p></div>
-                    </div>
-                </div>
+                <CompareModal player1={player1Info} player2={player2Info} setViewComparison={setViewComparison}/>
             }
         </div>
     )
