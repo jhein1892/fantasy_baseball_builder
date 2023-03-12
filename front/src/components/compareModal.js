@@ -1,13 +1,19 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import modalStyles from '../styles/modal.module.sass';
 
 export default function CompareModal({player1, player2, setViewComparison, categories, stat_ids}){
-
+    useEffect(() => {
+        console.log('IN COMPARE MODAL')
+        console.log(player1)
+        console.log(player2)
+        console.log("Categories: ", categories)
+        console.log("ID's", stat_ids)
+    },[])
 
     function generatePlayer(player){
-        console.log("Categories: ", categories)
-        console.log("ID's: ", stat_ids)
-        console.log("Player Details: ", player)
+        // console.log("Categories: ", categories)
+        // console.log("ID's: ", stat_ids)
+        // console.log("Player Details: ", player)
         
         let info = player.playerInfo[0]
         let playerDetails = player.playerDetails[0]
@@ -21,7 +27,7 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                     <p>Percent Owned:{info.percent_owned}</p>
                 </div>
                 <div className={modalStyles.scoringStats}>
-                    
+
                 </div> 
                 <div className={modalStyles.altStats}>
 
