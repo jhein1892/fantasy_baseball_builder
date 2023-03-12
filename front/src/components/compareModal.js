@@ -22,7 +22,7 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                 playerStats = playerStats[0]
                 
                 return (
-                    <div>
+                    <div className={modalStyles.statWrapper}>
                         <p>{stat.display_name}</p>
                         <p>{playerStats.stat.value}</p>
                     </div>
