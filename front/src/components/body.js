@@ -17,6 +17,29 @@ export default function Body({userInfo, data}) {
         setPlayer2Info(player2)
         setViewComparison(true)
     }
+
+    useEffect(() => {
+        if(Object.keys(data).length > 0){
+            let categories = data.categories
+            let ids = data.stat_ids.stat_categories
+
+            function findID(name, type){
+                let info = ids.filter((id) => {if(id.display_name == name && id.position_types[0] == type){
+                    return id
+                }})
+                return info
+            }            
+            
+            categories.forEach((x) => {
+                let type = x.position_type
+                let id = findID(x.display_name, type)
+                id = id[0]
+                x['stat_id'] = id.stat_id
+            })
+            console.log(categories)
+        }
+    },[data])
+
     return (
         <div className={bodyStyles.bodyWrapper} onScroll={() => console.log('scrolling')}>
             <div className={bodyStyles.rosterSection}>
@@ -35,7 +58,7 @@ export default function Body({userInfo, data}) {
                 <p>Proposed Trades</p>
             </div>
             {viewComparison &&
-                <CompareModal player1={player1Info} player2={player2Info} setViewComparison={setViewComparison} categories={data.categories} stat_ids={data.stat_ids}/>
+                <CompareModal player1={player1Info} player2={player2Info} setViewComparison={setViewComparison} categories={data.categories}/>
             }
         </div>
     )

@@ -1,13 +1,15 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import modalStyles from '../styles/modal.module.sass';
 
 export default function CompareModal({player1, player2, setViewComparison, categories, stat_ids}){
+    const [statCategories, setStatCategories] = useState()
+
     useEffect(() => {
         console.log('IN COMPARE MODAL')
         console.log(player1)
         console.log(player2)
         console.log("Categories: ", categories)
-        console.log("ID's", stat_ids)
+        // console.log("ID's", stat_ids)
     },[])
 
     function generatePlayer(player){
