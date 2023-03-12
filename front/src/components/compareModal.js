@@ -8,27 +8,38 @@ export default function CompareModal({player1, player2, setViewComparison, categ
         let type = player1.playerInfo[0].position_type
         let relevantCategories = categories.filter((x) => x.position_type === type)
         setStatCategories(relevantCategories)
-        // console.log("Categories: ", relevantCategories, type)
     },[])
 
     function generatePlayer(player){
-        // console.log("Categories: ", categories)
-        // console.log("ID's: ", stat_ids)
-        // console.log("Player Details: ", player)
-        
+
         let info = player.playerInfo[0]
         let playerDetails = player.playerDetails[0]
         let positions = info.eligible_positions.join(', ')
+
+        function generateStats(){
+            return statCategories.map((stat) => {
+                let playerStats = playerDetails.player_stats.stats.filter((x) => x.stat.stat_id == stat.stat_id)
+                playerStats = playerStats[0]
+                
+                return (
+                    <div>
+                        <p>{stat.display_name}</p>
+                        <p>{playerStats.stat.value}</p>
+                    </div>
+                )
+            })
+        }
+
         return(
             <>
                 <div className={modalStyles.playerInfo}>
                     <img src={playerDetails.image_url} alt='player_headshot' />
                     <h2>{info.name} - <span>{positions}</span></h2>
                     <p>Injury Status: {info.status ? info.status: "None"}</p>
-                    <p>Percent Owned:{info.percent_owned}</p>
+                    <p>Percent Owned: {info.percent_owned}</p>
                 </div>
                 <div className={modalStyles.scoringStats}>
-
+                    {statCategories && generateStats()}
                 </div> 
                 <div className={modalStyles.altStats}>
 
