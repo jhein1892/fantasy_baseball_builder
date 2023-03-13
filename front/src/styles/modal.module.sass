@@ -26,7 +26,13 @@
             .playerInfo
             
             .scoringStats
+                text-align: center
                 .statWrapper
-                    display: flex
-                    flex-direction: row
+                    display: grid
+                    grid-template-columns: 1fr 1fr
+                    column-gap: 15px
+                    .statName
+                        justify-self: end
+                    .statValue
+                        justify-self: start
             .altStats

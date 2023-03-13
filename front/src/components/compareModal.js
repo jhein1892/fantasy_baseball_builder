@@ -23,8 +23,9 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                 
                 return (
                     <div className={modalStyles.statWrapper}>
-                        <p>{stat.display_name}</p>
-                        <p>{playerStats.stat.value}</p>
+                        <p className={modalStyles.statName}>{stat.display_name}</p>
+                        {/* <hr /> */}
+                        <p className={modalStyles.statValue}>{playerStats.stat.value}</p>
                     </div>
                 )
             })
