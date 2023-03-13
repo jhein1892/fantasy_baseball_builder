@@ -77,80 +77,81 @@ export default function TeamRoster({ data, categories }){
     function generatePositions(positionSet, type){
         let tempData = localData ?  localData.filter((x) => x.position_type === type) : [];
         positionSet = positionSet.concat(additionalPositions)
-        console.log(positionSet, tempData)
-        // return positionSet.map((position, index) => {
+        // console.log(positionSet, tempData)
+        return positionSet.map((position, index) => {
 
-        //     // Find players assigned to current positions
-        //     let eligiblePlayer = tempData.filter((x) => x.selected_position === position);
-        //     let eligiblePositionsString = "";
+            // Find players assigned to current positions
+            let eligiblePlayer = tempData.filter((x) => x.selected_position === position);
+            let eligiblePositionsString = "";
 
-        //     // Pick first element and remove from data set for future positions.
-        //     if(eligiblePlayer.length > 0){
-        //         eligiblePlayer = eligiblePlayer[0];
-        //         let newTempData = tempData.filter((x) => x.player_id !== eligiblePlayer.player_id);
-        //         tempData = newTempData;
-        //         eligiblePositionsString = eligiblePlayer.eligible_positions.join(', ')
-        //     }
+            // Pick first element and remove from data set for future positions.
+            if(eligiblePlayer.length > 0){
+                eligiblePlayer = eligiblePlayer[0];
+                let newTempData = tempData.filter((x) => x.player_id !== eligiblePlayer.player_id);
+                tempData = newTempData;
+            }
 
-        //     if(additionalPositions.includes(position) && eligiblePlayer.length === 0) {
-        //         return null;
-        //     }
-        //     // Eligible positions for position players
-        //     let eligible_positions;
-        //     if(type === 'P')
-        //         eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['P','BN', 'IL', 'NA']) : [];
-        //     else if(type === 'B') 
-        //         eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['Util','BN', 'IL', 'NA']) : [];
-        //     // else return table row with data
-        //     return(
-        //         <tr className={rosterStyles.positionSlot} key={`${position}-${index}`}>
-        //             <td className={rosterStyles.positionTitle}>{position}</td>
-        //             <td className={rosterStyles.playerName}>{eligiblePlayer.name ? eligiblePlayer.name : 'empty' } - <span>{eligiblePositionsString}</span></td>
-        //             <td>--</td>
-        //             <td>--</td>
-        //             <td>--</td>
-        //             <td>--</td>
-        //             <td>--</td>
-        //             <td>--</td>
-        //             <td>--</td>
-        //             <td>--</td>
-        //             <td>--</td>
-        //             <td>--</td>
-        //             <td>
-        //                 <select
-        //                     name={eligiblePlayer.player_id}
-        //                     onChange={(e) => handlePositionChange(e, type)}
-        //                     value={eligiblePlayer.selected_position}
-        //                 >
-        //                     {eligiblePlayer.eligible_positions ?
-        //                         <>
-        //                         <option
-        //                             key={`${eligiblePlayer.player_id}-${eligiblePlayer.selected_position}`}
-        //                             value={eligiblePlayer.selected_position}
-        //                         >
-        //                             {eligiblePlayer.selected_position}
-        //                         </option>
+            // console.log(eligiblePlayer)
+            if(additionalPositions.includes(position) && eligiblePlayer.length === 0) {
+                return null;
+            }
+            // Eligible positions for position players
+            let eligible_positions;
+            if(type === 'P')
+                eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['P','BN', 'IL', 'NA']) : [];
+            else if(type === 'B') 
+                eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['Util','BN', 'IL', 'NA']) : [];
+            // else return table row with data
+            return(
+                <tr className={rosterStyles.positionSlot} key={`${position}-${index}`}>
+                    <td className={rosterStyles.positionTitle}>{position}</td>
+                    <td className={rosterStyles.playerName}>{eligiblePlayer.name ? eligiblePlayer.name['full'] : 'empty' } - <span>{eligiblePlayer.display_position}</span></td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>--</td>
+                    <td>
+                        <select
+                            name={eligiblePlayer.player_id}
+                            onChange={(e) => handlePositionChange(e, type)}
+                            value={eligiblePlayer.selected_position}
+                        >
+                            {eligiblePlayer.eligible_positions ?
+                                <>
+                                <option
+                                    key={`${eligiblePlayer.player_id}-${eligiblePlayer.selected_position}-a`}
+                                    value={eligiblePlayer.selected_position}
+                                >
+                                    {eligiblePlayer.selected_position}
+                                </option>
 
-        //                         {eligible_positions.map((position) => {
-        //                             if(position === eligiblePlayer.selected_position) return;
-        //                             return (
-        //                                 <option
-        //                                     value={position}
-        //                                     key={`${eligiblePlayer.player_id}-${position}`}
-        //                                 >
-        //                                     {position}
-        //                                 </option>
-        //                             )
-        //                         })}
-        //                         </>
-        //                         :
-        //                         <option></option>
-        //                     }
-        //                 </select>
-        //             </td>
-        //         </tr>
-        //     )
-        // })
+                                {eligible_positions.map((position, index) => {
+                                    let thisposition = position.position ? position.position : position
+                                    if(position.position === eligiblePlayer.selected_position) return;
+                                    return (
+                                        <option
+                                            value={position.position_type}
+                                            key={`${eligiblePlayer.player_id}-${thisposition}-${index}`}
+                                        >
+                                            {position.position}
+                                        </option>
+                                    )
+                                })}
+                                </>
+                                :
+                                <option></option>
+                            }
+                        </select>
+                    </td>
+                </tr>
+            )
+        })
     }
 
     useEffect(() => {
