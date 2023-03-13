@@ -1074,8 +1074,15 @@ def signIn():
 
    for player in rosterDetails:
       playerid = player['player_id']
-      index = next((i for i, p in enumerate(roster) if p['player_id'] == playerid), -1)
-      player['selected_position'] = roster[index]['selected_position']
+      # print(playerid)
+      index = -1
+      for i,x in enumerate(roster):
+         if x['player_id'] == int(playerid):
+            print(x['player_id'])
+            index = i
+         
+      if index >= 0:
+         player['selected_position'] = roster[index]['selected_position']
 
    # Call yahoo_fantasy_api with league_id and team_id to get roster data
 

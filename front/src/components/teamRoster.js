@@ -77,84 +77,84 @@ export default function TeamRoster({ data, categories }){
     function generatePositions(positionSet, type){
         let tempData = localData ?  localData.filter((x) => x.position_type === type) : [];
         positionSet = positionSet.concat(additionalPositions)
-        return positionSet.map((position, index) => {
+        console.log(positionSet, tempData)
+        // return positionSet.map((position, index) => {
 
-            // Find players assigned to current positions
-            let eligiblePlayer = tempData.filter((x) => x.selected_position === position);
-            let eligiblePositionsString = "";
+        //     // Find players assigned to current positions
+        //     let eligiblePlayer = tempData.filter((x) => x.selected_position === position);
+        //     let eligiblePositionsString = "";
 
-            // Pick first element and remove from data set for future positions.
-            if(eligiblePlayer.length > 0){
-                eligiblePlayer = eligiblePlayer[0];
-                let newTempData = tempData.filter((x) => x.player_id !== eligiblePlayer.player_id);
-                tempData = newTempData;
-                eligiblePositionsString = eligiblePlayer.eligible_positions.join(', ')
-            }
+        //     // Pick first element and remove from data set for future positions.
+        //     if(eligiblePlayer.length > 0){
+        //         eligiblePlayer = eligiblePlayer[0];
+        //         let newTempData = tempData.filter((x) => x.player_id !== eligiblePlayer.player_id);
+        //         tempData = newTempData;
+        //         eligiblePositionsString = eligiblePlayer.eligible_positions.join(', ')
+        //     }
 
-            if(additionalPositions.includes(position) && eligiblePlayer.length === 0) {
-                return null;
-            }
-            // Eligible positions for position players
-            let eligible_positions;
-            if(type === 'P')
-                eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['P','BN', 'IL', 'NA']) : [];
-            else if(type === 'B') 
-                eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['Util','BN', 'IL', 'NA']) : [];
-            // else return table row with data
-            return(
-                <tr className={rosterStyles.positionSlot} key={`${position}-${index}`}>
-                    <td className={rosterStyles.positionTitle}>{position}</td>
-                    <td className={rosterStyles.playerName}>{eligiblePlayer.name ? eligiblePlayer.name : 'empty' } - <span>{eligiblePositionsString}</span></td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>--</td>
-                    <td>
-                        <select
-                            name={eligiblePlayer.player_id}
-                            onChange={(e) => handlePositionChange(e, type)}
-                            value={eligiblePlayer.selected_position}
-                        >
-                            {eligiblePlayer.eligible_positions ?
-                                <>
-                                <option
-                                    key={`${eligiblePlayer.player_id}-${eligiblePlayer.selected_position}`}
-                                    value={eligiblePlayer.selected_position}
-                                >
-                                    {eligiblePlayer.selected_position}
-                                </option>
+        //     if(additionalPositions.includes(position) && eligiblePlayer.length === 0) {
+        //         return null;
+        //     }
+        //     // Eligible positions for position players
+        //     let eligible_positions;
+        //     if(type === 'P')
+        //         eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['P','BN', 'IL', 'NA']) : [];
+        //     else if(type === 'B') 
+        //         eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['Util','BN', 'IL', 'NA']) : [];
+        //     // else return table row with data
+        //     return(
+        //         <tr className={rosterStyles.positionSlot} key={`${position}-${index}`}>
+        //             <td className={rosterStyles.positionTitle}>{position}</td>
+        //             <td className={rosterStyles.playerName}>{eligiblePlayer.name ? eligiblePlayer.name : 'empty' } - <span>{eligiblePositionsString}</span></td>
+        //             <td>--</td>
+        //             <td>--</td>
+        //             <td>--</td>
+        //             <td>--</td>
+        //             <td>--</td>
+        //             <td>--</td>
+        //             <td>--</td>
+        //             <td>--</td>
+        //             <td>--</td>
+        //             <td>--</td>
+        //             <td>
+        //                 <select
+        //                     name={eligiblePlayer.player_id}
+        //                     onChange={(e) => handlePositionChange(e, type)}
+        //                     value={eligiblePlayer.selected_position}
+        //                 >
+        //                     {eligiblePlayer.eligible_positions ?
+        //                         <>
+        //                         <option
+        //                             key={`${eligiblePlayer.player_id}-${eligiblePlayer.selected_position}`}
+        //                             value={eligiblePlayer.selected_position}
+        //                         >
+        //                             {eligiblePlayer.selected_position}
+        //                         </option>
 
-                                {eligible_positions.map((position) => {
-                                    if(position === eligiblePlayer.selected_position) return;
-                                    return (
-                                        <option
-                                            value={position}
-                                            key={`${eligiblePlayer.player_id}-${position}`}
-                                        >
-                                            {position}
-                                        </option>
-                                    )
-                                })}
-                                </>
-                                :
-                                <option></option>
-                            }
-                        </select>
-                    </td>
-                </tr>
-            )
-        })
+        //                         {eligible_positions.map((position) => {
+        //                             if(position === eligiblePlayer.selected_position) return;
+        //                             return (
+        //                                 <option
+        //                                     value={position}
+        //                                     key={`${eligiblePlayer.player_id}-${position}`}
+        //                                 >
+        //                                     {position}
+        //                                 </option>
+        //                             )
+        //                         })}
+        //                         </>
+        //                         :
+        //                         <option></option>
+        //                     }
+        //                 </select>
+        //             </td>
+        //         </tr>
+        //     )
+        // })
     }
 
     useEffect(() => {
         if(data){
-            console.log(data)
             setLocalData(data)
         }
     },[data])
@@ -195,7 +195,7 @@ export default function TeamRoster({ data, categories }){
                     </tr>
                 </thead>
                 <tbody>
-                    {/* {generatePositions(batterPositions, 'B')} */}
+                    {generatePositions(batterPositions, 'B')}
                 </tbody>
             </table>
             <h3>Pitchers:</h3>
@@ -223,7 +223,7 @@ export default function TeamRoster({ data, categories }){
                     </tr>
                 </thead>
                 <tbody>
-                    {/* {generatePositions(pitcherPositions, 'P')} */}
+                    {generatePositions(pitcherPositions, 'P')}
                 </tbody>
             </table>
             <div className={rosterStyles.buttonWrapper}>
