@@ -6,7 +6,7 @@ import config from '../config';
 
 export default function TeamRoster({ data, categories }){
     const [localData, setLocalData] = useState();
-    const batterPositions = ['C', '1B', '2B', '3B', 'SS','OF','OF','OF','Util'];    // Roster Positions for Batters 
+    const batterPositions = ['C', '1B', '2B', '3B', 'SS','OF','OF','OF','Util', 'Util'];    // Roster Positions for Batters 
     const pitcherPositions = ['SP','SP','SP','RP','RP','P','P','P'];                // Roster Positions for Pitchers
     const additionalPositions = ['BN','BN','BN','IL','IL','IL','IL','NA'];          // Additonal Roster Spots
     const availablePositions = {
@@ -78,6 +78,7 @@ export default function TeamRoster({ data, categories }){
         let tempData = localData ?  localData.filter((x) => x.position_type === type) : [];
         positionSet = positionSet.concat(additionalPositions)
         return positionSet.map((position, index) => {
+
             // Find players assigned to current positions
             let eligiblePlayer = tempData.filter((x) => x.selected_position === position);
             let eligiblePositionsString = "";
@@ -153,6 +154,7 @@ export default function TeamRoster({ data, categories }){
 
     useEffect(() => {
         if(data){
+            console.log(data)
             setLocalData(data)
         }
     },[data])
@@ -193,7 +195,7 @@ export default function TeamRoster({ data, categories }){
                     </tr>
                 </thead>
                 <tbody>
-                    {generatePositions(batterPositions, 'B')}
+                    {/* {generatePositions(batterPositions, 'B')} */}
                 </tbody>
             </table>
             <h3>Pitchers:</h3>
@@ -221,7 +223,7 @@ export default function TeamRoster({ data, categories }){
                     </tr>
                 </thead>
                 <tbody>
-                    {generatePositions(pitcherPositions, 'P')}
+                    {/* {generatePositions(pitcherPositions, 'P')} */}
                 </tbody>
             </table>
             <div className={rosterStyles.buttonWrapper}>

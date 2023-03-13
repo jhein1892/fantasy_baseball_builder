@@ -61,99 +61,6 @@ myPlayer = [
  'eligible_positions': ['SP'], 'selected_position':'IL', 'status': 'DTD'},
 ]
 
-leagueStandings = [
-    {'team_key': '388.l.27081.t.5',
- 'name': 'Lumber Kings',
- 'rank': 1,
- 'playoff_seed': '5',
- 'outcome_totals': {'wins': '121',
-  'losses': '116',
-  'ties': '15',
-  'percentage': '.510'},
- 'games_back': '19'},
-
-     {'team_key': '388.l.27081.t.5',
- 'name': 'Team 2',
- 'rank': 6,
- 'playoff_seed': '5',
- 'outcome_totals': {'wins': '98',
-  'losses': '146',
-  'ties': '12',
-  'percentage': '.340'},
- 'games_back': '50'},
-
-     {'team_key': '388.l.27081.t.5',
- 'name': 'Big Boys',
- 'rank': 3,
- 'playoff_seed': '5',
- 'outcome_totals': {'wins': '121',
-  'losses': '116',
-  'ties': '15',
-  'percentage': '.510'},
- 'games_back': '19'},
-
-     {'team_key': '388.l.27081.t.5',
- 'name': 'Liver Kings',
- 'rank': 7,
- 'playoff_seed': '5',
- 'outcome_totals': {'wins': '121',
-  'losses': '116',
-  'ties': '15',
-  'percentage': '.510'},
- 'games_back': '19'},
-
-     {'team_key': '388.l.27081.t.5',
- 'name': 'Lumber Kings',
- 'rank': 2,
- 'playoff_seed': '5',
- 'outcome_totals': {'wins': '121',
-  'losses': '116',
-  'ties': '15',
-  'percentage': '.510'},
- 'games_back': '19'},
-
-     {'team_key': '388.l.27081.t.5',
- 'name': 'Team 2',
- 'rank': 5,
- 'playoff_seed': '5',
- 'outcome_totals': {'wins': '121',
-  'losses': '116',
-  'ties': '15',
-  'percentage': '.510'},
- 'games_back': '19'},
-
-     {'team_key': '388.l.27081.t.5',
- 'name': 'Big Boys',
- 'rank': 4,
- 'playoff_seed': '5',
- 'outcome_totals': {'wins': '121',
-  'losses': '116',
-  'ties': '15',
-  'percentage': '.510'},
- 'games_back': '19'},
-
-     {'team_key': '388.l.27081.t.5',
- 'name': 'Liver Kings',
- 'rank': 8,
- 'playoff_seed': '5',
- 'outcome_totals': {'wins': '121',
-  'losses': '116',
-  'ties': '15',
-  'percentage': '.510'},
- 'games_back': '19'},
-
-   {'team_key': '388.l.27081.t.5',
- 'name': 'Last Place',
- 'rank': 9,
- 'playoff_seed': '5',
- 'outcome_totals': {'wins': '121',
-  'losses': '116',
-  'ties': '15',
-  'percentage': '.510'},
- 'games_back': '19'},
-
- ]
-
 stat_ids = {
   "game_key": "328",
   "game_id": "328",
@@ -1153,13 +1060,26 @@ def signIn():
    standings = lg.standings()
    matchups = lg.matchups()
    categories = lg.stat_categories()
+
    matchups = matchups['fantasy_content']['league']
    matchups.append(stat_ids) 
 
    roster = tm.roster()
+   rosterIDs = []
+
+   for player in roster:
+      rosterIDs.append(player['player_id'])
+   
+   rosterDetails = lg.player_details(rosterIDs)
+
+   for player in rosterDetails:
+      playerid = player['player_id']
+      index = next((i for i, p in enumerate(roster) if p['player_id'] == playerid), -1)
+      player['selected_position'] = roster[index]['selected_position']
+
    # Call yahoo_fantasy_api with league_id and team_id to get roster data
 
-   response = make_response({'roster': myPlayer, 'standings': standings, 'matchups': matchups, 'categories': categories, "stat_ids": stat_ids,})
+   response = make_response({'roster': rosterDetails, 'standings': standings, 'matchups': matchups, 'categories': categories, "stat_ids": stat_ids,})
    return response
 
 

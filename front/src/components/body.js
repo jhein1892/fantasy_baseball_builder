@@ -36,7 +36,6 @@ export default function Body({userInfo, data}) {
                 id = id[0]
                 x['stat_id'] = id.stat_id
             })
-            console.log(categories)
         }
     },[data])
 
