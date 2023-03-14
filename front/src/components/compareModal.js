@@ -7,6 +7,8 @@ export default function CompareModal({player1, player2, setViewComparison, categ
     useEffect(() => {
         let type = player1.playerInfo[0].position_type
         let relevantCategories = categories.filter((x) => x.position_type === type)
+        console.log(player2)
+        console.log(player1)
         setStatCategories(relevantCategories)
     },[])
 
@@ -47,8 +49,24 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                 </div>
             </>
         )
+    }
 
-        console.log(player)
+    function AvailablePlayers(){
+        let positions = player1.playerDetails[0].position_type
+        let swappable = player2.filter((x) => x['position_type'] == positions)
+        return (
+            <div>
+                <select>
+                    {swappable.map((player) => {
+                        return(
+                            <option>
+                                <p>{player.name['full']} - <span>{player.display_position}</span></p>
+                            </option>
+                        )
+                    })}
+                </select>
+            </div>
+        )
     }
 
     function handleClick(e){
@@ -64,7 +82,10 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                     {generatePlayer(player1)}
                 </div>
                 <hr/>
-                <div><p>Player 2</p></div>
+                {/* Within this section, we want a drop down menu for every player that could be replaced by player 1 */}
+                <div><p>Player 2</p>
+                    {AvailablePlayers()}
+                </div>
             </div>
         </div>
     )
