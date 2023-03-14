@@ -3,6 +3,7 @@ import modalStyles from '../styles/modal.module.sass';
 
 export default function CompareModal({player1, player2, setViewComparison, categories}){
     const [statCategories, setStatCategories] = useState()
+    const [currentPlayer, setCurrentPlayer] = useState()
 
     useEffect(() => {
         let type = player1.playerInfo[0].position_type
@@ -51,21 +52,32 @@ export default function CompareModal({player1, player2, setViewComparison, categ
         )
     }
 
+    function handleChange(e){
+        e.preventDefault()
+        let selectedPlayer = e.target.options[e.target.selectedIndex]
+        
+        console.log(selectedPlayer.id)
+    }
     function AvailablePlayers(){
         let positions = player1.playerDetails[0].position_type
         let swappable = player2.filter((x) => x['position_type'] == positions)
         return (
-            <div>
-                <select>
+            <>
+                <select
+                    defaultValue={player1.playerDetails[0].primary_position}
+                    onChange={(e) => handleChange(e)}
+                >
                     {swappable.map((player) => {
+                        console.log(player.player_id)
                         return(
-                            <option>
-                                <p>{player.name['full']} - <span>{player.display_position}</span></p>
+                            <option value={player.selected_position} id={player.player_id} key={`option-${player.selected_position}-${player.player_id}`}>
+                                <p>{player.name['full']} - <span>{player.selected_position}</span></p>
                             </option>
                         )
                     })}
                 </select>
-            </div>
+                {/* {generatePlayer()} */}
+            </>
         )
     }
 
