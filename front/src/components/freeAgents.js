@@ -36,10 +36,10 @@ export default function FreeAgents({generateComparison}){
     function handleRowClick(e, id){
         e.preventDefault()
 
-        let playerInfo = freeAgentData.filter((x) => x.player_id === id)
+        // let playerInfo = freeAgentData.filter((x) => x.player_id === id)
         let playerDetails = playerStats.filter((x) => x.player_id == id)
 
-        generateComparison({playerInfo, playerDetails})
+        generateComparison(playerDetails[0])
 
     }
 

@@ -6,22 +6,25 @@ export default function CompareModal({player1, player2, setViewComparison, categ
     const [currentPlayer, setCurrentPlayer] = useState()
 
     useEffect(() => {
-        let type = player1.playerInfo[0].position_type
+        console.log("player1", player1)
+        console.log("player2", player2)
+        console.log(categories)
+        let type = player1.position_type
         let relevantCategories = categories.filter((x) => x.position_type === type)
-        console.log(player2)
-        console.log(player1)
+        setCurrentPlayer(player2[0])
         setStatCategories(relevantCategories)
     },[])
 
     function generatePlayer(player){
-
-        let info = player.playerInfo[0]
-        let playerDetails = player.playerDetails[0]
-        let positions = info.eligible_positions.join(', ')
+        console.log(player)
+        // let info = player.playerInfo[0]
+        // let playerDetails = player.playerDetails[0]
+        // let positions = info.eligible_positions.join(', ')
 
         function generateStats(){
+
             return statCategories.map((stat) => {
-                let playerStats = playerDetails.player_stats.stats.filter((x) => x.stat.stat_id == stat.stat_id)
+                let playerStats = player.player_stats.stats.filter((x) => x.stat.stat_id == stat.stat_id)
                 playerStats = playerStats[0]
                 
                 return (
@@ -37,10 +40,10 @@ export default function CompareModal({player1, player2, setViewComparison, categ
         return(
             <>
                 <div className={modalStyles.playerInfo}>
-                    <img src={playerDetails.image_url} alt='player_headshot' />
-                    <h2>{info.name} - <span>{positions}</span></h2>
-                    <p>Injury Status: {info.status ? info.status: "None"}</p>
-                    <p>Percent Owned: {info.percent_owned}</p>
+                    <img src={player.image_url} alt='player_headshot' />
+                    {/* <h2>{info.name} - <span>{positions}</span></h2> */}
+                    {/* <p>Injury Status: {info.status ? info.status: "None"}</p>
+                    <p>Percent Owned: {info.percent_owned}</p> */}
                 </div>
                 <div className={modalStyles.scoringStats}>
                     {statCategories && generateStats()}
@@ -55,16 +58,17 @@ export default function CompareModal({player1, player2, setViewComparison, categ
     function handleChange(e){
         e.preventDefault()
         let selectedPlayer = e.target.options[e.target.selectedIndex]
-        
-        console.log(selectedPlayer.id)
+        let newPlayer = player2.filter((x) => x.player_id == selectedPlayer.id)
+        setCurrentPlayer(newPlayer[0])
     }
     function AvailablePlayers(){
-        let positions = player1.playerDetails[0].position_type
+        let positions = player1.position_type
         let swappable = player2.filter((x) => x['position_type'] == positions)
+        console.log(currentPlayer)
         return (
             <>
                 <select
-                    defaultValue={player1.playerDetails[0].primary_position}
+                    defaultValue={player1.primary_position}
                     onChange={(e) => handleChange(e)}
                 >
                     {swappable.map((player) => {
@@ -76,7 +80,6 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                         )
                     })}
                 </select>
-                {/* {generatePlayer()} */}
             </>
         )
     }
@@ -94,9 +97,9 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                     {generatePlayer(player1)}
                 </div>
                 <hr/>
-                {/* Within this section, we want a drop down menu for every player that could be replaced by player 1 */}
                 <div><p>Player 2</p>
                     {AvailablePlayers()}
+                    {currentPlayer && generatePlayer(currentPlayer)}
                 </div>
             </div>
         </div>
