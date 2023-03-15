@@ -16,7 +16,8 @@ export default function FreeAgents({generateComparison}){
     function handleChange(e){
         e.preventDefault()
         let value = e.target.value;
-        setPlayerStats()
+        console.log('change', value)
+        setPlayerStats([])
         setSearchValue(value)
     }
 
@@ -33,13 +34,20 @@ export default function FreeAgents({generateComparison}){
         })
     }
 
-    function handleRowClick(e, id){
+    async function handleRowClick(e, id){
         e.preventDefault()
-
+        console.log(id)
+        let playerDetails = await new Promise((resolve) => {
+            console.log(playerStats)
+            let filteredData = playerStats.filter((x) => x.player_id == id);
+            resolve(filteredData)
+        })
+        console.log(playerDetails)
         // let playerInfo = freeAgentData.filter((x) => x.player_id === id)
-        let playerDetails = playerStats.filter((x) => x.player_id == id)
-
-        generateComparison(playerDetails[0])
+        // let playerDetails = playerStats.filter((x) => x.player_id == id)
+        if(playerDetails.length > 0){
+            generateComparison(playerDetails[0])
+        }
 
     }
 
@@ -66,13 +74,11 @@ export default function FreeAgents({generateComparison}){
         
         let visiblePlayers = freeAgentData.slice(startIndex, endIndex)
         let playerIds = visiblePlayers.map((player) => {return player['player_id']})
-        if(!playerStats){
+        console.log("PLayerStats:", playerStats.length, searchValue )
+        if(playerStats.length == 0){
             axios.put('https://127.0.0.1:5000/playerStats', {data: playerIds})
             .then((response) => {
                 let playerData = response.data.player_details
-                // console.log(response.data.stat_cat)
-                // console.log(playerData)
-                // console.log(response.data.player_details)
                 setPlayerStats(playerData)
             })
             .catch((error) => {
@@ -92,7 +98,7 @@ export default function FreeAgents({generateComparison}){
                         <td>{player.name}</td>
                         <td>{positionList}</td>
                         <td>{player.percent_owned}</td>
-                        <td><button onClick={(e) => handleRowClick(e, player.player_id)}>View Stats</button></td>
+                        <td><button disabled={freeAgentData.length === 0} onClick={(e) => handleRowClick(e, player.player_id)}>View Stats</button></td>
                         <td><button>add</button></td>
                     </tr>
                 </>

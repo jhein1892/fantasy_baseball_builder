@@ -8,15 +8,18 @@ export default function CompareModal({player1, player2, setViewComparison, categ
     useEffect(() => {
         console.log("player1", player1)
         console.log("player2", player2)
-        console.log(categories)
-        let type = player1.position_type
-        let relevantCategories = categories.filter((x) => x.position_type === type)
-        setCurrentPlayer(player2[0])
-        setStatCategories(relevantCategories)
-    },[])
+        try{
+            let type = player1.position_type
+            let relevantCategories = categories.filter((x) => x.position_type === type)
+            let displayPlayer = player2.filter((x) => x.selected_position == player1.primary_position)
+            setCurrentPlayer(displayPlayer[0])
+            setStatCategories(relevantCategories)
+        } catch(error) {
+            console.log('not ready yet')
+        }
+    },[player1])
 
     function generatePlayer(player){
-        console.log(player)
         // let info = player.playerInfo[0]
         // let playerDetails = player.playerDetails[0]
         // let positions = info.eligible_positions.join(', ')
@@ -41,7 +44,7 @@ export default function CompareModal({player1, player2, setViewComparison, categ
             <>
                 <div className={modalStyles.playerInfo}>
                     <img src={player.image_url} alt='player_headshot' />
-                    {/* <h2>{info.name} - <span>{positions}</span></h2> */}
+                    <h2>{player.name.full} - <span>{player.display_position}</span></h2>
                     {/* <p>Injury Status: {info.status ? info.status: "None"}</p>
                     <p>Percent Owned: {info.percent_owned}</p> */}
                 </div>
@@ -64,7 +67,7 @@ export default function CompareModal({player1, player2, setViewComparison, categ
     function AvailablePlayers(){
         let positions = player1.position_type
         let swappable = player2.filter((x) => x['position_type'] == positions)
-        console.log(currentPlayer)
+
         return (
             <>
                 <select
@@ -72,7 +75,7 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                     onChange={(e) => handleChange(e)}
                 >
                     {swappable.map((player) => {
-                        console.log(player.player_id)
+
                         return(
                             <option value={player.selected_position} id={player.player_id} key={`option-${player.selected_position}-${player.player_id}`}>
                                 <p>{player.name['full']} - <span>{player.selected_position}</span></p>
@@ -87,6 +90,8 @@ export default function CompareModal({player1, player2, setViewComparison, categ
     function handleClick(e){
         e.preventDefault()
         if(e.target.id === 'outer'){
+            setStatCategories()
+            setCurrentPlayer()
             setViewComparison(false)
         }
     }
@@ -94,7 +99,7 @@ export default function CompareModal({player1, player2, setViewComparison, categ
         <div id='outer' onClick={(e) => {handleClick(e)}} className={modalStyles.wrapper}>
             <div className={modalStyles.innerWrapper}>
                 <div className={modalStyles.playerWrapper}>
-                    {generatePlayer(player1)}
+                    {player1 && generatePlayer(player1)}
                 </div>
                 <hr/>
                 <div><p>Player 2</p>

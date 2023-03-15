@@ -1078,7 +1078,6 @@ def signIn():
       index = -1
       for i,x in enumerate(roster):
          if x['player_id'] == int(playerid):
-            print(x['player_id'])
             index = i
          
       if index >= 0:
