@@ -10,6 +10,7 @@ export default function FreeAgents({generateComparison}){
     const [freeAgentData, setFreeAgentsData] = useState([])
     const [page, setPage] = useState(1)
     const [pageLength, setPageLength] = useState(25)
+    const [newPlayers, setnewPlayers] = useState(false)
     const [playerStats, setPlayerStats] = useState()
     // const [playerIds, setPlayerIds] = useState([])
 
@@ -17,6 +18,7 @@ export default function FreeAgents({generateComparison}){
         e.preventDefault()
         let value = e.target.value;
         console.log('change', value)
+        setnewPlayers(false)
         setPlayerStats([])
         setSearchValue(value)
     }
@@ -28,6 +30,7 @@ export default function FreeAgents({generateComparison}){
         .then((response) => {
             let data = response.data            
             setFreeAgentsData(data.availablePlayers)
+            setnewPlayers(true)
         }) 
         .catch((error) => {
           console.log(error)
@@ -75,7 +78,7 @@ export default function FreeAgents({generateComparison}){
         let visiblePlayers = freeAgentData.slice(startIndex, endIndex)
         let playerIds = visiblePlayers.map((player) => {return player['player_id']})
         console.log("PLayerStats:", playerStats.length, searchValue )
-        if(playerStats.length == 0){
+        if(newPlayers && playerStats.length == 0){
             axios.put('https://127.0.0.1:5000/playerStats', {data: playerIds})
             .then((response) => {
                 let playerData = response.data.player_details
