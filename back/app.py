@@ -1064,13 +1064,8 @@ def signIn():
    matchups = matchups['fantasy_content']['league']
    matchups.append(stat_ids) 
 
-
-
-
    roster = tm.roster()
    rosterIDs = []
-
-   print(dir(tm))
 
    for player in roster:
       rosterIDs.append(player['player_id'])

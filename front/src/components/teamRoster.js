@@ -4,6 +4,8 @@ import classNames from 'classnames';
 import axios from 'axios';
 import config from '../config';
 
+// Add Drop button
+
 export default function TeamRoster({ data, categories }){
     const [localData, setLocalData] = useState();
     const batterPositions = ['C', '1B', '2B', '3B', 'SS','OF','OF','OF','Util', 'Util'];    // Roster Positions for Batters 
@@ -20,7 +22,7 @@ export default function TeamRoster({ data, categories }){
         "SP": 3,
         "RP": 2,
         "P": 3,
-        "BN": 3,
+        "BN": 4,
         "IL": 4,
         "NA": 1
     }
@@ -77,12 +79,11 @@ export default function TeamRoster({ data, categories }){
     function generatePositions(positionSet, type){
         let tempData = localData ?  localData.filter((x) => x.position_type === type) : [];
         positionSet = positionSet.concat(additionalPositions)
-        // console.log(positionSet, tempData)
+
         return positionSet.map((position, index) => {
 
             // Find players assigned to current positions
             let eligiblePlayer = tempData.filter((x) => x.selected_position === position);
-            let eligiblePositionsString = "";
 
             // Pick first element and remove from data set for future positions.
             if(eligiblePlayer.length > 0){
@@ -90,7 +91,7 @@ export default function TeamRoster({ data, categories }){
                 let newTempData = tempData.filter((x) => x.player_id !== eligiblePlayer.player_id);
                 tempData = newTempData;
             }
-            
+
             if(additionalPositions.includes(position) && eligiblePlayer.length === 0) {
                 return null;
             }
