@@ -20,17 +20,33 @@
         >div
             pointer-events: unset
         
+        .selectWrapper
+            position: absolute
+        
         .playerWrapper
             text-align: center
+            padding: 20px
 
             .playerInfo
-            
+                img
+                    background: grey
+                    border-radius: 50%
+                    height: 75px
+                    padding: 6px 4px 0px 4px
+                    
+                span
+                    font-weight: 400
+                    font-size: 1.2rem
             .scoringStats
                 text-align: center
                 .statWrapper
                     display: grid
                     grid-template-columns: 1fr 1fr
                     column-gap: 15px
+                    align-items: center
+                    height: 40px
+                    p
+                        margin: 0
                     .statName
                         justify-self: end
                     .statValue

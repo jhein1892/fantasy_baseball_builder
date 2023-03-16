@@ -45,14 +45,18 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                 <div className={modalStyles.playerInfo}>
                     <img src={player.image_url} alt='player_headshot' />
                     <h2>{player.name.full} - <span>{player.display_position}</span></h2>
-                    {/* <p>Injury Status: {info.status ? info.status: "None"}</p>
-                    <p>Percent Owned: {info.percent_owned}</p> */}
                 </div>
                 <div className={modalStyles.scoringStats}>
                     {statCategories && generateStats()}
                 </div> 
                 <div className={modalStyles.altStats}>
+                    {player.selected_position && 
+                        <button>Remove</button>
+                    } 
+                    {!player.selected_position &&
 
+                        <button>Add</button>
+                    }
                 </div>
             </>
         )
@@ -69,7 +73,7 @@ export default function CompareModal({player1, player2, setViewComparison, categ
         let swappable = player2.filter((x) => x['position_type'] == positions)
 
         return (
-            <>
+            <div className={modalStyles.selectWrapper}>
                 <select
                     defaultValue={player1.primary_position}
                     onChange={(e) => handleChange(e)}
@@ -83,7 +87,7 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                         )
                     })}
                 </select>
-            </>
+            </div>
         )
     }
 
@@ -102,9 +106,11 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                     {player1 && generatePlayer(player1)}
                 </div>
                 <hr/>
-                <div><p>Player 2</p>
+                <div style={{position: 'relative'}}>
                     {AvailablePlayers()}
-                    {currentPlayer && generatePlayer(currentPlayer)}
+                    <div className={modalStyles.playerWrapper}>
+                        {currentPlayer && generatePlayer(currentPlayer)}
+                    </div>
                 </div>
             </div>
         </div>
