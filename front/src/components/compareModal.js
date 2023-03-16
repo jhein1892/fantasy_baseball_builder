@@ -20,9 +20,7 @@ export default function CompareModal({player1, player2, setViewComparison, categ
     },[player1])
 
     function generatePlayer(player){
-        // let info = player.playerInfo[0]
-        // let playerDetails = player.playerDetails[0]
-        // let positions = info.eligible_positions.join(', ')
+
 
         function generateStats(){
 
@@ -116,3 +114,7 @@ export default function CompareModal({player1, player2, setViewComparison, categ
         </div>
     )
 }
+
+// Add_Drop => Drop my player and add the one I'm comparing to
+// Add player => Check if we have room, supply position options for the add
+// Drop player => Drop player
