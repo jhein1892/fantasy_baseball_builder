@@ -90,17 +90,13 @@ export default function TeamRoster({ data, categories }){
                 let newTempData = tempData.filter((x) => x.player_id !== eligiblePlayer.player_id);
                 tempData = newTempData;
             }
-
-            // console.log(eligiblePlayer)
+            
             if(additionalPositions.includes(position) && eligiblePlayer.length === 0) {
                 return null;
             }
             // Eligible positions for position players
-            let eligible_positions;
-            if(type === 'P')
-                eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['P','BN', 'IL', 'NA']) : [];
-            else if(type === 'B') 
-                eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['Util','BN', 'IL', 'NA']) : [];
+            let eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['BN', 'IL', 'NA']) : [];
+
             // else return table row with data
             return(
                 <tr className={rosterStyles.positionSlot} key={`${position}-${index}`}>
@@ -133,13 +129,13 @@ export default function TeamRoster({ data, categories }){
 
                                 {eligible_positions.map((position, index) => {
                                     let thisposition = position.position ? position.position : position
-                                    if(position.position === eligiblePlayer.selected_position) return;
+                                    if(thisposition === eligiblePlayer.selected_position) return;
                                     return (
                                         <option
-                                            value={position.position_type}
+                                            value={thisposition}
                                             key={`${eligiblePlayer.player_id}-${thisposition}-${index}`}
                                         >
-                                            {position.position}
+                                            {thisposition}
                                         </option>
                                     )
                                 })}
