@@ -76,14 +76,22 @@ export default function TeamRoster({ data, categories }){
         } else setError(prev => ({...prev, [positionType] : value}));
     }
 
-    function generateCategories(type){
+    function generateCategories(type, isHeader, data=null){
         if(categories){
             let cats = categories.filter((x) => x.position_type == type)
             console.log(cats)
             return cats.map((x) => {
-                return (
-                    <th>{x.display_name}</th>
-                )
+                if(isHeader){
+                    return (
+                        <th>{x.display_name}</th>
+                    )
+                }
+                else {
+                    let category = data[x['display_name']]
+                    return (
+                        <td>{category.value}</td>
+                    )
+                }
             })
         }
 
@@ -127,16 +135,7 @@ export default function TeamRoster({ data, categories }){
                     <tr className={rosterStyles.positionSlot} key={`${position}-${index}`}>
                         <td className={rosterStyles.positionTitle}>{position}</td>
                         <td className={rosterStyles.playerName}>{eligiblePlayer.name ? eligiblePlayer.name['full'] : 'empty' } - <span>{eligiblePlayer.display_position}</span></td>
-                        <td></td>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
-                        <td>--</td>
+                        {generateCategories(type, false, statObject)}
                         <td>
                             <select
                                 name={eligiblePlayer.player_id}
@@ -204,7 +203,7 @@ export default function TeamRoster({ data, categories }){
                     <tr>
                         <th>Position</th>
                         <th>Name</th>
-                        {generateCategories('B')}
+                        {generateCategories('B', true)}
                         <th>Switch Positions</th>
                     </tr>
                 </thead>
@@ -223,7 +222,7 @@ export default function TeamRoster({ data, categories }){
                     <tr>
                         <th>Position</th>
                         <th>Name</th>
-                        {generateCategories('P')}
+                        {generateCategories('P', true)}
                         <th>Switch Positions</th>
                     </tr>
                 </thead>
