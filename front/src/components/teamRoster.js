@@ -76,6 +76,19 @@ export default function TeamRoster({ data, categories }){
         } else setError(prev => ({...prev, [positionType] : value}));
     }
 
+    function generateCategories(type){
+        if(categories){
+            let cats = categories.filter((x) => x.position_type == type)
+            console.log(cats)
+            return cats.map((x) => {
+                return (
+                    <th>{x.display_name}</th>
+                )
+            })
+        }
+
+    }
+
     function generatePositions(positionSet, type){
         let tempData = localData ?  localData.filter((x) => x.position_type === type) : [];
         positionSet = positionSet.concat(additionalPositions)
@@ -105,13 +118,8 @@ export default function TeamRoster({ data, categories }){
                     let name = categories.filter((x) => x.stat_id == stat.stat.stat_id)
                     name = name[0]
                     let displayName = name ? name['display_name'] : 'NA'
-                    console.log(displayName)
                     statObject[displayName] = stat.stat
-                    // name = name ? name[0]['display_name']: 'NA'
-                    // name ? statObject[name['display_name']]: statObject['NA'] = stat.stat 
-                    // stat['stat']['display_name'] = 
                 })
-                // let playerstats = eligiblePlayer['player_stats']['stats']
                 console.log(statObject)
 
                 // else return table row with data
@@ -119,7 +127,7 @@ export default function TeamRoster({ data, categories }){
                     <tr className={rosterStyles.positionSlot} key={`${position}-${index}`}>
                         <td className={rosterStyles.positionTitle}>{position}</td>
                         <td className={rosterStyles.playerName}>{eligiblePlayer.name ? eligiblePlayer.name['full'] : 'empty' } - <span>{eligiblePlayer.display_position}</span></td>
-                        <td>{}</td>
+                        <td></td>
                         <td>--</td>
                         <td>--</td>
                         <td>--</td>
@@ -196,16 +204,7 @@ export default function TeamRoster({ data, categories }){
                     <tr>
                         <th>Position</th>
                         <th>Name</th>
-                        <th>R</th>
-                        <th>H</th>
-                        <th>HR</th>
-                        <th>RBI</th>
-                        <th>SB</th>
-                        <th>BB</th>
-                        <th>IBB</th>
-                        <th>HBP</th>
-                        <th>OPS</th>
-                        <th>CI</th>
+                        {generateCategories('B')}
                         <th>Switch Positions</th>
                     </tr>
                 </thead>
@@ -224,16 +223,7 @@ export default function TeamRoster({ data, categories }){
                     <tr>
                         <th>Position</th>
                         <th>Name</th>
-                        <th>(W)</th>
-                        <th>(L)</th>
-                        <th>(CG)</th>
-                        <th>(K)</th>
-                        <th>(BLK)</th>
-                        <th>(GIDP)</th>
-                        <th>(ERA)</th>
-                        <th>(WHIP)</th>
-                        <th>(PICK)</th>
-                        <th>(SV+H)</th>
+                        {generateCategories('P')}
                         <th>Switch Positions</th>
                     </tr>
                 </thead>
