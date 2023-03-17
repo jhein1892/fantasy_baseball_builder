@@ -6,8 +6,7 @@ export default function CompareModal({player1, player2, setViewComparison, categ
     const [currentPlayer, setCurrentPlayer] = useState()
 
     useEffect(() => {
-        console.log("player1", player1)
-        console.log("player2", player2)
+
         try{
             let type = player1.position_type
             let relevantCategories = categories.filter((x) => x.position_type === type)
