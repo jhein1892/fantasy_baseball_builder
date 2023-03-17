@@ -97,20 +97,29 @@ export default function TeamRoster({ data, categories }){
                 }
                 // Eligible positions for position players
                 let eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['BN', 'IL', 'NA']) : [];
+
+                let statObject = {}
+
+
                 eligiblePlayer['player_stats']['stats'].forEach((stat) => {
                     let name = categories.filter((x) => x.stat_id == stat.stat.stat_id)
                     name = name[0]
-                    console.log(name ? name['display_name']: 'NA')
-                    stat['stat']['display_name'] = name ? name['display_name']: 'NA'
+                    let displayName = name ? name['display_name'] : 'NA'
+                    console.log(displayName)
+                    statObject[displayName] = stat.stat
+                    // name = name ? name[0]['display_name']: 'NA'
+                    // name ? statObject[name['display_name']]: statObject['NA'] = stat.stat 
+                    // stat['stat']['display_name'] = 
                 })
-                console.log(eligiblePlayer)
-                
+                // let playerstats = eligiblePlayer['player_stats']['stats']
+                console.log(statObject)
+
                 // else return table row with data
                 return(
                     <tr className={rosterStyles.positionSlot} key={`${position}-${index}`}>
                         <td className={rosterStyles.positionTitle}>{position}</td>
                         <td className={rosterStyles.playerName}>{eligiblePlayer.name ? eligiblePlayer.name['full'] : 'empty' } - <span>{eligiblePlayer.display_position}</span></td>
-                        <td>--</td>
+                        <td>{}</td>
                         <td>--</td>
                         <td>--</td>
                         <td>--</td>
