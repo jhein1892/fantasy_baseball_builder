@@ -212,7 +212,7 @@ export default function TeamRoster({ data, categories }){
                     </tr>
                 </thead>
                 <tbody>
-                    {generatePositions(batterPositions, 'B')}
+                    {localData && generatePositions(batterPositions, 'B')}
                 </tbody>
             </table>
             <h3>Pitchers:</h3>
@@ -232,7 +232,7 @@ export default function TeamRoster({ data, categories }){
                     </tr>
                 </thead>
                 <tbody>
-                    {generatePositions(pitcherPositions, 'P')}
+                    {localData && generatePositions(pitcherPositions, 'P')}
                 </tbody>
             </table>
             <div className={rosterStyles.buttonWrapper}>
