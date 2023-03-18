@@ -81,16 +81,16 @@ export default function TeamRoster({ data, categories }){
             // console.log("categories:", categories)
             let cats = categories.filter((x) => x.position_type == type)
             // console.log(cats)
-            return cats.map((x) => {
+            return cats.map((x,index) => {
                 if(isHeader){
                     return (
-                        <th>{x.display_name}</th>
+                        <th key={`header-${x['display_name']}-${index}`}>{x.display_name}</th>
                     )
                 }
                 else {
                     let category = data[x['display_name']]
                     return (
-                        <td>{category ? category.value : "-"}</td>
+                        <td key={`body-${x['display_name']}-${index}`}>{category ? category.value : "-"}</td>
                     )
                 }
             })
@@ -99,12 +99,11 @@ export default function TeamRoster({ data, categories }){
     }
 
     function generatePositions(positionSet, type){
-        console.log(type)
         let tempData = localData ?  localData.filter((x) => x.position_type === type) : [];
         positionSet = positionSet.concat(additionalPositions)
         if(tempData.length > 0){
+            console.log(type)
             return positionSet.map((position, index) => {
-    
                 // Find players assigned to current positions
                 let eligiblePlayer = tempData.filter((x) => x.selected_position === position);
     
@@ -180,6 +179,7 @@ export default function TeamRoster({ data, categories }){
 
     useEffect(() => {
         if(data){
+            console.log('here')
             setLocalData(data)
         }
     },[data])

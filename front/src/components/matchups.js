@@ -25,7 +25,7 @@ export default function Matchups({data}){
     function generateList(){
         let availableData = matchupData ? matchupData : {}
         let dataKeys = Object.keys(availableData)
-        return dataKeys.map((key) => {
+        return dataKeys.map((key,index) => {
             if(key !== 'count'){
                 let singleMatchupData = availableData[key].matchup
                 let teamsData = singleMatchupData[0].teams
@@ -37,7 +37,7 @@ export default function Matchups({data}){
                 })
 
                 return (
-                    <div className={listClass}>
+                    <div key={`${key}-${index}`} className={listClass}>
                         <p>{team1[0][2]['name']}</p>
                         <p>vs</p>
                         <p>{team2[0][2]['name']}</p>
@@ -76,7 +76,7 @@ export default function Matchups({data}){
 
     function generateStats(key){
         let statData = matchupData[key].matchup['stat_winners']
-        return statData.map((category) => {
+        return statData.map((category,index) => {
             let stat_id = category['stat_winner']['stat_id']
             let displayName = statID.find(el => el.stat_id == stat_id)
             let dataType = displayName['position_types'][0]
@@ -89,7 +89,7 @@ export default function Matchups({data}){
 
             if(dataType == displayStats){
                 return (
-                    <p className={statClass}>{displayName}</p>
+                    <p key={`${displayName}-${index}`} className={statClass}>{displayName}</p>
                 )
             }
         })
@@ -98,7 +98,7 @@ export default function Matchups({data}){
     function generateCard(){
         let availableData = matchupData ? matchupData : {}
         let dataKeys = Object.keys(availableData)
-        return dataKeys.map((key) => {
+        return dataKeys.map((key, index) => {
             if(key !== 'count'){
                 let singleMatchupData = availableData[key].matchup
                 let teamsData = singleMatchupData[0].teams
@@ -117,7 +117,7 @@ export default function Matchups({data}){
                 })
 
                 return (
-                    <div className={matchupClass}>
+                    <div key={`${key}-keys-${index}`} className={matchupClass}>
                         <div style={{width: '100%'}}>
                             {generateTeam(team1)}
                         </div>
