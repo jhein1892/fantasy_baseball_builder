@@ -78,8 +78,9 @@ export default function TeamRoster({ data, categories }){
 
     function generateCategories(type, isHeader, data=null){
         if(categories){
+            // console.log("categories:", categories)
             let cats = categories.filter((x) => x.position_type == type)
-            console.log(cats)
+            // console.log(cats)
             return cats.map((x) => {
                 if(isHeader){
                     return (
@@ -89,7 +90,7 @@ export default function TeamRoster({ data, categories }){
                 else {
                     let category = data[x['display_name']]
                     return (
-                        <td>{category.value}</td>
+                        <td>{category ? category.value : "-"}</td>
                     )
                 }
             })
@@ -98,6 +99,7 @@ export default function TeamRoster({ data, categories }){
     }
 
     function generatePositions(positionSet, type){
+        console.log(type)
         let tempData = localData ?  localData.filter((x) => x.position_type === type) : [];
         positionSet = positionSet.concat(additionalPositions)
         if(tempData.length > 0){
@@ -128,7 +130,7 @@ export default function TeamRoster({ data, categories }){
                     let displayName = name ? name['display_name'] : 'NA'
                     statObject[displayName] = stat.stat
                 })
-                console.log(statObject)
+                // console.log("State", eligiblePlayer.name.full, statObject)
 
                 // else return table row with data
                 return(
@@ -169,6 +171,7 @@ export default function TeamRoster({ data, categories }){
                                 }
                             </select>
                         </td>
+                        <td><button>Drop</button></td>
                     </tr>
                 )
             })
@@ -205,6 +208,7 @@ export default function TeamRoster({ data, categories }){
                         <th>Name</th>
                         {generateCategories('B', true)}
                         <th>Switch Positions</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -224,6 +228,7 @@ export default function TeamRoster({ data, categories }){
                         <th>Name</th>
                         {generateCategories('P', true)}
                         <th>Switch Positions</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
