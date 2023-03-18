@@ -78,9 +78,7 @@ export default function TeamRoster({ data, categories }){
 
     function generateCategories(type, isHeader, data=null){
         if(categories){
-            // console.log("categories:", categories)
             let cats = categories.filter((x) => x.position_type == type)
-            // console.log(cats)
             return cats.map((x,index) => {
                 if(isHeader){
                     return (
@@ -102,7 +100,6 @@ export default function TeamRoster({ data, categories }){
         let tempData = localData ?  localData.filter((x) => x.position_type === type) : [];
         positionSet = positionSet.concat(additionalPositions)
         if(tempData.length > 0){
-            console.log(type)
             return positionSet.map((position, index) => {
                 // Find players assigned to current positions
                 let eligiblePlayer = tempData.filter((x) => x.selected_position === position);
@@ -179,7 +176,6 @@ export default function TeamRoster({ data, categories }){
 
     useEffect(() => {
         if(data){
-            console.log('here')
             setLocalData(data)
         }
     },[data])
@@ -195,6 +191,7 @@ export default function TeamRoster({ data, categories }){
 
     return (
         <div className={rosterStyles.rosterWrapper}>
+
             <h3>Batters:</h3>
             <div className={batterErrorClasses}>
                 {error.batterLineup &&
