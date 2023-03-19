@@ -6,6 +6,7 @@ import Standings from './standings';
 import Matchups from './matchups';
 import FreeAgents from './freeAgents';
 import CompareModal from './compareModal';
+import Trades from './trades';
 
 export default function Body({userInfo, data}) {
     const [player1Info, setPlayer1Info] = useState()
@@ -55,6 +56,7 @@ export default function Body({userInfo, data}) {
             </div>
             <div className={bodyStyles.tradeSection}>
                 <p>Proposed Trades</p>
+                <Trades />
             </div>
             {viewComparison &&
                 <CompareModal player1={player1Info} player2={player2Info} setViewComparison={setViewComparison} categories={data.categories}/>

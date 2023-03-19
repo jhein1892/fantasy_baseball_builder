@@ -1,66 +1,3 @@
-myPlayer = [
-    #Position Players
-    {'player_id': 1, 'name': 'Ronald Acuna Jr.', 'position_type': 'B',
- 'eligible_positions': ['OF'], 'selected_position': 'OF',
- 'status': ''},
-    {'player_id': 2, 'name': 'Julio Rodriguez', 'position_type': 'B',
- 'eligible_positions': ['OF'], 'selected_position': 'OF',
- 'status': ''},
-    {'player_id': 3, 'name': 'Aaron Judge', 'position_type': 'B',
- 'eligible_positions': ['OF'], 'selected_position': 'OF',
- 'status': ''},
-    {'player_id': 4, 'name': 'Trea Turner', 'position_type': 'B',
- 'eligible_positions': ['SS'], 'selected_position': 'SS',
- 'status': ''},
-    {'player_id': 5, 'name': 'Jose Ramirez', 'position_type': 'B',
- 'eligible_positions': ['3B'], 'selected_position':'3B', 'status': ''},
-    {'player_id': 6, 'name': 'Mookie Betts', 'position_type': 'B',
- 'eligible_positions': ['OF', '2B'], 'selected_position':'2B', 'status': ''},
-    {'player_id': 7, 'name': 'Vladamir Guerrero Jr.', 'position_type': 'B',
- 'eligible_positions': ['1B'], 'selected_position': '1B',
- 'status': ''},
-    {'player_id': 8, 'name': 'JT Realmuto', 'position_type': 'B',
- 'eligible_positions': ['C'], 'selected_position': 'C',
- 'status': ''},
-    {'player_id': 9, 'name': 'Bobby Witt Jr', 'position_type': 'B',
- 'eligible_positions': ['3B', 'SS'], 'selected_position':'Util', 'status': ''},
-
-    # Pitchers
-
-    {'player_id': 10, 'name': 'Corbin Burnes', 'position_type': 'P',
- 'eligible_positions': ['SP'], 'selected_position':'SP', 'status': ''},
-    {'player_id': 11, 'name': 'Gerrit Cole', 'position_type': 'P',
- 'eligible_positions': ['SP'], 'selected_position':'SP', 'status': ''},
-    {'player_id': 12, 'name': 'Jacob deGrom', 'position_type': 'P',
- 'eligible_positions': ['SP'], 'selected_position':'SP', 'status': ''},
-    {'player_id': 13, 'name': 'Spencer Strider', 'position_type': 'P',
- 'eligible_positions': ['SP', 'RP'], 'selected_position':'RP', 'status': ''},
-    {'player_id': 14, 'name': 'Edwin Diaz', 'position_type': 'P',
- 'eligible_positions': ['RP'], 'selected_position':'RP', 'status': ''},
-    {'player_id': 15, 'name': 'Josh Hader', 'position_type': 'P',
- 'eligible_positions': ['RP'], 'selected_position':'P', 'status': ''},
-    {'player_id': 16, 'name': 'Aaron Nola', 'position_type': 'P',
- 'eligible_positions': ['SP'], 'selected_position':'P', 'status': ''},
-    {'player_id': 17, 'name': 'Shane McClanahan', 'position_type': 'P',
- 'eligible_positions': ['SP'], 'selected_position':'P', 'status': ''},
-
-    # Bench
-    {'player_id': 18, 'name': 'Mike Trout', 'position_type': 'B',
- 'eligible_positions': ['OF'], 'selected_position':'BN', 'status': ''},
-    {'player_id': 19, 'name': 'Matt Olson', 'position_type': 'P',
- 'eligible_positions': ['SP'], 'selected_position':'BN', 'status': ''},
-    {'player_id': 20, 'name': 'Jose Altuve', 'position_type': 'B',
- 'eligible_positions': ['2B'], 'selected_position':'BN', 'status': ''},
-
-    # Injured List
-    {'player_id': 21, 'name': 'Pete Alonso', 'position_type': 'B',
- 'eligible_positions': ['1B'], 'selected_position':'IL', 'status': 'DTD'},
-    {'player_id': 22, 'name': 'Michael Harris II', 'position_type': 'B',
- 'eligible_positions': ['OF'], 'selected_position':'IL', 'status': 'DTD'},
-    {'player_id': 23, 'name': 'Dylan Cease', 'position_type': 'P',
- 'eligible_positions': ['SP'], 'selected_position':'IL', 'status': 'DTD'},
-]
-
 stat_ids = {
   "game_key": "328",
   "game_id": "328",
@@ -1114,6 +1051,11 @@ def getFreeAgents():
    return response
 
 
+@app.route("/availableTrades")
+def getTrades():
+   pendingTrades = tm.proposed_trades()
+
+   return make_response({"pending_trades": pendingTrades})
 
 
 

@@ -10,7 +10,6 @@ I'm hoping that this backend is going to be python based, allowing me to utilize
 ## To Run
 Once you've installed all the dependent python packages, run the command:
 
-    gunicorn app:app --bind 0.0.0.0:8080
-
+    flask run --cert=localhost.crt --key=localhost.key
 
 Make sure you've generated cert and pem keys
