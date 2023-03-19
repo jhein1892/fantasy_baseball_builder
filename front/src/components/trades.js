@@ -13,6 +13,9 @@ export default function Trades(){
                 <tr>
                     <td>{trade.status}</td>
                     <td>{trade.trader_team_key.name}</td>
+                    <td>---</td>
+                    <td><button>Accept</button></td>
+                    <td><button>Decline</button></td>
                 </tr>
             )
         })
@@ -37,6 +40,9 @@ export default function Trades(){
                             <tr>
                                 <th>Status</th>
                                 <th>Team</th>
+                                <th>Assessment</th>
+                                <th></th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
