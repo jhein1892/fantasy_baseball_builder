@@ -6,21 +6,45 @@ import tradeStyles from '../styles/trades.module.sass'
 export default function Trades(){
     const [tradeData, setTradeData] = useState()
 
-    useEffect(() => {
-        axios.get(`${config.REACT_APP_API_ENDPOINT}/availableTrades`)
-        .then((response) => {
-            setTradeData(response.data.pending_trades)
+    function generateTradeList(){
+        console.log(tradeData)
+        return tradeData.map((trade) => {
+            return (
+                <tr>
+                    <td>{trade.status}</td>
+                    <td>{trade.trader_team_key.name}</td>
+                </tr>
+            )
         })
+    }
+
+    useEffect(() => {
+        if(!tradeData){
+            axios.get(`${config.REACT_APP_API_ENDPOINT}/availableTrades`)
+            .then((response) => {
+                setTradeData(response.data.pending_trades)
+            })
+        }
     },[])
 
     return(
         <div className={tradeStyles.wrapper}>
         {tradeData &&
             <>
-                <div>
-
+                <div className={tradeStyles.tradeList}>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Status</th>
+                                <th>Team</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {generateTradeList()}
+                        </tbody>
+                    </table>
                 </div>
-                <div>
+                <div className={tradeStyles.tradeDescription}>
 
                 </div>
             </>
