@@ -55,7 +55,6 @@ export default function Body({userInfo, data}) {
                 <Matchups data={data.matchups} categories={data.categories}/>
             </div>
             <div className={bodyStyles.tradeSection}>
-                <p>Proposed Trades</p>
                 <Trades />
             </div>
             {viewComparison &&

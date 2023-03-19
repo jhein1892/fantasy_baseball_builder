@@ -1054,22 +1054,23 @@ def getFreeAgents():
 @app.route("/availableTrades")
 def getTrades():
   pendingTrades = tm.proposed_trades()
-  teams = lg.teams()
-  for trade in pendingTrades:
-    trade['tradee_team_key'] = teams[trade['tradee_team_key']]
-    trade['trader_team_key'] = teams[trade['trader_team_key']]
-    tradee_players = trade['tradee_players']
-    tradee_ids = []
-    for player in tradee_players:
-       tradee_ids.append(int(player['player_id']))
-    
-    trader_players = trade['trader_players']
-    trader_ids = []
-    for player in trader_players:
-       trader_ids.append(int(player['player_id']))
-    
-    trade['tradee_players'] = lg.player_details(tradee_ids)
-    trade['trader_players'] = lg.player_details(trader_ids)
+  if len(pendingTrades) > 0:
+    teams = lg.teams()
+    for trade in pendingTrades:
+      trade['tradee_team_key'] = teams[trade['tradee_team_key']]
+      trade['trader_team_key'] = teams[trade['trader_team_key']]
+      tradee_players = trade['tradee_players']
+      tradee_ids = []
+      for player in tradee_players:
+        tradee_ids.append(int(player['player_id']))
+      
+      trader_players = trade['trader_players']
+      trader_ids = []
+      for player in trader_players:
+        trader_ids.append(int(player['player_id']))
+      
+      trade['tradee_players'] = lg.player_details(tradee_ids)
+      trade['trader_players'] = lg.player_details(trader_ids)
 
 
   # print(teams)
