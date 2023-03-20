@@ -28,12 +28,26 @@ export default function Trades({ categories }){
 
     function generatePlayers(player, playerCats){
         // if(categories){
-            console.log(playerCats)
+            let playerStats = player.player_stats.stats
+            // console.log(playerStats)
+            // console.log(playerCats)
             return (
-                <div>
-                    <p>{player.name.full}</p>
-
-                </div>
+                <tr>
+                    <td>{player.name.full}</td>
+                    <td>{player.display_position}</td>
+                    {playerCats.map((cat) => {
+                        if(cat.stat_id){
+                            let value = playerStats.filter((x) => x.stat.stat_id == cat.stat_id)
+                            value = value[0].stat
+                            console.log(value, playerStats, cat)
+                            
+                            return (
+                                <td>{value.value}</td>
+                            )
+                        }
+                    })}
+                </tr>
+                    
             )
         // }
     }
@@ -45,7 +59,22 @@ export default function Trades({ categories }){
                 <p>{detailsData[`${team}_team_key`].name}</p>
                 {detailsData[`${team}_players`].map((player) => {
                     let playerCats = categories.filter((x) => x.position_type == player.position_type)
-                   return (generatePlayers(player, playerCats))
+                    return(
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Positions</td>
+                                    {playerCats.map((x) => {
+                                        return (<td>{x.display_name}</td>)
+                                    })}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {generatePlayers(player, playerCats)}
+                            </tbody>
+                        </table>
+                    )
                 })}
             </div>
         )
