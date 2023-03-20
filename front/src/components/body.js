@@ -55,7 +55,7 @@ export default function Body({userInfo, data}) {
                 <Matchups data={data.matchups} categories={data.categories}/>
             </div>
             <div className={bodyStyles.tradeSection}>
-                <Trades />
+                <Trades categories={data.categories}/>
             </div>
             {viewComparison &&
                 <CompareModal player1={player1Info} player2={player2Info} setViewComparison={setViewComparison} categories={data.categories}/>

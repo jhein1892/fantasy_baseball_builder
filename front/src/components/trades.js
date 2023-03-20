@@ -4,13 +4,12 @@ import config from '../config';
 import tradeStyles from '../styles/trades.module.sass'
 import classNames from 'classnames';
 
-export default function Trades(){
+export default function Trades({ categories }){
     const [tradeData, setTradeData] = useState()
     const [displayValue, setDisplayValue] = useState(0)
 
 
     function generateTradeList(){
-        console.log(tradeData)
         return tradeData.map((trade, index) => {
             let rowClasses = classNames({
                 [tradeStyles.activeRow]: displayValue == index
@@ -27,16 +26,26 @@ export default function Trades(){
         })
     }
 
+    function generatePlayers(player, playerCats){
+        // if(categories){
+            console.log(playerCats)
+            return (
+                <div>
+                    <p>{player.name.full}</p>
+
+                </div>
+            )
+        // }
+    }
+
     function generateTradeDetails(team){
         let detailsData = tradeData[displayValue]
-
         return (
             <div>
                 <p>{detailsData[`${team}_team_key`].name}</p>
                 {detailsData[`${team}_players`].map((player) => {
-                    return (
-                        <p>{player.name.full}</p>
-                    )
+                    let playerCats = categories.filter((x) => x.position_type == player.position_type)
+                   return (generatePlayers(player, playerCats))
                 })}
             </div>
         )
@@ -73,10 +82,10 @@ export default function Trades(){
                 </div>
                 <div className={tradeStyles.tradeDescription}>
                     <div>
-                        {generateTradeDetails('trader')}
+                        { categories && generateTradeDetails('trader')}
                     </div>
                     <div>
-                        {generateTradeDetails('tradee')}
+                        { categories && generateTradeDetails('tradee')}
                     </div>
                 </div>
             </>
