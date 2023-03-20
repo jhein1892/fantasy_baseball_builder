@@ -27,6 +27,21 @@ export default function Trades(){
         })
     }
 
+    function generateTradeDetails(team){
+        let detailsData = tradeData[displayValue]
+
+        return (
+            <div>
+                <p>{detailsData[`${team}_team_key`].name}</p>
+                {detailsData[`${team}_players`].map((player) => {
+                    return (
+                        <p>{player.name.full}</p>
+                    )
+                })}
+            </div>
+        )
+    }
+
     useEffect(() => {
         if(!tradeData){
             axios.get(`${config.REACT_APP_API_ENDPOINT}/availableTrades`)
@@ -57,7 +72,12 @@ export default function Trades(){
                     </table>
                 </div>
                 <div className={tradeStyles.tradeDescription}>
-
+                    <div>
+                        {generateTradeDetails('trader')}
+                    </div>
+                    <div>
+                        {generateTradeDetails('tradee')}
+                    </div>
                 </div>
             </>
         }
