@@ -2,15 +2,21 @@ import React, {useEffect, useState} from 'react'
 import axios from 'axios'
 import config from '../config';
 import tradeStyles from '../styles/trades.module.sass'
+import classNames from 'classnames';
 
 export default function Trades(){
     const [tradeData, setTradeData] = useState()
+    const [displayValue, setDisplayValue] = useState(0)
+
 
     function generateTradeList(){
         console.log(tradeData)
-        return tradeData.map((trade) => {
+        return tradeData.map((trade, index) => {
+            let rowClasses = classNames({
+                [tradeStyles.activeRow]: displayValue == index
+            })
             return (
-                <tr>
+                <tr className={rowClasses}> 
                     <td>{trade.status}</td>
                     <td>{trade.trader_team_key.name}</td>
                     <td>---</td>

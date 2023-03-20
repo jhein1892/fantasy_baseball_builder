@@ -3,10 +3,16 @@
     grid-template-columns: 1fr 2fr
     height: 100%
     .tradeList
-        background: red
+        // background: red
+        border-right: 1px solid black
         table
+            border-spacing: initial
             width: 100%
+            thead
+                background: var(--primary-light)
             tr
                 text-align: center
+            .activeRow
+                background: grey
     .tradeDescription
-        background: green
+        // background: green
