@@ -33,7 +33,7 @@ export default function Trades({ categories }){
             // console.log(playerCats)
             return (
                 <tr>
-                    <td>{player.name.full}</td>
+                    <td className={tradeStyles.playerName}>{player.name.full}</td>
                     <td>{player.display_position}</td>
                     {playerCats.map((cat) => {
                         if(cat.stat_id){
@@ -55,15 +55,15 @@ export default function Trades({ categories }){
     function generateTradeDetails(team){
         let detailsData = tradeData[displayValue]
         return (
-            <div>
-                <p>{detailsData[`${team}_team_key`].name}</p>
+            <>
+                <h3>{detailsData[`${team}_team_key`].name}</h3>
                 {detailsData[`${team}_players`].map((player) => {
                     let playerCats = categories.filter((x) => x.position_type == player.position_type)
                     return(
                         <table>
                             <thead>
                                 <tr>
-                                    <td>Name</td>
+                                    <td className={tradeStyles.playerName}>Name</td>
                                     <td>Positions</td>
                                     {playerCats.map((x) => {
                                         return (<td>{x.display_name}</td>)
@@ -76,7 +76,7 @@ export default function Trades({ categories }){
                         </table>
                     )
                 })}
-            </div>
+            </>
         )
     }
 
@@ -110,10 +110,10 @@ export default function Trades({ categories }){
                     </table>
                 </div>
                 <div className={tradeStyles.tradeDescription}>
-                    <div >
+                    <div className={tradeStyles.tradeDetails}>
                         { categories && generateTradeDetails('trader')}
                     </div>
-                    <div>
+                    <div className={tradeStyles.tradeDetails}>
                         { categories && generateTradeDetails('tradee')}
                     </div>
                 </div>
