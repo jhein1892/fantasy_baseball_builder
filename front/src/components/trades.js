@@ -110,7 +110,7 @@ export default function Trades({ categories }){
                     </table>
                 </div>
                 <div className={tradeStyles.tradeDescription}>
-                    <div>
+                    <div >
                         { categories && generateTradeDetails('trader')}
                     </div>
                     <div>
