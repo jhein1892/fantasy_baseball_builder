@@ -4,6 +4,10 @@ import config from '../config';
 import tradeStyles from '../styles/trades.module.sass'
 import classNames from 'classnames';
 
+// Need to make a way of switching between trades
+// Need to check what happens when I propose a trade
+// Need to connect my buttons
+
 export default function Trades({ categories }){
     const [tradeData, setTradeData] = useState()
     const [displayValue, setDisplayValue] = useState(0)
@@ -27,10 +31,7 @@ export default function Trades({ categories }){
     }
 
     function generatePlayers(player, playerCats){
-        // if(categories){
             let playerStats = player.player_stats.stats
-            // console.log(playerStats)
-            // console.log(playerCats)
             return (
                 <tr>
                     <td className={tradeStyles.playerName}>{player.name.full}</td>
