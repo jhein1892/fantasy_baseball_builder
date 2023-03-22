@@ -12,19 +12,28 @@ export default function Trades({ categories }){
     const [tradeData, setTradeData] = useState()
     const [displayValue, setDisplayValue] = useState(0)
 
+    function handleTradeProposal(e){
+        e.preventDefault()
+        let transactionID = e.target.parentNode.parentNode.id;
+        let transactionType = e.target.name
+
+        console.log(transactionID, transactionType)
+    }
+
 
     function generateTradeList(){
         return tradeData.map((trade, index) => {
+            console.log(trade)
             let rowClasses = classNames({
                 [tradeStyles.activeRow]: displayValue == index
             })
             return (
-                <tr className={rowClasses}> 
+                <tr className={rowClasses} id={`${trade.transaction_key}`}> 
                     <td>{trade.status}</td>
                     <td>{trade.trader_team_key.name}</td>
                     <td>---</td>
-                    <td><button>Accept</button></td>
-                    <td><button>Decline</button></td>
+                    <td><button name='accept' onClick={(e) => handleTradeProposal(e)}>Accept</button></td>
+                    <td><button name='decline' onClick={(e) => handleTradeProposal(e)}>Decline</button></td>
                 </tr>
             )
         })
@@ -40,7 +49,6 @@ export default function Trades({ categories }){
                         if(cat.stat_id){
                             let value = playerStats.filter((x) => x.stat.stat_id == cat.stat_id)
                             value = value[0].stat
-                            console.log(value, playerStats, cat)
                             
                             return (
                                 <td>{value.value}</td>
