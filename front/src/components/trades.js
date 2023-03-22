@@ -63,7 +63,7 @@ export default function Trades({ categories }){
                     return(
                         <table>
                             <thead>
-                                <tr>
+                                <tr className={tradeStyles.tableHead}>
                                     <td className={tradeStyles.playerName}>Name</td>
                                     <td>Positions</td>
                                     {playerCats.map((x) => {

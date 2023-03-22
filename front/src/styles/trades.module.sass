@@ -19,18 +19,25 @@
         display: flex
         flex-direction: column
         background: #e2e2e2
+        justify-content: center
         .tradeDetails
             background: var(--background-main)
-            margin-bottom: 15px
             padding: 10px
             width: 95%
             margin: 10px auto
+            box-shadow: 0px 0px 4px 2px #7f7f7f
+            &:hover
+                box-shadow: 0px 0px 4px 2px var(--primary-light)
+                transform: scale(1.01)
             h3
                 margin: 0 0 10px
             table
                 width: 65%
                 border-spacing: initial
                 text-align: center
+
+                .tableHead
+                    background: #e2e2e2
             
                 .playerName
                     text-align: start
