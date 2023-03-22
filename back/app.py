@@ -1077,7 +1077,12 @@ def getTrades():
 
   return make_response({"pending_trades": pendingTrades})
 
+@app.route("/availableTrades", methods=["PUT"])
+def putTradeResponse():
+   data = request.get_json()
+   print(data)
 
+   return make_response({'status': 200})
 
 # FILE CALLED: teamRoster.js
 # Updated Roster being sent here

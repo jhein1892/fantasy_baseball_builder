@@ -16,8 +16,12 @@ export default function Trades({ categories }){
         e.preventDefault()
         let transactionID = e.target.parentNode.parentNode.id;
         let transactionType = e.target.name
-
-        console.log(transactionID, transactionType)
+        
+        axios.put(`${config.REACT_APP_API_ENDPOINT}/availableTrades`, {data:{transactionID, transactionType}})
+        .then((response) => {
+            console.log(response)
+        })
+        // console.log(transactionID, transactionType)
     }
 
 

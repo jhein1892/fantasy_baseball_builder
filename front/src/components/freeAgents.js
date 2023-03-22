@@ -3,6 +3,8 @@ import axios from 'axios'
 import freeAgentStyles from '../styles/freeAgents.module.sass'
 import classNames from 'classnames';
 
+// Add in Waiver players
+
 export default function FreeAgents({generateComparison}){
     const positions = ['All Batters','All Pitchers', 'C','1B','2B','3B','SS','LF','CF','RF','SP','RP']
 
@@ -12,7 +14,6 @@ export default function FreeAgents({generateComparison}){
     const [pageLength, setPageLength] = useState(25)
     const [newPlayers, setnewPlayers] = useState(false)
     const [playerStats, setPlayerStats] = useState()
-    // const [playerIds, setPlayerIds] = useState([])
 
     function handleChange(e){
         e.preventDefault()
