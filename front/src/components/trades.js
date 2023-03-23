@@ -110,7 +110,7 @@ export default function Trades({ categories }){
                 console.log("loading: ", response.data.pending_trades)
                 let data = response.data.pending_trades
                 if(data.length > 0){
-                    setDisplayValue(data[0].transaction_key)
+                    // setDisplayValue(data[0].transaction_key)
                     setTradeData(data)
                 }
             })
@@ -133,17 +133,26 @@ export default function Trades({ categories }){
                             </tr>
                         </thead>
                         <tbody>
-                            {displayValue && generateTradeList()}
+                            {generateTradeList()}
                         </tbody>
                     </table>
                 </div>
                 <div className={tradeStyles.tradeDescription}>
-                    <div className={tradeStyles.tradeDetails}>
-                        { categories && generateTradeDetails('trader')}
-                    </div>
-                    <div className={tradeStyles.tradeDetails}>
-                        { categories && generateTradeDetails('tradee')}
-                    </div>
+                    {displayValue &&
+                    <>
+                        <div className={tradeStyles.tradeDetails}>
+                            {generateTradeDetails('trader')}
+                        </div>
+                        <div className={tradeStyles.tradeDetails}>
+                            {generateTradeDetails('tradee')}
+                        </div>
+                    </>
+                    }
+                    {!displayValue &&
+                        <div className={tradeStyles.emptyDetails}>
+                            <h3>No Trade Selected or Available</h3>
+                        </div>
+                    }
                 </div>
             </>
         }
