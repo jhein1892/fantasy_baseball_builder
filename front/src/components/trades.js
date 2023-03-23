@@ -24,6 +24,11 @@ export default function Trades({ categories }){
         // console.log(transactionID, transactionType)
     }
 
+    function handleClick(e){
+        e.preventDefault()
+        console.log(e.target.parentNode.id)
+    }
+
 
     function generateTradeList(){
         return tradeData.map((trade, index) => {
@@ -32,7 +37,7 @@ export default function Trades({ categories }){
                 [tradeStyles.activeRow]: displayValue == index
             })
             return (
-                <tr className={rowClasses} id={`${trade.transaction_key}`}> 
+                <tr className={rowClasses} id={`${trade.transaction_key}`} onClick={handleClick}> 
                     <td>{trade.status}</td>
                     <td>{trade.trader_team_key.name}</td>
                     <td>---</td>
