@@ -10,7 +10,7 @@ import classNames from 'classnames';
 
 export default function Trades({ categories }){
     const [tradeData, setTradeData] = useState()
-    const [displayValue, setDisplayValue] = useState(0)
+    const [displayValue, setDisplayValue] = useState()
 
     function handleTradeProposal(e){
         e.preventDefault()
@@ -26,7 +26,9 @@ export default function Trades({ categories }){
 
     function handleClick(e){
         e.preventDefault()
-        console.log(e.target.parentNode.id)
+        let tradeId = e.target.parentNode.id  
+        // console.log(e.target.parentNode.id)
+        setDisplayValue(tradeId)
     }
 
 
@@ -34,7 +36,7 @@ export default function Trades({ categories }){
         return tradeData.map((trade, index) => {
             console.log(trade)
             let rowClasses = classNames({
-                [tradeStyles.activeRow]: displayValue == index
+                [tradeStyles.activeRow]: displayValue == trade.transaction_key
             })
             return (
                 <tr className={rowClasses} id={`${trade.transaction_key}`} onClick={handleClick}> 
@@ -71,7 +73,10 @@ export default function Trades({ categories }){
     }
 
     function generateTradeDetails(team){
-        let detailsData = tradeData[displayValue]
+        // let detailsData = tradeData[displayValue]
+        let detailsData = tradeData.filter(x => x.transaction_key == displayValue)
+        detailsData = detailsData[0]
+        console.log("details", detailsData)
         return (
             <>
                 <h3>{detailsData[`${team}_team_key`].name}</h3>
@@ -102,7 +107,12 @@ export default function Trades({ categories }){
         if(!tradeData){
             axios.get(`${config.REACT_APP_API_ENDPOINT}/availableTrades`)
             .then((response) => {
-                setTradeData(response.data.pending_trades)
+                console.log("loading: ", response.data.pending_trades)
+                let data = response.data.pending_trades
+                if(data.length > 0){
+                    setDisplayValue(data[0].transaction_key)
+                    setTradeData(data)
+                }
             })
         }
     },[])
@@ -123,7 +133,7 @@ export default function Trades({ categories }){
                             </tr>
                         </thead>
                         <tbody>
-                            {generateTradeList()}
+                            {displayValue && generateTradeList()}
                         </tbody>
                     </table>
                 </div>
