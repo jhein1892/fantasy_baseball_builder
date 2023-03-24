@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import axios from 'axios';
 import config from '../config';
 
-// Add Drop button
+// Add Status tag to players
 
 export default function TeamRoster({ data, categories }){
     const [localData, setLocalData] = useState();
