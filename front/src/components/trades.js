@@ -34,7 +34,7 @@ export default function Trades({ categories }){
 
     function generateTradeList(){
         return tradeData.map((trade, index) => {
-            console.log(trade)
+            // console.log(trade)
             let rowClasses = classNames({
                 [tradeStyles.activeRow]: displayValue == trade.transaction_key
             })
@@ -76,7 +76,7 @@ export default function Trades({ categories }){
         // let detailsData = tradeData[displayValue]
         let detailsData = tradeData.filter(x => x.transaction_key == displayValue)
         detailsData = detailsData[0]
-        console.log("details", detailsData)
+        // console.log("details", detailsData)
         return (
             <>
                 <h3>{detailsData[`${team}_team_key`].name}</h3>
@@ -107,7 +107,7 @@ export default function Trades({ categories }){
         if(!tradeData){
             axios.get(`${config.REACT_APP_API_ENDPOINT}/availableTrades`)
             .then((response) => {
-                console.log("loading: ", response.data.pending_trades)
+                // console.log("loading: ", response.data.pending_trades)
                 let data = response.data.pending_trades
                 if(data.length > 0){
                     // setDisplayValue(data[0].transaction_key)

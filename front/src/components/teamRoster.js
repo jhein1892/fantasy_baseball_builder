@@ -45,6 +45,19 @@ export default function TeamRoster({ data, categories }){
         })
     }
     
+    function handleDrop(e){
+        e.preventDefault();
+        let playerRow = e.target.parentNode.parentNode
+        let playerId = playerRow.id
+
+        axios.put(`${config.REACT_APP_API_ENDPOINT}/dropPlayer`, {id:playerId})
+        .then((response) => {
+            console.log(response)
+        })
+        
+        
+    }
+
     function handlePositionChange(e, type){
         setError(prev => ({...prev, ['batterLineup']: false, ['pitcherLineup']: false}))
         let id = e.target.name;
@@ -126,11 +139,11 @@ export default function TeamRoster({ data, categories }){
                     let displayName = name ? name['display_name'] : 'NA'
                     statObject[displayName] = stat.stat
                 })
-                // console.log("State", eligiblePlayer.name.full, statObject)
+                // console.log(eligiblePlayer)
 
                 // else return table row with data
                 return(
-                    <tr className={rosterStyles.positionSlot} key={`${position}-${index}`}>
+                    <tr className={rosterStyles.positionSlot} key={`${position}-${index}`} id={eligiblePlayer.player_id}>
                         <td className={rosterStyles.positionTitle}>{position}</td>
                         <td className={rosterStyles.playerName}>{eligiblePlayer.name ? eligiblePlayer.name['full'] : 'empty' } - <span>{eligiblePlayer.display_position}</span></td>
                         {generateCategories(type, false, statObject)}
@@ -167,7 +180,7 @@ export default function TeamRoster({ data, categories }){
                                 }
                             </select>
                         </td>
-                        <td><button>Drop</button></td>
+                        <td><button onClick={handleDrop}>Drop</button></td>
                     </tr>
                 )
             })

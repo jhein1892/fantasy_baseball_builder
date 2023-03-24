@@ -1025,7 +1025,6 @@ def signIn():
    response = make_response({'roster': rosterDetails, 'standings': standings, 'matchups': matchups, 'categories': categories, "stat_ids": stat_ids,})
    return response
 
-
 @app.route("/playerStats", methods=["PUT"])
 def getPlayerStats():
    data = request.get_json()
@@ -1034,7 +1033,6 @@ def getPlayerStats():
    playerDetails = lg.player_details(data)
    response = make_response({"player_details": playerDetails})
    return response
-
 
 def percent_owned(e):
    return e['percent_owned']
@@ -1049,7 +1047,6 @@ def getFreeAgents():
    response = make_response({'availablePlayers': freeAgents})
    
    return response
-
 
 @app.route("/availableTrades")
 def getTrades():
@@ -1088,13 +1085,24 @@ def putTradeResponse():
 # Updated Roster being sent here
 @app.route("/updateRoster", methods=["PUT"])
 def updateRoster():
-    # Updated Roster set being passed through here
-    data = request.get_json()
-    
-   #  print(data)
+  # Updated Roster set being passed through here
+  data = request.get_json()
+  
+  #  print(data)
 
-    response = make_response({"status": 200})
-    return response
+  response = make_response({"status": 200})
+  return response
+
+@app.route("/dropPlayer", methods=["PUT"])
+def dropPlayer():
+  data = request.get_json()
+
+  print(data)
+
+  response = make_response({"status": 200})
+  return response
+
+
 
 if __name__ == "__main__":
     app.run()
