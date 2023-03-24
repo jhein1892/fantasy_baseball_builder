@@ -1088,7 +1088,7 @@ def updateRoster():
   # Updated Roster set being passed through here
   data = request.get_json()
   
-  #  print(data)
+  print(data)
 
   response = make_response({"status": 200})
   return response

@@ -36,6 +36,7 @@ export default function TeamRoster({ data, categories }){
         e.preventDefault();
 
         console.log(localData);
+        // This needs to be updated to send the right type of data
         axios.put(`${config.REACT_APP_API_ENDPOINT}/updateRoster`, localData)
         .then((response) => {
             console.log(response);
@@ -116,35 +117,37 @@ export default function TeamRoster({ data, categories }){
             return positionSet.map((position, index) => {
                 // Find players assigned to current positions
                 let eligiblePlayer = tempData.filter((x) => x.selected_position === position);
-    
+                
                 // Pick first element and remove from data set for future positions.
                 if(eligiblePlayer.length > 0){
                     eligiblePlayer = eligiblePlayer[0];
                     let newTempData = tempData.filter((x) => x.player_id !== eligiblePlayer.player_id);
                     tempData = newTempData;
                 }
-    
                 if(additionalPositions.includes(position) && eligiblePlayer.length === 0) {
                     return null;
                 }
                 // Eligible positions for position players
                 let eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['BN', 'IL', 'NA']) : [];
-
+                
                 let statObject = {}
-
-
-                eligiblePlayer['player_stats']['stats'].forEach((stat) => {
-                    let name = categories.filter((x) => x.stat_id == stat.stat.stat_id)
-                    name = name[0]
-                    let displayName = name ? name['display_name'] : 'NA'
-                    statObject[displayName] = stat.stat
-                })
+                // Building dict that will hold the values/names for stats
+                if(eligiblePlayer.length > 0){
+                    eligiblePlayer['player_stats']['stats'].forEach((stat) => {
+                        let name = categories.filter((x) => x.stat_id == stat.stat.stat_id)
+                        name = name[0]
+                        let displayName = name ? name['display_name'] : 'NA'
+                        statObject[displayName] = stat.stat
+                    })
+                }
                 // console.log(eligiblePlayer)
 
                 // else return table row with data
                 return(
                     <tr className={rosterStyles.positionSlot} key={`${position}-${index}`} id={eligiblePlayer.player_id}>
                         <td className={rosterStyles.positionTitle}>{position}</td>
+                        {eligiblePlayer && 
+                        <>
                         <td className={rosterStyles.playerName}>{eligiblePlayer.name ? eligiblePlayer.name['full'] : 'empty' } - <span>{eligiblePlayer.display_position}</span></td>
                         {generateCategories(type, false, statObject)}
                         <td>
@@ -181,6 +184,8 @@ export default function TeamRoster({ data, categories }){
                             </select>
                         </td>
                         <td><button onClick={handleDrop}>Drop</button></td>
+                        </>
+                        }
                     </tr>
                 )
             })
