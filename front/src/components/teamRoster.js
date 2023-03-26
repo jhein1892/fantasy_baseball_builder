@@ -129,7 +129,7 @@ export default function TeamRoster({ data, categories }){
                 }
                 // Eligible positions for position players
                 let eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['BN', 'IL', 'NA']) : [];
-                
+                console.log(eligiblePlayer)
                 let statObject = {}
                 // Building dict that will hold the values/names for stats
                 if(eligiblePlayer.length > 0){
@@ -148,7 +148,7 @@ export default function TeamRoster({ data, categories }){
                         <td className={rosterStyles.positionTitle}>{position}</td>
                         {eligiblePlayer && 
                         <>
-                        <td className={rosterStyles.playerName}>{eligiblePlayer.name ? eligiblePlayer.name['full'] : 'empty' } - <span>{eligiblePlayer.display_position}</span></td>
+                        <td className={rosterStyles.playerName}>{eligiblePlayer.status && <><span className={rosterStyles.injuryTag}>{eligiblePlayer.status}</span></>}{eligiblePlayer.name ? eligiblePlayer.name['full'] : 'empty' } - <span>{eligiblePlayer.display_position}</span></td>
                         {generateCategories(type, false, statObject)}
                         <td>
                             <select

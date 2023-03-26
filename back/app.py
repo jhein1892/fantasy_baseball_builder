@@ -1096,9 +1096,12 @@ def updateRoster():
 @app.route("/dropPlayer", methods=["PUT"])
 def dropPlayer():
   data = request.get_json()
+  playerID = data['id']
+  print(playerID)
 
-  print(data)
-
+  # Uncomment to drop player
+  # tm.drop_player(playerID)
+  
   response = make_response({"status": 200})
   return response
 
