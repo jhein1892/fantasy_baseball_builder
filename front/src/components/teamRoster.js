@@ -148,7 +148,7 @@ export default function TeamRoster({ data, categories }){
                         <td className={rosterStyles.positionTitle}>{position}</td>
                         {eligiblePlayer && 
                         <>
-                        <td className={rosterStyles.playerName}>{eligiblePlayer.status && <><span className={rosterStyles.injuryTag}>{eligiblePlayer.status}</span></>}{eligiblePlayer.name ? eligiblePlayer.name['full'] : 'empty' } - <span>{eligiblePlayer.display_position}</span></td>
+                        <td className={rosterStyles.playerName}>{eligiblePlayer.status && <span className={rosterStyles.injuryTag}>{eligiblePlayer.status}</span>}{eligiblePlayer.name ? eligiblePlayer.name['full'] : 'empty' } - <span>{eligiblePlayer.display_position}</span></td>
                         {generateCategories(type, false, statObject)}
                         <td>
                             <select

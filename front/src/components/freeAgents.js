@@ -99,7 +99,7 @@ export default function FreeAgents({generateComparison}){
                     {/* THis is going to be color coded based on comparision with current position player */}
                     {/* Also add an onclick handler which would bring up all of th stat categories, with color coded breakdowns compared to current player in that position. If multiple players, then we drop down menu to choose one*/}
                     <tr className={freeAgentStyles.playerRow} id={player.player_id}>
-                        <td>{player.name}</td>
+                        <td>{player.status && <span>{player.status}</span>}{player.name}</td>
                         <td>{positionList}</td>
                         <td>{player.percent_owned}</td>
                         <td><button disabled={freeAgentData.length === 0} onClick={(e) => handleRowClick(e, player.player_id)}>View Stats</button></td>
