@@ -8,6 +8,7 @@ import config from '../config';
 
 export default function TeamRoster({ data, categories }){
     const [localData, setLocalData] = useState();
+    const [updatedRoster, setUpdatedRoster] = useState([]);
     const batterPositions = ['C', '1B', '2B', '3B', 'SS','OF','OF','OF','Util', 'Util'];    // Roster Positions for Batters 
     const pitcherPositions = ['SP','SP','SP','RP','RP','P','P','P'];                // Roster Positions for Pitchers
     const additionalPositions = ['BN','BN','BN','IL','IL','IL','IL','NA'];          // Additonal Roster Spots
@@ -35,15 +36,17 @@ export default function TeamRoster({ data, categories }){
     function handleSubmit(e){
         e.preventDefault();
 
-        console.log(localData);
         // This needs to be updated to send the right type of data
-        axios.put(`${config.REACT_APP_API_ENDPOINT}/updateRoster`, localData)
-        .then((response) => {
-            console.log(response);
-        })
-        .catch((error) => {
-            console.log(error)
-        })
+        // plyrs = [{'player_id': 5981, 'selected_position': 'BN'}, 
+        //  {'player_id': 4558, 'selected_position': 'BN'}]
+        console.log(updatedRoster)
+        // axios.put(`${config.REACT_APP_API_ENDPOINT}/updateRoster`, localData)
+        // .then((response) => {
+        //     console.log(response);
+        // })
+        // .catch((error) => {
+        //     console.log(error)
+        // })
     }
     
     function handleDrop(e){
@@ -66,6 +69,7 @@ export default function TeamRoster({ data, categories }){
         let tempLocalData = localData;
         let moveAllowed = true;
         let positionType = type === 'P' ? 'pitcherLineup' : 'batterLineup';
+        console.log(id)
 
         if(availablePositions[value] === 1){
             if(tempLocalData.some(player => player['selected_position'] === value)){
@@ -79,6 +83,22 @@ export default function TeamRoster({ data, categories }){
         }
 
         if(moveAllowed){
+
+            let changeInfo = {'player_id': id, 'selected_position': value}
+            let hasChanged = false
+            let changes = updatedRoster
+            // console.log(changes)
+            for (let i = 0; i < changes.length; i++){
+                if(changes[i]['player_id'] == id){
+                    changes[i] = changeInfo;
+                    hasChanged = true;
+                }
+            }
+            if(!hasChanged){
+                changes.push(changeInfo);
+            }
+            setUpdatedRoster([...changes])
+
             tempLocalData.every((player) => {
                 if(player.player_id == id){
                     player.selected_position = value;
@@ -129,7 +149,6 @@ export default function TeamRoster({ data, categories }){
                 }
                 // Eligible positions for position players
                 let eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['BN', 'IL', 'NA']) : [];
-                console.log(eligiblePlayer)
                 let statObject = {}
                 // Building dict that will hold the values/names for stats
                 if(eligiblePlayer.length > 0){
