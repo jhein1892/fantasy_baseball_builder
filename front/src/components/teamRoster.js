@@ -39,14 +39,17 @@ export default function TeamRoster({ data, categories }){
         // This needs to be updated to send the right type of data
         // plyrs = [{'player_id': 5981, 'selected_position': 'BN'}, 
         //  {'player_id': 4558, 'selected_position': 'BN'}]
-        console.log(updatedRoster)
-        // axios.put(`${config.REACT_APP_API_ENDPOINT}/updateRoster`, localData)
-        // .then((response) => {
-        //     console.log(response);
-        // })
-        // .catch((error) => {
-        //     console.log(error)
-        // })
+
+        //before we send this data off, we should compare it to local data and remove anything that is the same as in there
+        // updatedRoster
+        
+        axios.put(`${config.REACT_APP_API_ENDPOINT}/updateRoster`, updatedRoster)
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((error) => {
+            console.log(error)
+        })
     }
     
     function handleDrop(e){
