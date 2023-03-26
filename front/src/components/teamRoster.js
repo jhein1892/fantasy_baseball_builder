@@ -35,13 +35,6 @@ export default function TeamRoster({ data, categories }){
 
     function handleSubmit(e){
         e.preventDefault();
-
-        // This needs to be updated to send the right type of data
-        // plyrs = [{'player_id': 5981, 'selected_position': 'BN'}, 
-        //  {'player_id': 4558, 'selected_position': 'BN'}]
-
-        //before we send this data off, we should compare it to local data and remove anything that is the same as in there
-        // updatedRoster
         
         axios.put(`${config.REACT_APP_API_ENDPOINT}/updateRoster`, updatedRoster)
         .then((response) => {
@@ -217,6 +210,7 @@ export default function TeamRoster({ data, categories }){
     useEffect(() => {
         if(data){
             setLocalData(data)
+            console.log(data)
         }
     },[data])
 
