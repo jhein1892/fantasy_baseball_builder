@@ -54,7 +54,7 @@ export default function Trades({ categories }){
             let playerStats = player.player_stats.stats
             return (
                 <tr>
-                    <td className={tradeStyles.playerName}>{player.name.full}</td>
+                    <td className={tradeStyles.playerName}>{player.status && <span>{player.status}</span>}{player.name.full}</td>
                     <td>{player.display_position}</td>
                     {playerCats.map((cat) => {
                         if(cat.stat_id){
