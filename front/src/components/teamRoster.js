@@ -4,8 +4,6 @@ import classNames from 'classnames';
 import axios from 'axios';
 import config from '../config';
 
-// Add Status tag to players
-
 export default function TeamRoster({ data, categories }){
     const [localData, setLocalData] = useState();
     const [updatedRoster, setUpdatedRoster] = useState([]);
@@ -35,7 +33,7 @@ export default function TeamRoster({ data, categories }){
 
     function handleSubmit(e){
         e.preventDefault();
-        
+
         axios.put(`${config.REACT_APP_API_ENDPOINT}/updateRoster`, updatedRoster)
         .then((response) => {
             console.log(response);
