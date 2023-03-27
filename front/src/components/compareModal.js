@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import modalStyles from '../styles/modal.module.sass';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronCircleLeft, faChevronCircleRight, faRepeat } from '@fortawesome/free-solid-svg-icons'
+import { faRepeat, faUserMinus, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 
 export default function CompareModal({player1, player2, setViewComparison, categories}){
     const [statCategories, setStatCategories] = useState()
@@ -62,11 +62,11 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                 </div> 
                 <div className={modalStyles.altStats}>
                     {player.selected_position && 
-                        <button name='drop' onClick={(e) => {handleRosterChange(e, player.player_id)}}>Drop</button>
+                        <button name='drop' onClick={(e) => {handleRosterChange(e, player.player_id)}}><FontAwesomeIcon size='3x' color='#5d5d87' icon={faUserMinus}/></button>
                     } 
                     {!player.selected_position &&
 
-                        <button name='add' onClick={(e) => {handleRosterChange(e, player.player_id)}}>Add</button>
+                        <button name='add' onClick={(e) => {handleRosterChange(e, player.player_id)}}><FontAwesomeIcon size='3x' color='#5d5d87' icon={faUserPlus}/></button>
                     }
                 </div>
             </>
