@@ -62,11 +62,11 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                 </div> 
                 <div className={modalStyles.altStats}>
                     {player.selected_position && 
-                        <button name='drop' onClick={(e) => {handleRosterChange(e, player.player_id)}}><FontAwesomeIcon size='3x' color='#5d5d87' icon={faUserMinus}/></button>
+                        <button name='drop' className={modalStyles.action} onClick={(e) => {handleRosterChange(e, player.player_id)}}><FontAwesomeIcon size='3x' color='#5d5d87' icon={faUserMinus}/></button>
                     } 
                     {!player.selected_position &&
 
-                        <button name='add' onClick={(e) => {handleRosterChange(e, player.player_id)}}><FontAwesomeIcon size='3x' color='#5d5d87' icon={faUserPlus}/></button>
+                        <button name='add' className={modalStyles.action} onClick={(e) => {handleRosterChange(e, player.player_id)}}><FontAwesomeIcon size='3x' color='#5d5d87' icon={faUserPlus}/></button>
                     }
                 </div>
             </>

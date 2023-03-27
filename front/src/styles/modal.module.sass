@@ -53,7 +53,16 @@
                     .statValue
                         justify-self: start
             .altStats
-        
+                .action
+                    border: 1px solid var(--background-main)
+                    background: var(--background-main)
+                    padding: 10px
+
+                    &:hover
+                        border: 1px solid var(--primary)
+                        border-radius: 10px
+                        box-shadow: 0px 0px 4px 1px var(--primary-light)
+
         .midSection
             display: flex
             flex-direction: column
