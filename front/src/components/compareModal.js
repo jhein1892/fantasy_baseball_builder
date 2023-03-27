@@ -116,7 +116,7 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                 </div>
                 <div className={modalStyles.midSection}>
                     <hr/>
-                    <button className={modalStyles.addDropButton}><FontAwesomeIcon size='3x' color='#5d5d87' icon={faRepeat}/></button>
+                    <button className={modalStyles.addDropButton} name='addDrop' onClick={(e) => handleRosterChange(e, [player1.player_id, currentPlayer.player_id])}><FontAwesomeIcon size='3x' color='#5d5d87' icon={faRepeat}/></button>
                     <hr/>
                 </div>
                 <div style={{position: 'relative'}}>
