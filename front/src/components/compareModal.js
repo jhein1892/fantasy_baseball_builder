@@ -1,28 +1,42 @@
 import React, {useEffect, useState} from 'react'
 import modalStyles from '../styles/modal.module.sass';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronCircleLeft, faChevronCircleRight, faRepeat } from '@fortawesome/free-solid-svg-icons'
 
 export default function CompareModal({player1, player2, setViewComparison, categories}){
     const [statCategories, setStatCategories] = useState()
     const [currentPlayer, setCurrentPlayer] = useState()
 
-    useEffect(() => {
+    function handleChange(e){
+        e.preventDefault()
+        let selectedPlayer = e.target.options[e.target.selectedIndex]
+        let newPlayer = player2.filter((x) => x.player_id == selectedPlayer.id)
+        setCurrentPlayer(newPlayer[0])
+    }
 
-        try{
-            let type = player1.position_type
-            let relevantCategories = categories.filter((x) => x.position_type === type)
-            let displayPlayer = player2.filter((x) => x.selected_position == player1.primary_position)
-            setCurrentPlayer(displayPlayer[0])
-            setStatCategories(relevantCategories)
-        } catch(error) {
-            console.log('not ready yet')
+    function handleClick(e){
+        e.preventDefault()
+        if(e.target.id === 'outer'){
+            setStatCategories()
+            setCurrentPlayer()
+            setViewComparison(false)
         }
-    },[player1])
+    }
+
+    function handleRosterChange(e, id){
+        e.preventDefault();
+        let type = e.target.name;
+        if(type === 'add'){
+            console.log("add", id)
+        } else if (type == 'drop'){
+            console.log("Drop", id)
+        } else {
+            console.log("Add Drop", id)
+        }
+    }
 
     function generatePlayer(player){
-
-
         function generateStats(){
-
             return statCategories.map((stat) => {
                 let playerStats = player.player_stats.stats.filter((x) => x.stat.stat_id == stat.stat_id)
                 playerStats = playerStats[0]
@@ -48,23 +62,17 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                 </div> 
                 <div className={modalStyles.altStats}>
                     {player.selected_position && 
-                        <button>Remove</button>
+                        <button name='drop' onClick={(e) => {handleRosterChange(e, player.player_id)}}>Drop</button>
                     } 
                     {!player.selected_position &&
 
-                        <button>Add</button>
+                        <button name='add' onClick={(e) => {handleRosterChange(e, player.player_id)}}>Add</button>
                     }
                 </div>
             </>
         )
     }
 
-    function handleChange(e){
-        e.preventDefault()
-        let selectedPlayer = e.target.options[e.target.selectedIndex]
-        let newPlayer = player2.filter((x) => x.player_id == selectedPlayer.id)
-        setCurrentPlayer(newPlayer[0])
-    }
     function AvailablePlayers(){
         let positions = player1.position_type
         let swappable = player2.filter((x) => x['position_type'] == positions)
@@ -88,21 +96,29 @@ export default function CompareModal({player1, player2, setViewComparison, categ
         )
     }
 
-    function handleClick(e){
-        e.preventDefault()
-        if(e.target.id === 'outer'){
-            setStatCategories()
-            setCurrentPlayer()
-            setViewComparison(false)
+    useEffect(() => {
+        try{
+            let type = player1.position_type
+            let relevantCategories = categories.filter((x) => x.position_type === type)
+            let displayPlayer = player2.filter((x) => x.selected_position == player1.primary_position)
+            setCurrentPlayer(displayPlayer[0])
+            setStatCategories(relevantCategories)
+        } catch(error) {
+            console.log('not ready yet')
         }
-    }
+    },[player1])
+
     return(
         <div id='outer' onClick={(e) => {handleClick(e)}} className={modalStyles.wrapper}>
             <div className={modalStyles.innerWrapper}>
                 <div className={modalStyles.playerWrapper}>
                     {player1 && generatePlayer(player1)}
                 </div>
-                <hr/>
+                <div className={modalStyles.midSection}>
+                    <hr/>
+                    <button className={modalStyles.addDropButton}><FontAwesomeIcon size='3x' color='#5d5d87' icon={faRepeat}/></button>
+                    <hr/>
+                </div>
                 <div style={{position: 'relative'}}>
                     {AvailablePlayers()}
                     <div className={modalStyles.playerWrapper}>
