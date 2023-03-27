@@ -26,6 +26,7 @@ export default function CompareModal({player1, player2, setViewComparison, categ
     function handleRosterChange(e, id){
         e.preventDefault();
         let type = e.target.name;
+        console.log(e.target)
         if(type === 'add'){
             console.log("add", id)
         } else if (type == 'drop'){
@@ -62,11 +63,11 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                 </div> 
                 <div className={modalStyles.altStats}>
                     {player.selected_position && 
-                        <button name='drop' className={modalStyles.action} onClick={(e) => {handleRosterChange(e, player.player_id)}}><FontAwesomeIcon size='3x' color='#5d5d87' icon={faUserMinus}/></button>
+                        <button name='drop' className={modalStyles.actionButton} onClick={(e) => {handleRosterChange(e, player.player_id)}}><FontAwesomeIcon size='3x' color='#5d5d87' icon={faUserMinus}/></button>
                     } 
                     {!player.selected_position &&
 
-                        <button name='add' className={modalStyles.action} onClick={(e) => {handleRosterChange(e, player.player_id)}}><FontAwesomeIcon size='3x' color='#5d5d87' icon={faUserPlus}/></button>
+                        <button name='add' className={modalStyles.actionButton} onClick={(e) => {handleRosterChange(e, player.player_id)}}><FontAwesomeIcon size='3x' color='#5d5d87' icon={faUserPlus}/></button>
                     }
                 </div>
             </>
@@ -116,7 +117,7 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                 </div>
                 <div className={modalStyles.midSection}>
                     <hr/>
-                    <button className={modalStyles.addDropButton} name='addDrop' onClick={(e) => handleRosterChange(e, [player1.player_id, currentPlayer.player_id])}><FontAwesomeIcon size='3x' color='#5d5d87' icon={faRepeat}/></button>
+                    <button className={modalStyles.actionButton} name='addDrop' onClick={(e) => handleRosterChange(e, [player1.player_id, currentPlayer.player_id])}><FontAwesomeIcon size='3x' color='#5d5d87' icon={faRepeat}/></button>
                     <hr/>
                 </div>
                 <div style={{position: 'relative'}}>
