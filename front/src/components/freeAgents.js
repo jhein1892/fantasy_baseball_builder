@@ -18,7 +18,6 @@ export default function FreeAgents({generateComparison}){
     function handleChange(e){
         e.preventDefault()
         let value = e.target.value;
-        console.log('change', value)
         setnewPlayers(false)
         setPlayerStats([])
         setSearchValue(value)
@@ -40,9 +39,7 @@ export default function FreeAgents({generateComparison}){
 
     async function handleRowClick(e, id){
         e.preventDefault()
-        console.log(id)
         let playerDetails = await new Promise((resolve) => {
-            console.log(playerStats)
             let filteredData = playerStats.filter((x) => x.player_id == id);
             resolve(filteredData)
         })
@@ -57,10 +54,11 @@ export default function FreeAgents({generateComparison}){
 
     function generatePages(){
         let numValues = freeAgentData ? freeAgentData.length : 0
+        
         let numPages = Math.floor(numValues / pageLength)
         numPages = numValues % pageLength > 0 ? numPages+1: numPages
 
-        
+        console.log(numPages)
         return Array.from({length:numPages}, (_, index) => index + 1).map((num) => {
             const pageNumStyles = classNames({
                 [freeAgentStyles.active]: num === page
@@ -78,8 +76,7 @@ export default function FreeAgents({generateComparison}){
         
         let visiblePlayers = freeAgentData.slice(startIndex, endIndex)
         let playerIds = visiblePlayers.map((player) => {return player['player_id']})
-        console.log("PLayerStats:", playerStats.length, searchValue )
-        if(newPlayers && playerStats.length == 0){
+        if(newPlayers && !playerStats){
             axios.put('https://127.0.0.1:5000/playerStats', {data: playerIds})
             .then((response) => {
                 let playerData = response.data.player_details
