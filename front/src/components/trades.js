@@ -119,7 +119,7 @@ export default function Trades({ categories }){
 
     return(
         <div className={tradeStyles.wrapper}>
-        {tradeData &&
+        {tradeData ?
             <>
                 <div className={tradeStyles.tradeList}>
                     <table>
@@ -155,6 +155,10 @@ export default function Trades({ categories }){
                     }
                 </div>
             </>
+            :
+            <div className={tradeStyles.noTradesWrapper}>
+                <h1>No Current Trade Proposals</h1>
+            </div>
         }
         </div>
     )
