@@ -11,7 +11,7 @@ export default function FreeAgents({generateComparison}){
     const [searchValue, setSearchValue] = useState('B')
     const [freeAgentData, setFreeAgentsData] = useState([])
     const [page, setPage] = useState(1)
-    const [pageLength, setPageLength] = useState(25)
+    const [pageLength, setPageLength] = useState(23)
     const [newPlayers, setnewPlayers] = useState(false)
     const [playerStats, setPlayerStats] = useState()
 
@@ -43,9 +43,6 @@ export default function FreeAgents({generateComparison}){
             let filteredData = playerStats.filter((x) => x.player_id == id);
             resolve(filteredData)
         })
-        console.log(playerDetails)
-        // let playerInfo = freeAgentData.filter((x) => x.player_id === id)
-        // let playerDetails = playerStats.filter((x) => x.player_id == id)
         if(playerDetails.length > 0){
             generateComparison(playerDetails[0])
         }
@@ -89,7 +86,6 @@ export default function FreeAgents({generateComparison}){
 
 
         let returnRows =  visiblePlayers.map((player) => {
-            // console.log(player.player_id)
             let positionList = player['eligible_positions'].join(', ')
             return (
                 <>

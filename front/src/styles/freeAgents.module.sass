@@ -2,6 +2,31 @@
     height: 100%
     position: relative
     z-index: 0
+    text-align: center
+    form
+        display: flex
+        flex-direction: column
+        width: 33%
+        align-items: center
+        margin: auto
+        height: 60px
+        justify-content: space-between
+        select
+            width: 100%
+            text-align: center
+            padding: 4px
+            border: none
+            background: lightgrey
+            border-radius: 3px
+        button
+            padding: 4px 10px
+            border: none
+            border-radius: 3px
+            font-weight: bold
+            font-size: 1rem
+            &[type='submit']    
+                width: 100%
+                background: var(--hover-green)
     .playerWrapper
         max-height: 80%
         overflow: auto
