@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import freeAgentStyles from '../styles/freeAgents.module.sass'
 import classNames from 'classnames';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronCircleLeft, faChevronCircleRight, faRepeat, faUserMinus, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 
 // Add in Waiver players
 
@@ -109,6 +111,7 @@ export default function FreeAgents({generateComparison}){
         e.preventDefault()
         setPlayerStats()
         let direction = e.target.name
+        console.log(direction)
         if (direction === 'next'){
             setPage(page+1)
         } else {
@@ -153,11 +156,11 @@ export default function FreeAgents({generateComparison}){
                 </div>
             </div>
             <div className={freeAgentStyles.pageControl}>
-                <button name='back' onClick={handlePageChange}>prev</button>
+                <button name='back' onClick={handlePageChange}><FontAwesomeIcon size='3x' color='#5d5d87' icon={faChevronCircleLeft}/></button>
                 <div className={freeAgentStyles.pageList}>
                     {generatePages()}
                 </div>
-                <button name='next' onClick={handlePageChange}>next</button>
+                <button name='next' onClick={handlePageChange}><FontAwesomeIcon size='3x' color='#5d5d87' icon={faChevronCircleRight}/></button>
             </div>
         </div>
     )

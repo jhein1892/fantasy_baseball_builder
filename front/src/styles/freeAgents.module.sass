@@ -70,8 +70,6 @@
 
 
 
-
-
     .pageControl
         display: flex
         justify-content: space-between
@@ -83,13 +81,16 @@
         left: 5%
         bottom: 4%
         button
-            height: 25px
-            width: 50px
+            border: none
+            background: var(--background-main)
+            svg
+                pointer-events: none
         .pageList
             display: flex
             justify-content: space-evenly
             width: 80%
             p
                 padding: 5px, 9px
+                text-shadow: 1px 1px 2px black
             .active
                 color: var(--secondary)
