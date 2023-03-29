@@ -4,6 +4,7 @@ import freeAgentStyles from '../styles/freeAgents.module.sass'
 import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronCircleLeft, faChevronCircleRight, faRepeat, faUserMinus, faUserPlus } from '@fortawesome/free-solid-svg-icons'
+import config from '../config'; // REACT_APP_API_ENDPOINT
 
 // Add in Waiver players
 
@@ -25,10 +26,9 @@ export default function FreeAgents({generateComparison}){
         setSearchValue(value)
     }
 
-
     function handleSubmit(e){
         e.preventDefault()
-        axios.put('https://127.0.0.1:5000/freeAgents', {data:searchValue})
+        axios.put(`${config.REACT_APP_API_ENDPOINT}/freeAgents`, {data:searchValue})
         .then((response) => {
             let data = response.data            
             setFreeAgentsData(data.availablePlayers)
@@ -53,10 +53,17 @@ export default function FreeAgents({generateComparison}){
 
     }
 
+    // Adds player to roster
     function handlePlayerAdd(e, id){
         e.preventDefault()
 
-        console.log(id)
+        axios.put(`${config.REACT_APP_API_ENDPOINT}/addPlayer`, {id: id})
+        .then((response) => {
+            console.log(response);
+        })
+        .catch((error) => {
+            console.error(error);
+        })
     }
 
     function generatePages(){
@@ -85,7 +92,7 @@ export default function FreeAgents({generateComparison}){
         let playerIds = visiblePlayers.map((player) => {return player['player_id']})
         if(newPlayers && playerStats.length === 0){
             console.log("Player Stats")
-            axios.put('https://127.0.0.1:5000/playerStats', {data: playerIds})
+            axios.put(`${config.REACT_APP_API_ENDPOINT}/playerStats`, {data: playerIds})
             .then((response) => {
                 let playerData = response.data.player_details
                 setPlayerStats(playerData)

@@ -1097,16 +1097,16 @@ def updateRoster():
 def dropPlayer():
   data = request.get_json()
   playerID = data['id']
-  print("DROP: " + playerID)
+  print(f"DROP: {playerID}")
 
   response = make_response({"status": 200})
   return response
 
-@app.route("/addPLayer", methods=["PUT"])
+@app.route("/addPlayer", methods=["PUT"])
 def addPlayer():
   data = request.get_json()
   playerID = data['id']
-  print("ADD" + playerID)
+  print(f"ADD {playerID}")
 
   response = make_response({"status": 200})
   return response
@@ -1116,7 +1116,7 @@ def addPlayer():
 def addDropPlayer():
    data = request.get_json()
    playerID = data['id']
-   print("ADD DROP: " + playerID)
+   print(f"ADD DROP: {playerID}")
 
    response = make_response({"status": 200})
    return response
