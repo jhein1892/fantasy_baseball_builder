@@ -15,7 +15,7 @@ export default function FreeAgents({generateComparison}){
     const [page, setPage] = useState(1)
     const [pageLength, setPageLength] = useState(23)
     const [newPlayers, setnewPlayers] = useState(false)
-    const [playerStats, setPlayerStats] = useState()
+    const [playerStats, setPlayerStats] = useState([])
 
     function handleChange(e){
         e.preventDefault()
@@ -41,14 +41,22 @@ export default function FreeAgents({generateComparison}){
 
     async function handleRowClick(e, id){
         e.preventDefault()
+        console.log('here', id)
         let playerDetails = await new Promise((resolve) => {
             let filteredData = playerStats.filter((x) => x.player_id == id);
             resolve(filteredData)
         })
+        console.log(playerDetails)
         if(playerDetails.length > 0){
             generateComparison(playerDetails[0])
         }
 
+    }
+
+    function handlePlayerAdd(e, id){
+        e.preventDefault()
+
+        console.log(id)
     }
 
     function generatePages(){
@@ -75,7 +83,8 @@ export default function FreeAgents({generateComparison}){
         
         let visiblePlayers = freeAgentData.slice(startIndex, endIndex)
         let playerIds = visiblePlayers.map((player) => {return player['player_id']})
-        if(newPlayers && !playerStats){
+        if(newPlayers && playerStats.length === 0){
+            console.log("Player Stats")
             axios.put('https://127.0.0.1:5000/playerStats', {data: playerIds})
             .then((response) => {
                 let playerData = response.data.player_details
@@ -97,8 +106,8 @@ export default function FreeAgents({generateComparison}){
                         <td>{player.status && <span>{player.status}</span>}{player.name}</td>
                         <td>{positionList}</td>
                         <td>{player.percent_owned}</td>
-                        <td><button disabled={freeAgentData.length === 0} onClick={(e) => handleRowClick(e, player.player_id)}>View Stats</button></td>
-                        <td><button>add</button></td>
+                        <td><button disabled={playerStats.length === 0} onClick={(e) => handleRowClick(e, player.player_id)}>View Stats</button></td>
+                        <td><button onClick={(e) => handlePlayerAdd(e, player.player_id)}>add</button></td>
                     </tr>
                 </>
             )
@@ -109,7 +118,7 @@ export default function FreeAgents({generateComparison}){
     function handlePageChange(e){
         // Set some boundaries to make sure we stay within available pages
         e.preventDefault()
-        setPlayerStats()
+        setPlayerStats([])
         let direction = e.target.name
         console.log(direction)
         if (direction === 'next'){
