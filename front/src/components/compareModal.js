@@ -30,7 +30,13 @@ export default function CompareModal({player1, player2, setViewComparison, categ
         let type = e.target.name;
         console.log(e.target)
         let urlString = `${type}Player`
-        console.log(urlString)
+        axios.put(`${config.REACT_APP_API_ENDPOINT}/${urlString}`, {id:id})
+        .then((response) => {
+            console.log(response)
+        })
+        .catch((error) => {
+            console.error(error)
+        })
     }
 
     function generatePlayer(player){
