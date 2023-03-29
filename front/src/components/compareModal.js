@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react'
 import modalStyles from '../styles/modal.module.sass';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRepeat, faUserMinus, faUserPlus } from '@fortawesome/free-solid-svg-icons'
+import config from '../config';
+import axios from 'axios';
 
 export default function CompareModal({player1, player2, setViewComparison, categories}){
     const [statCategories, setStatCategories] = useState()
@@ -27,13 +29,8 @@ export default function CompareModal({player1, player2, setViewComparison, categ
         e.preventDefault();
         let type = e.target.name;
         console.log(e.target)
-        if(type === 'add'){
-            console.log("add", id)
-        } else if (type == 'drop'){
-            console.log("Drop", id)
-        } else {
-            console.log("Add Drop", id)
-        }
+        let urlString = `${type}Player`
+        console.log(urlString)
     }
 
     function generatePlayer(player){
