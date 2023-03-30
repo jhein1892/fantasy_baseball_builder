@@ -1081,18 +1081,17 @@ def putTradeResponse():
 
    return make_response({'status': 200})
 
-# FILE CALLED: teamRoster.js
-# Updated Roster being sent here
-@app.route("/updateRoster", methods=["PUT"])
-def updateRoster():
-  # Updated Roster set being passed through here
-  data = request.get_json()
-  
-  print(data)
+@app.route("/leagueNews")
+def getInformation():
+   dropTransactions = lg.transactions('drop')
+   tradeTransactions = lg.transactions('trade')
+   waivers = lg.waivers()
 
-  response = make_response({"status": 200})
-  return response
+   response = make_response(dropTransactions, tradeTransactions, waivers)
+   return response
 
+## Making changes to roster
+# Route to Drop a Player
 @app.route("/dropPlayer", methods=["PUT"])
 def dropPlayer():
   data = request.get_json()
@@ -1102,6 +1101,7 @@ def dropPlayer():
   response = make_response({"status": 200})
   return response
 
+# Route to Add a Player
 @app.route("/addPlayer", methods=["PUT"])
 def addPlayer():
   data = request.get_json()
@@ -1111,7 +1111,7 @@ def addPlayer():
   response = make_response({"status": 200})
   return response
 
-
+# Route to Add/Drop a Player
 @app.route("/addDropPlayer", methods=["PUT"])
 def addDropPlayer():
    data = request.get_json()
@@ -1124,7 +1124,17 @@ def addDropPlayer():
 
   # Uncomment to drop player
   # tm.drop_player(playerID)
+
+# Updated Roster being sent here
+@app.route("/updateRoster", methods=["PUT"])
+def updateRoster():
+  # Updated Roster set being passed through here
+  data = request.get_json()
   
+  print(data)
+
+  response = make_response({"status": 200})
+  return response
 
 
 

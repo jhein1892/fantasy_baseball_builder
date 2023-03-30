@@ -8,7 +8,7 @@ import FreeAgents from './freeAgents';
 import CompareModal from './compareModal';
 import Trades from './trades';
 
-export default function Body({userInfo, data}) {
+export default function Body({data}) {
     const [player1Info, setPlayer1Info] = useState()
     const [player2Info, setPlayer2Info] = useState()
     const [viewComparison, setViewComparison] = useState(false)
