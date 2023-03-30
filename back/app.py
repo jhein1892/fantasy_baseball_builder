@@ -983,47 +983,43 @@ sslify = SSLify(app)
 
 CORS(app, origins=['https://localhost:3000'], methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
-# This route sends values to the front when called
-@app.route("/")
-def home():
-    response = make_response("Hello World!")
-    return response
-
 # FILE CALLED: App.js
 # Used to get league_id and team_name
-@app.route("/", methods=["PUT"])
+@app.route("/")
 def signIn():
-   data = request.get_json()
-   standings = lg.standings()
-   matchups = lg.matchups()
-   categories = lg.stat_categories()
+  standings = lg.standings()
+  matchups = lg.matchups()
+  categories = lg.stat_categories()
+  dropTransactions = lg.transactions('drop', 10)
+  tradeTransactions = lg.transactions('trade', 10)
+  waivers = lg.waivers()
 
-   matchups = matchups['fantasy_content']['league']
-   matchups.append(stat_ids) 
+  matchups = matchups['fantasy_content']['league']
+  matchups.append(stat_ids) 
 
-   roster = tm.roster()
-   rosterIDs = []
+  roster = tm.roster()
+  rosterIDs = []
 
-   for player in roster:
-      rosterIDs.append(player['player_id'])
-   
-   rosterDetails = lg.player_details(rosterIDs)
+  for player in roster:
+    rosterIDs.append(player['player_id'])
+  
+  rosterDetails = lg.player_details(rosterIDs)
 
-   for player in rosterDetails:
-      playerid = player['player_id']
-      # print(playerid)
-      index = -1
-      for i,x in enumerate(roster):
-         if x['player_id'] == int(playerid):
-            index = i
-         
-      if index >= 0:
-         player['selected_position'] = roster[index]['selected_position']
+  for player in rosterDetails:
+    playerid = player['player_id']
+    # print(playerid)
+    index = -1
+    for i,x in enumerate(roster):
+        if x['player_id'] == int(playerid):
+          index = i
+        
+    if index >= 0:
+        player['selected_position'] = roster[index]['selected_position']
 
-   # Call yahoo_fantasy_api with league_id and team_id to get roster data
+  # Call yahoo_fantasy_api with league_id and team_id to get roster data
 
-   response = make_response({'roster': rosterDetails, 'standings': standings, 'matchups': matchups, 'categories': categories, "stat_ids": stat_ids,})
-   return response
+  response = make_response({'teamData':{'roster': rosterDetails, 'standings': standings, 'matchups': matchups, 'categories': categories, "stat_ids": stat_ids,}, 'leagueData':{"dropped": dropTransactions, "traded":tradeTransactions, "waivers":waivers}})
+  return response
 
 @app.route("/playerStats", methods=["PUT"])
 def getPlayerStats():
@@ -1081,14 +1077,14 @@ def putTradeResponse():
 
    return make_response({'status': 200})
 
-@app.route("/leagueNews")
-def getInformation():
-   dropTransactions = lg.transactions('drop')
-   tradeTransactions = lg.transactions('trade')
-   waivers = lg.waivers()
+# @app.route("/leagueNews")
+# def getInformation():
+#    dropTransactions = lg.transactions('drop')
+#    tradeTransactions = lg.transactions('trade')
+#    waivers = lg.waivers()
 
-   response = make_response(dropTransactions, tradeTransactions, waivers)
-   return response
+#    response = make_response(dropTransactions, tradeTransactions, waivers)
+#    return response
 
 ## Making changes to roster
 # Route to Drop a Player

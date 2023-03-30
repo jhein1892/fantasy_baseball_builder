@@ -6,31 +6,20 @@ import React, { useState, useEffect } from 'react';
 import config from './config';
 
 function App() {
-  // league_id and team_name
-  const [userInfo, setUserInfo] = useState({});
+
   // Information about the roster for the team
   const [teamData, setTeamData] = useState({})
-  const [scrolled, setScrolled] = useState(true);
-  // 
-  // function submitValues(e){
-  //   e.preventDefault();
-  //   axios.put(`${config.REACT_APP_API_ENDPOINT}/`, userInfo)
-  //   .then((response) => {
-  //     let data = response.data
+  const [leagueNews, setLeagueNews] = useState()
 
-  //     setTeamData(data)
-  //   }) 
-  //   .catch((error) => {
-  //     console.log(error)
-  //   })
-  // }
-
-  //  Temporary UseEffect for development of teamRoster component
+  // Could turn this into a function once I need to not only have my team loading.
   useEffect(() => {
-    axios.put(`${config.REACT_APP_API_ENDPOINT}/`, userInfo)
+    axios.get(`${config.REACT_APP_API_ENDPOINT}/`)
     .then((response) => {
-      let data = response.data
-      setTeamData(data)
+      let teamData = response.data.teamData
+      setTeamData(teamData)
+
+      let leagueNews = response.data.leagueData      
+      setLeagueNews(leagueNews)
     }) 
     .catch((error) => {
       console.log(error)
@@ -40,9 +29,9 @@ function App() {
   return (
     <div>
       <Header 
+        leagueNews={leagueNews}
       />
       <Body 
-        userInfo={userInfo}
         data={teamData}
       />
     </div>
