@@ -115,6 +115,7 @@ export default function TeamRoster({ data, categories }){
                 }
                 else {
                     let category = data[x['display_name']]
+                
                     return (
                         <td key={`body-${x['display_name']}-${index}`}>{category ? category.value : "-"}</td>
                     )
@@ -128,6 +129,7 @@ export default function TeamRoster({ data, categories }){
         let tempData = localData ?  localData.filter((x) => x.position_type === type) : [];
         positionSet = positionSet.concat(additionalPositions)
         if(tempData.length > 0){
+
             return positionSet.map((position, index) => {
                 // Find players assigned to current positions
                 let eligiblePlayer = tempData.filter((x) => x.selected_position === position);
@@ -138,6 +140,7 @@ export default function TeamRoster({ data, categories }){
                     let newTempData = tempData.filter((x) => x.player_id !== eligiblePlayer.player_id);
                     tempData = newTempData;
                 }
+
                 if(additionalPositions.includes(position) && eligiblePlayer.length === 0) {
                     return null;
                 }
@@ -145,7 +148,7 @@ export default function TeamRoster({ data, categories }){
                 let eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['BN', 'IL', 'NA']) : [];
                 let statObject = {}
                 // Building dict that will hold the values/names for stats
-                if(eligiblePlayer.length > 0){
+                if(eligiblePlayer){
                     eligiblePlayer['player_stats']['stats'].forEach((stat) => {
                         let name = categories.filter((x) => x.stat_id == stat.stat.stat_id)
                         name = name[0]
@@ -153,7 +156,6 @@ export default function TeamRoster({ data, categories }){
                         statObject[displayName] = stat.stat
                     })
                 }
-                // console.log(eligiblePlayer)
 
                 // else return table row with data
                 return(
