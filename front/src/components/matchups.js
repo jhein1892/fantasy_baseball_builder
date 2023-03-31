@@ -69,43 +69,36 @@ export default function Matchups({data}){
         let statData = matchupData[key].matchup['stat_winners']
         return statData.map((category,index) => {
             let stat_id = category['stat_winner']['stat_id']
-            let team_stat_id;
-            if(team){
-                console.log(team[1]['team_stats']['stats'][index])
-                console.log(category)
-            }
             let winner_id = category['stat_winner']['winner_team_key']
-            let team_id;
-            let team_stats;
-            if(team){
-                team_id = team[0][0]['team_key']
-                team_stats = team[1]['team_stats']['stats']
-            }
-
             let displayName = statID.find(el => el.stat_id == stat_id)
             let dataType = displayName['position_types'][0]
             displayName = displayName['display_name']
-            
             let stat_value = category['stat_winner']
-            const statClass = classNames({
-                [matchupStyles.statTied]: !team && stat_value['is_tied'] == 1,
-                [matchupStyles.statWinning]: team && (winner_id === team_id)
-            })
-            let cat_plater_value;
-            if(team_stats){
+            
+            let team_id;
+            let team_stats;
+            let cat_player_value;
+
+            if(team){
+                team_id = team[0][0]['team_key']
+                team_stats = team[1]['team_stats']['stats']
                 team_stats.map((stat) => {
                     if(stat['stat']['stat_id'] == stat_id){
-                        cat_plater_value = stat['stat']['value']
+                        cat_player_value = stat['stat']['value']
                         return true
                     }
                     
                 })
             }
-            console.log(cat_plater_value)
+
+            const statClass = classNames({
+                [matchupStyles.statTied]: !team && stat_value['is_tied'] == 1,
+                [matchupStyles.statWinning]: team && (winner_id === team_id)
+            })
 
             if(dataType == displayStats){
                 return (
-                    <p key={`${displayName}-${index}`} className={statClass}>{cat_plater_value ? cat_plater_value : displayName}</p>
+                    <p key={`${displayName}-${index}`} className={statClass}>{cat_player_value ? cat_player_value : displayName}</p>
                 )
             }
         })
