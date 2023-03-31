@@ -48,7 +48,7 @@ export default function Matchups({data}){
     }
 
 
-    function generateTeam(team){
+    function generateTeam(team, key){
         let imageURL = team[0][5]['team_logos'][0]['team_logo']['url']
         // console.log(team)
         return (
@@ -59,37 +59,53 @@ export default function Matchups({data}){
                     </div>
                     <h3>{team[0][2]['name']}</h3>
                 </div>
-                <p>--</p>
-                <p>--</p>
-                <p>--</p>
-                <p>--</p>
-                <p>--</p>
-                <p>--</p>
-                <p>--</p>
-                <p>--</p>
-                <p>--</p>
-                <p>--</p>
+                {generateStats(key, team)}
             </div>
         )
 
     }
 
-    function generateStats(key){
+    function generateStats(key, team=null){
         let statData = matchupData[key].matchup['stat_winners']
         return statData.map((category,index) => {
             let stat_id = category['stat_winner']['stat_id']
+            let team_stat_id;
+            if(team){
+                console.log(team[1]['team_stats']['stats'][index])
+                console.log(category)
+            }
+            let winner_id = category['stat_winner']['winner_team_key']
+            let team_id;
+            let team_stats;
+            if(team){
+                team_id = team[0][0]['team_key']
+                team_stats = team[1]['team_stats']['stats']
+            }
+
             let displayName = statID.find(el => el.stat_id == stat_id)
             let dataType = displayName['position_types'][0]
             displayName = displayName['display_name']
             
             let stat_value = category['stat_winner']
             const statClass = classNames({
-                [matchupStyles.statTied]: stat_value['is_tied'] == 1
+                [matchupStyles.statTied]: !team && stat_value['is_tied'] == 1,
+                [matchupStyles.statWinning]: team && (winner_id === team_id)
             })
+            let cat_plater_value;
+            if(team_stats){
+                team_stats.map((stat) => {
+                    if(stat['stat']['stat_id'] == stat_id){
+                        cat_plater_value = stat['stat']['value']
+                        return true
+                    }
+                    
+                })
+            }
+            console.log(cat_plater_value)
 
             if(dataType == displayStats){
                 return (
-                    <p key={`${displayName}-${index}`} className={statClass}>{displayName}</p>
+                    <p key={`${displayName}-${index}`} className={statClass}>{cat_plater_value ? cat_plater_value : displayName}</p>
                 )
             }
         })
@@ -119,7 +135,7 @@ export default function Matchups({data}){
                 return (
                     <div key={`${key}-keys-${index}`} className={matchupClass}>
                         <div style={{width: '100%'}}>
-                            {generateTeam(team1)}
+                            {generateTeam(team1, key)}
                         </div>
                         <div className={matchupStyles.thirdContainer}>
                             <div className={matchupStyles.topSection}>
@@ -134,7 +150,7 @@ export default function Matchups({data}){
                             {generateStats(key)}                            
                         </div>
                         <div style={{width: '100%'}}>
-                            {generateTeam(team2)}
+                            {generateTeam(team2, key)}
                         </div>
                     </div>
                 )
