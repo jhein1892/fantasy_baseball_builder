@@ -150,6 +150,7 @@ export default function TeamRoster({ data, categories }){
                 // Building dict that will hold the values/names for stats
                 if(eligiblePlayer){
                     eligiblePlayer['player_stats']['stats'].forEach((stat) => {
+
                         if(stat['stat']['stat_id'] == '50'){ // Innings Pitched
                             let value = stat['stat']['value']
                             if(value === '-'){
@@ -157,6 +158,7 @@ export default function TeamRoster({ data, categories }){
                             }
                             statObject['IP'] = {stat: '50',  value: value}
                         }
+
                         if(stat['stat']['stat_id'] == '60'){ // H/AB (AVG)
                             let value = stat['stat']['value'] 
                             value = value.split('/')
@@ -176,7 +178,7 @@ export default function TeamRoster({ data, categories }){
                 }
 
                 let additionalProperty = type === 'B' ? statObject['BA'] : statObject['IP']
-                console.log(additionalProperty['value'])
+
                 // else return table row with data
                 return(
                     <tr className={rosterStyles.positionSlot} key={`${position}-${index}`} id={eligiblePlayer.player_id}>
@@ -231,7 +233,6 @@ export default function TeamRoster({ data, categories }){
     useEffect(() => {
         if(data){
             setLocalData(data)
-            console.log(data)
         }
     },[data])
 
