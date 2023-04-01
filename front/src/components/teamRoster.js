@@ -150,13 +150,19 @@ export default function TeamRoster({ data, categories }){
                 // Building dict that will hold the values/names for stats
                 if(eligiblePlayer){
                     eligiblePlayer['player_stats']['stats'].forEach((stat) => {
+                        if(stat['stat']['stat_id'] == '50'){
+                            // Innings Pitched is id: 50
+                        }
+                        if(stat['stat']['stat_id'] == '60'){
+                            // Batting Average is id: 60
+                        }
                         let name = categories.filter((x) => x.stat_id == stat.stat.stat_id)
                         name = name[0]
                         let displayName = name ? name['display_name'] : 'NA'
                         statObject[displayName] = stat.stat
                     })
                 }
-
+                
                 // else return table row with data
                 return(
                     <tr className={rosterStyles.positionSlot} key={`${position}-${index}`} id={eligiblePlayer.player_id}>
@@ -164,6 +170,7 @@ export default function TeamRoster({ data, categories }){
                         {eligiblePlayer && 
                         <>
                         <td className={rosterStyles.playerName}>{eligiblePlayer.status && <span className={rosterStyles.injuryTag}>{eligiblePlayer.status}</span>}{eligiblePlayer.name ? eligiblePlayer.name['full'] : 'empty' } - <span>{eligiblePlayer.display_position}</span></td>
+                        <td>BA</td>
                         {generateCategories(type, false, statObject)}
                         <td>
                             <select
@@ -237,6 +244,7 @@ export default function TeamRoster({ data, categories }){
                     <tr>
                         <th>Position</th>
                         <th>Name</th>
+                        <th>BA</th>
                         {generateCategories('B', true)}
                         <th>Switch Positions</th>
                         <th></th>
@@ -257,6 +265,7 @@ export default function TeamRoster({ data, categories }){
                     <tr>
                         <th>Position</th>
                         <th>Name</th>
+                        <th>IP</th>
                         {generateCategories('P', true)}
                         <th>Switch Positions</th>
                         <th></th>

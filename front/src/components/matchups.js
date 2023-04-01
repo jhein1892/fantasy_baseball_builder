@@ -85,7 +85,6 @@ export default function Matchups({data}){
                 team_stats.map((stat) => {
                     if(stat['stat']['stat_id'] == stat_id){
                         cat_player_value = stat['stat']['value']
-                        console.log(cat_player_value)
                         return true
                     }
                     
@@ -156,7 +155,6 @@ export default function Matchups({data}){
 
     function handleCardChange(e){
         e.preventDefault();
-        console.log(e.target)
         let direction = e.target.name
         let maxCount = matchupData.count
         if(direction === 'next'){
