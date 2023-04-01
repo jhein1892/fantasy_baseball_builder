@@ -77,7 +77,7 @@ export default function Matchups({data}){
             
             let team_id;
             let team_stats;
-            let cat_player_value;
+            let cat_player_value = -1;
 
             if(team){
                 team_id = team[0][0]['team_key']
@@ -85,6 +85,7 @@ export default function Matchups({data}){
                 team_stats.map((stat) => {
                     if(stat['stat']['stat_id'] == stat_id){
                         cat_player_value = stat['stat']['value']
+                        console.log(cat_player_value)
                         return true
                     }
                     
@@ -98,7 +99,7 @@ export default function Matchups({data}){
 
             if(dataType == displayStats){
                 return (
-                    <p key={`${displayName}-${index}`} className={statClass}>{cat_player_value ? cat_player_value : displayName}</p>
+                    <p key={`${displayName}-${index}`} className={statClass}>{cat_player_value !== -1 ? cat_player_value : displayName}</p>
                 )
             }
         })
