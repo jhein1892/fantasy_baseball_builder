@@ -150,19 +150,33 @@ export default function TeamRoster({ data, categories }){
                 // Building dict that will hold the values/names for stats
                 if(eligiblePlayer){
                     eligiblePlayer['player_stats']['stats'].forEach((stat) => {
-                        if(stat['stat']['stat_id'] == '50'){
-                            // Innings Pitched is id: 50
+                        if(stat['stat']['stat_id'] == '50'){ // Innings Pitched
+                            let value = stat['stat']['value']
+                            if(value === '-'){
+                                value = '0.0'
+                            }
+                            statObject['IP'] = {stat: '50',  value: value}
                         }
-                        if(stat['stat']['stat_id'] == '60'){
-                            // Batting Average is id: 60
+                        if(stat['stat']['stat_id'] == '60'){ // H/AB (AVG)
+                            let value = stat['stat']['value'] 
+                            value = value.split('/')
+                            value = parseFloat(value[0]/value[1]).toFixed(3)
+                            if(value === 'NaN'){
+                                value = '0.000'
+                            }
+                            value = value.substring(1)
+                            statObject['BA'] = {stat:'60', value: value}
                         }
+
                         let name = categories.filter((x) => x.stat_id == stat.stat.stat_id)
                         name = name[0]
                         let displayName = name ? name['display_name'] : 'NA'
                         statObject[displayName] = stat.stat
                     })
                 }
-                
+
+                let additionalProperty = type === 'B' ? statObject['BA'] : statObject['IP']
+                console.log(additionalProperty['value'])
                 // else return table row with data
                 return(
                     <tr className={rosterStyles.positionSlot} key={`${position}-${index}`} id={eligiblePlayer.player_id}>
@@ -170,7 +184,7 @@ export default function TeamRoster({ data, categories }){
                         {eligiblePlayer && 
                         <>
                         <td className={rosterStyles.playerName}>{eligiblePlayer.status && <span className={rosterStyles.injuryTag}>{eligiblePlayer.status}</span>}{eligiblePlayer.name ? eligiblePlayer.name['full'] : 'empty' } - <span>{eligiblePlayer.display_position}</span></td>
-                        <td>BA</td>
+                        <td>{additionalProperty['value'] ? additionalProperty['value'] : 0}</td>
                         {generateCategories(type, false, statObject)}
                         <td>
                             <select
