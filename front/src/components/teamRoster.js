@@ -129,7 +129,6 @@ export default function TeamRoster({ data, categories }){
         let tempData = localData ?  localData.filter((x) => x.position_type === type) : [];
         positionSet = positionSet.concat(additionalPositions)
         if(tempData.length > 0){
-
             return positionSet.map((position, index) => {
                 // Find players assigned to current positions
                 let eligiblePlayer = tempData.filter((x) => x.selected_position === position);
@@ -139,16 +138,21 @@ export default function TeamRoster({ data, categories }){
                     eligiblePlayer = eligiblePlayer[0];
                     let newTempData = tempData.filter((x) => x.player_id !== eligiblePlayer.player_id);
                     tempData = newTempData;
+                } 
+                else {
+                    eligiblePlayer = {}
                 }
 
-                if(additionalPositions.includes(position) && eligiblePlayer.length === 0) {
+                if(additionalPositions.includes(position) && !eligiblePlayer['player_id']) {
                     return null;
                 }
                 // Eligible positions for position players
                 let eligible_positions = eligiblePlayer.eligible_positions ? eligiblePlayer.eligible_positions.concat(['BN', 'IL', 'NA']) : [];
                 let statObject = {}
+
                 // Building dict that will hold the values/names for stats
-                if(eligiblePlayer){
+                if(eligiblePlayer && eligiblePlayer['player_stats']){
+                    // console.log(eligiblePlayer)
                     eligiblePlayer['player_stats']['stats'].forEach((stat) => {
 
                         if(stat['stat']['stat_id'] == '50'){ // Innings Pitched
@@ -186,7 +190,7 @@ export default function TeamRoster({ data, categories }){
                         {eligiblePlayer && 
                         <>
                         <td className={rosterStyles.playerName}>{eligiblePlayer.status && <span className={rosterStyles.injuryTag}>{eligiblePlayer.status}</span>}{eligiblePlayer.name ? eligiblePlayer.name['full'] : 'empty' } - <span>{eligiblePlayer.display_position}</span></td>
-                        <td>{additionalProperty['value'] ? additionalProperty['value'] : 0}</td>
+                        <td>{additionalProperty ? additionalProperty['value'] : 0}</td>
                         {generateCategories(type, false, statObject)}
                         <td>
                             <select
