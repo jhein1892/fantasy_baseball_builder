@@ -41,12 +41,10 @@ export default function FreeAgents({generateComparison}){
 
     async function handleRowClick(e, id){
         e.preventDefault()
-        console.log('here', id)
         let playerDetails = await new Promise((resolve) => {
             let filteredData = playerStats.filter((x) => x.player_id == id);
             resolve(filteredData)
         })
-        console.log(playerDetails)
         if(playerDetails.length > 0){
             generateComparison(playerDetails[0])
         }
@@ -72,7 +70,6 @@ export default function FreeAgents({generateComparison}){
         let numPages = Math.floor(numValues / pageLength)
         numPages = numValues % pageLength > 0 ? numPages+1: numPages
 
-        console.log(numPages)
         return Array.from({length:numPages}, (_, index) => index + 1).map((num) => {
             const pageNumStyles = classNames({
                 [freeAgentStyles.active]: num === page
@@ -91,7 +88,6 @@ export default function FreeAgents({generateComparison}){
         let visiblePlayers = freeAgentData.slice(startIndex, endIndex)
         let playerIds = visiblePlayers.map((player) => {return player['player_id']})
         if(newPlayers && playerStats.length === 0){
-            console.log("Player Stats")
             axios.put(`${config.REACT_APP_API_ENDPOINT}/playerStats`, {data: playerIds})
             .then((response) => {
                 let playerData = response.data.player_details
@@ -127,7 +123,6 @@ export default function FreeAgents({generateComparison}){
         e.preventDefault()
         setPlayerStats([])
         let direction = e.target.name
-        console.log(direction)
         if (direction === 'next'){
             setPage(page+1)
         } else {
