@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import React, { useState, useEffect } from 'react';
 import config from './config';
+import NewsTicker from './components/header';
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
       <Header 
         leagueNews={leagueNews}
       />
+      {/* <NewsTicker leagueNews={leagueNews}/> */}
       <Body 
         data={teamData}
       />

@@ -9,41 +9,7 @@
     z-index: 100
     box-shadow: 0px 1px 4px 2px
 
-
-    &html:not([data-scroll='0'])
-        
-
-    form
-        display: grid
-        grid-template-columns: 1fr 1fr
-        row-gap: 10px
-        height: 100%
-        align-items: center
-        position: relative
-
-        label
-            font-size: 1.1rem
-            color: var(--secondary)
-        input
-            text-align: center
-            background: var(--primary-light)
-            border-radius: 5px
-            padding: 3px
-            box-shadow: none
-            border: none
-
-            &:focus-visible
-                outline: 2px solid var(--secondary)
-            
-            &:disabled
-                background: #63648f
-        button
-            &[type='submit']
-                grid-column: 1/span 2
-                justify-self: center
-                padding: 5px
-                width: 30%
-                border-radius: 5px
-                border: none
-                position: absolute
-                bottom: 10px
+    .typeWrapper
+        display: flex
+        flex-direction: row
+        margin: 15px
