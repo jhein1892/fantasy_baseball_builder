@@ -1,19 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import headerStyles from '../styles/header.module.sass';
 import classNames from 'classnames';
-import Ticker from 'react-ticker';
-
-const NewsTicker = () => (
-    <Ticker>
-        {({ index }) => (
-            <>
-            <h1 style={{ paddingRight: "0.5em" }}>
-                This is the Headline of element #{index}!
-            </h1>
-            </>
-        )}
-    </Ticker>
-)
 
 function Header({leagueNews}) {
     const [newsType, setNewsType] = useState([])
@@ -45,7 +32,7 @@ function Header({leagueNews}) {
 
     return (
         <div className={headerStyles.headerWrapper} id='header'>
-            {generateNews()}
+                {generateNews()}
         </div>
     )
 }
