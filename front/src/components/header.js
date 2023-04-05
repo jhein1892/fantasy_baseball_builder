@@ -14,24 +14,23 @@ function Header({leagueNews}) {
 
             return (
                 <div className={newsStyles}>
-                    <p>{type}</p>
+                    <h3>{type}</h3>
                     <div className={headerStyles.typeContent}>
-
+                        {leagueNews[type].map((news, index) => {
+                            let players = news['players']
+                            // let transInfo =
+                            let transType = news['type']
+                            console.log(players)
+                            return (
+                                <div className={headerStyles.transaction}>
+                                    <p>{transType}</p>
+                                </div>
+                            )
+                        })}
                     </div>
                 </div>
             )   
-            // return (
-            //     <div className={headerStyles.typeWrapper}>
-            //         <h3>{type}</h3>
-            //         {
-            //         leagueNews[type].map((news, index) => {
-            //             return (
-            //                 <p>{news.transaction_id}</p>
-            //             )
-            //         })
-            //         }
-            //     </div>
-            // )
+
         })
     }
  
