@@ -17,13 +17,30 @@ function Header({leagueNews}) {
                     <h3>{type}</h3>
                     <div className={headerStyles.typeContent}>
                         {leagueNews[type].map((news, index) => {
+
                             let players = news['players']
-                            // let transInfo =
+                            let count = players['count']
                             let transType = news['type']
-                            console.log(players)
+                            
+
+                            for(let i = 0; i < count; i++){
+                                let playerName = players[i]['player'][0][2]['name']['full']
+                                let transDetails;
+                                if(players[i]['player'][1]['transaction_data'].length){
+                                    transDetails = players[i]['player'][1]['transaction_data'][0]
+                                } else {
+                                    transDetails = players[i]['player'][1]['transaction_data']
+                                }
+
+                            }
+                            // console.log(players)
+                            
                             return (
                                 <div className={headerStyles.transaction}>
                                     <p>{transType}</p>
+                                    {
+                                        
+                                    }
                                 </div>
                             )
                         })}
