@@ -6,6 +6,34 @@ function Header({leagueNews}) {
     const [newsType, setNewsType] = useState([])
     const [displayIndex, setDisplayIndex] = useState(0)
 
+    function generateNewsType(count, players){
+        // console.log('here', count)
+        let arr = Array.from({length: count}, (_,index) => index);
+        return arr.map((i) => {
+            let playerName = players[i]['player'][0][2]['name']['full']
+            let transDetails;
+            if(players[i]['player'][1]['transaction_data'].length){
+                transDetails = players[i]['player'][1]['transaction_data'][0]
+            } else {
+                transDetails = players[i]['player'][1]['transaction_data']
+            }
+            return (
+                <p>{playerName}/{transDetails.type}</p>
+            )
+        })
+        
+        
+        // for(let i = 0; i < count; i++){
+        //     
+        //     
+        //  
+        //     return(
+        //         <p>{playerName}</p>
+        //     )
+        //     console.log(playerName, transDetails)
+        // }
+    }
+
     function generateNews(){
         return newsType.map((type, index) => {
             let newsStyles = classNames(headerStyles.typeWrapper,{
@@ -21,26 +49,11 @@ function Header({leagueNews}) {
                             let players = news['players']
                             let count = players['count']
                             let transType = news['type']
-                            
-
-                            for(let i = 0; i < count; i++){
-                                let playerName = players[i]['player'][0][2]['name']['full']
-                                let transDetails;
-                                if(players[i]['player'][1]['transaction_data'].length){
-                                    transDetails = players[i]['player'][1]['transaction_data'][0]
-                                } else {
-                                    transDetails = players[i]['player'][1]['transaction_data']
-                                }
-
-                            }
-                            // console.log(players)
-                            
+                            console.log(news)
                             return (
                                 <div className={headerStyles.transaction}>
                                     <p>{transType}</p>
-                                    {
-                                        
-                                    }
+                                    {generateNewsType(count, players)}
                                 </div>
                             )
                         })}
