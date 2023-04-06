@@ -47,15 +47,25 @@ function Header({leagueNews}) {
                         {leagueNews[type].map((news, index) => {
 
                             let players = news['players']
+                            let keyPrefix;
+                            let details;
+                            let teamName;
+
                             // Need to find the team Name
                             try{
-                                let type;
                                 if (players[0]['player'][1]['transaction_data'].length){
-                                    type = players[0]['player'][1]['transaction_data'][0]['type']
+                                    details = players[0]['player'][1]['transaction_data'][0]
                                 } else {
-                                    type = players[0]['player'][1]['transaction_data']['type']
+                                    details = players[0]['player'][1]['transaction_data']
                                 }
-                                console.log(type)
+                                if(details['type'] === 'add'){
+                                    // destination
+                                    keyPrefix = 'destination'
+                                } else {
+                                    // source
+                                    keyPrefix = 'source'
+                                }
+                                teamName = details[`${keyPrefix}_team_name`]
                             } catch(error){
                                 console.error(error)
                             }
@@ -66,7 +76,7 @@ function Header({leagueNews}) {
                             // console.log(news)
                             return (
                                 <div className={headerStyles.transaction}>
-                                    <p>{transType}</p>
+                                    <p>{teamName}/{transType}</p>
                                     {generateNewsType(count, players)}
                                 </div>
                             )
