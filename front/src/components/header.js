@@ -47,9 +47,23 @@ function Header({leagueNews}) {
                         {leagueNews[type].map((news, index) => {
 
                             let players = news['players']
+                            // Need to find the team Name
+                            try{
+                                let type;
+                                if (players[0]['player'][1]['transaction_data'].length){
+                                    type = players[0]['player'][1]['transaction_data'][0]['type']
+                                } else {
+                                    type = players[0]['player'][1]['transaction_data']['type']
+                                }
+                                console.log(type)
+                            } catch(error){
+                                console.error(error)
+                            }
+
+
                             let count = players['count']
                             let transType = news['type']
-                            console.log(news)
+                            // console.log(news)
                             return (
                                 <div className={headerStyles.transaction}>
                                     <p>{transType}</p>
