@@ -76,7 +76,8 @@ function Header({leagueNews}) {
                             // console.log(news)
                             return (
                                 <div className={headerStyles.transaction}>
-                                    <p>{teamName}/{transType}</p>
+                                    <p className={headerStyles.teamName}>{teamName} (<span>{transType}</span>)</p>
+                                    {/* <hr /> */}
                                     {generateNewsType(count, players)}
                                 </div>
                             )
