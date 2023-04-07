@@ -26,11 +26,22 @@
             justify-items: center
             .typeContent
                 background: var(--background-main)
-                height: 80%
+                height: 76%
                 width:  90%
                 padding: 5px
+                border-radius: 5px
                 display: flex
-                overflow-x: scroll
+                overflow-x: auto
+                overflow-y: hidden
+                &::-webkit-scrollbar
+                    height: 6px
+                &::-webkit-scrollbar-track
+                    background-color: var(--primary-light)
+                &::-webkit-scrollbar-thumb
+                    background-color: grey
+                    border-radius: 5px
+                    &:hover
+                        background-color: lightgrey
             .transaction
                 min-width: 20%
                 .teamName

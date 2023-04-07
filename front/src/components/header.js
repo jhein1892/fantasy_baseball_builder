@@ -5,8 +5,8 @@ import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import classNames from 'classnames';
 
 function Header({leagueNews}) {
-    const [newsType, setNewsType] = useState([])
-    const [displayIndex, setDisplayIndex] = useState(0)
+    const [newsType, setNewsType] = useState([]);
+    const [displayIndex, setDisplayIndex] = useState(0);
 
     function generateNewsType(count, players){
         // console.log('here', count)
