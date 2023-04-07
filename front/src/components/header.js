@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import headerStyles from '../styles/header.module.sass';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 import classNames from 'classnames';
 
 function Header({leagueNews}) {
@@ -17,8 +19,17 @@ function Header({leagueNews}) {
             } else {
                 transDetails = players[i]['player'][1]['transaction_data']
             }
+            let iconSrc;
+            let iconColor;
+            if (transDetails.type === 'add'){
+                iconSrc = faPlus
+                iconColor = 'green'
+            } else {
+                iconSrc = faMinus
+                iconColor = 'red'
+            }
             return (
-                <p>{playerName}/{transDetails.type}</p>
+                <p className={headerStyles.playerName}><FontAwesomeIcon icon={iconSrc} size='xs' color={iconColor}/> {playerName}</p>
             )
         })
         
@@ -77,7 +88,7 @@ function Header({leagueNews}) {
                             return (
                                 <div className={headerStyles.transaction}>
                                     <p className={headerStyles.teamName}>{teamName} (<span>{transType}</span>)</p>
-                                    {/* <hr /> */}
+                                    <hr />
                                     {generateNewsType(count, players)}
                                 </div>
                             )
