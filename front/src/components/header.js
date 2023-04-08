@@ -64,8 +64,7 @@ function Header({leagueNews}) {
                         </button>
                     </div>
                     <div className={headerStyles.typeContent}>
-                        {leagueNews[type].map((news, index) => {
-
+                        {leagueNews[type].length > 0 ? leagueNews[type].map((news, index) => {
                             let players = news['players']
                             let keyPrefix;
                             let details;
@@ -101,7 +100,7 @@ function Header({leagueNews}) {
                                     {generateNewsType(count, players)}
                                 </div>
                             )
-                        })}
+                        }) : <h3 className={headerStyles.noNews}>Nothing to Report</h3>}
                     </div>
                 </div>
             )   
