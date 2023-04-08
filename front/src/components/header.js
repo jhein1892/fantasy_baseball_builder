@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import headerStyles from '../styles/header.module.sass';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faMinus, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
 import classNames from 'classnames';
 
 function Header({leagueNews}) {
@@ -48,12 +48,16 @@ function Header({leagueNews}) {
     function generateNews(){
         return newsType.map((type, index) => {
             let newsStyles = classNames(headerStyles.typeWrapper,{
-                [headerStyles.visible]: index === displayIndex
+                [headerStyles.visible]: index === displayIndex % 3
             })
 
             return (
                 <div className={newsStyles}>
-                    <h3>{type}</h3>
+                    <div className={headerStyles.typeHeader}>
+                        <FontAwesomeIcon icon={faChevronUp} onClick={() => {setDisplayIndex(displayIndex + 1)}}/>
+                        <h3>{type}</h3>
+                        <FontAwesomeIcon icon={faChevronDown} onClick={() => {setDisplayIndex(displayIndex - 1)}}/>
+                    </div>
                     <div className={headerStyles.typeContent}>
                         {leagueNews[type].map((news, index) => {
 
