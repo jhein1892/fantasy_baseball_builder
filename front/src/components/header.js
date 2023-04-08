@@ -46,6 +46,7 @@ function Header({leagueNews}) {
     }
 
     function generateNews(){
+        
         return newsType.map((type, index) => {
             let newsStyles = classNames(headerStyles.typeWrapper,{
                 [headerStyles.visible]: index === displayIndex % 3
@@ -54,9 +55,13 @@ function Header({leagueNews}) {
             return (
                 <div className={newsStyles}>
                     <div className={headerStyles.typeHeader}>
-                        <FontAwesomeIcon icon={faChevronUp} onClick={() => {setDisplayIndex(displayIndex + 1)}}/>
+                        <button onClick={() => {setDisplayIndex(displayIndex + 1)}}>
+                            <FontAwesomeIcon icon={faChevronUp} />
+                        </button>
                         <h3>{type}</h3>
-                        <FontAwesomeIcon icon={faChevronDown} onClick={() => {setDisplayIndex(displayIndex - 1)}}/>
+                        <button disabled={displayIndex === 0 ? true : false} onClick={() => {setDisplayIndex(displayIndex - 1)}}>
+                            <FontAwesomeIcon icon={faChevronDown}/>
+                        </button>
                     </div>
                     <div className={headerStyles.typeContent}>
                         {leagueNews[type].map((news, index) => {
