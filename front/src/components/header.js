@@ -55,11 +55,11 @@ function Header({leagueNews}) {
             return (
                 <div className={newsStyles}>
                     <div className={headerStyles.typeHeader}>
-                        <button onClick={() => {setDisplayIndex(displayIndex + 1)}}>
+                        <button disabled={displayIndex === 0 ? true : false} onClick={() => {setDisplayIndex(displayIndex - 1)}}>
                             <FontAwesomeIcon icon={faChevronUp} />
                         </button>
                         <h3>{type}</h3>
-                        <button disabled={displayIndex === 0 ? true : false} onClick={() => {setDisplayIndex(displayIndex - 1)}}>
+                        <button  onClick={() => {setDisplayIndex(displayIndex + 1)}}>
                             <FontAwesomeIcon icon={faChevronDown}/>
                         </button>
                     </div>
@@ -107,6 +107,19 @@ function Header({leagueNews}) {
 
         })
     }
+
+    function generateDisplayLights(){
+        let newLights = Array.from({length: newsType.length}, (value, index) => index);
+        return newLights.map((x, index) => {
+            let lightClass = classNames({
+                [headerStyles.activeLight]: index === displayIndex % 3
+            })
+            return (
+                <div className={lightClass}></div>
+            )
+        })
+
+    }
  
     useEffect(() => {
         if(leagueNews){
@@ -119,7 +132,7 @@ function Header({leagueNews}) {
     return (
         <div className={headerStyles.headerWrapper} id='header'>
             <div className={headerStyles.leftSide}>
-
+                {generateDisplayLights()}
             </div>
             <div className={headerStyles.rightSide}>
                 {generateNews()}

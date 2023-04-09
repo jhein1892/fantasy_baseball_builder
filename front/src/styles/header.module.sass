@@ -10,7 +10,18 @@
     box-shadow: 0px 1px 4px 2px
 
     .leftSide
-        background: red
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: space-evenly
+        div
+            height: 10px
+            width: 10px
+            border-radius: 50%
+            background: var(--background-main)
+        .activeLight
+            background: #ffff8e
+            box-shadow: 0px 0px 8px 2px #ffff8e, 0px 0px 4px 1px var(--background-main)
     .rightSide
         // background: blue
         height: 100%
