@@ -58,6 +58,7 @@ export default function Matchups({data}){
                         <img src={imageURL} alt={`${team[0][2]['name']}_logo`}/>
                     </div>
                     <h3>{team[0][2]['name']}</h3>
+                    <h2 className={matchupStyles.teamPoints}>{team[1]['team_points']['total']}</h2>
                 </div>
                 {generateStats(key, team)}
             </div>
@@ -133,11 +134,7 @@ export default function Matchups({data}){
                         </div>
                         <div className={matchupStyles.thirdContainer}>
                             <div className={matchupStyles.topSection}>
-                                <div className={matchupStyles.pointsSection}>
-                                    <h3>{team1[1]['team_points']['total']}</h3>
-                                    <h2>vs</h2>
-                                    <h3>{team2[1]['team_points']['total']}</h3>
-                                </div>
+                                <h3>vs</h3>
                                 <div className={matchupStyles.buttonContainer}>
                                     <button className={buttonClass('P')} name='P' onClick={() => {setDisplayStats('P');}}>Pitching</button>
                                     {/* <hr /> */}
