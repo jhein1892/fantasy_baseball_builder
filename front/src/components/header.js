@@ -12,7 +12,9 @@ function Header({leagueNews}) {
         // console.log('here', count)
         let arr = Array.from({length: count}, (_,index) => index);
         return arr.map((i) => {
+
             let playerName = players[i]['player'][0][2]['name']['full']
+            let playerPosition = players[i]['player'][0][4]['display_position']
             let transDetails;
             if(players[i]['player'][1]['transaction_data'].length){
                 transDetails = players[i]['player'][1]['transaction_data'][0]
@@ -29,20 +31,9 @@ function Header({leagueNews}) {
                 iconColor = 'red'
             }
             return (
-                <p className={headerStyles.playerName}><FontAwesomeIcon icon={iconSrc} size='xs' color={iconColor}/> {playerName}</p>
+                <p className={headerStyles.playerName}><FontAwesomeIcon icon={iconSrc} size='xs' color={iconColor}/> {playerName} <span>{playerPosition}</span></p>
             )
         })
-        
-        
-        // for(let i = 0; i < count; i++){
-        //     
-        //     
-        //  
-        //     return(
-        //         <p>{playerName}</p>
-        //     )
-        //     console.log(playerName, transDetails)
-        // }
     }
 
     function generateNews(){
