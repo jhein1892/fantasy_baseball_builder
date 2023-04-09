@@ -113,6 +113,7 @@ export default function Matchups({data}){
                 let teamsData = singleMatchupData[0].teams
                 let team1 = teamsData[0]['team']
                 let team2 = teamsData[1]['team']
+                console.log(team1)
 
                 const matchupClass = classNames(matchupStyles.matchupContainer, {
                     [matchupStyles.display]:currentMatchup == key, 
@@ -132,7 +133,11 @@ export default function Matchups({data}){
                         </div>
                         <div className={matchupStyles.thirdContainer}>
                             <div className={matchupStyles.topSection}>
-                                <h2>vs</h2>
+                                <div className={matchupStyles.pointsSection}>
+                                    <h3>{team1[1]['team_points']['total']}</h3>
+                                    <h2>vs</h2>
+                                    <h3>{team2[1]['team_points']['total']}</h3>
+                                </div>
                                 <div className={matchupStyles.buttonContainer}>
                                     <button className={buttonClass('P')} name='P' onClick={() => {setDisplayStats('P');}}>Pitching</button>
                                     {/* <hr /> */}
