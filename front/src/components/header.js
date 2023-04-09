@@ -9,7 +9,6 @@ function Header({leagueNews}) {
     const [displayIndex, setDisplayIndex] = useState(0);
 
     function generateNewsType(count, players){
-        // console.log('here', count)
         let arr = Array.from({length: count}, (_,index) => index);
         return arr.map((i) => {
 
@@ -116,7 +115,6 @@ function Header({leagueNews}) {
         if(leagueNews){
             setNewsType(Object.keys(leagueNews))
         }
-        console.log('league', leagueNews)
     },[leagueNews])
 
 

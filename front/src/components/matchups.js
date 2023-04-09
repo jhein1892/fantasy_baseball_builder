@@ -50,7 +50,6 @@ export default function Matchups({data}){
 
     function generateTeam(team, key){
         let imageURL = team[0][5]['team_logos'][0]['team_logo']['url']
-        // console.log(team)
         return (
             <div className={matchupStyles.thirdContainer}>
                 <div className={matchupStyles.topSection}>
@@ -114,7 +113,6 @@ export default function Matchups({data}){
                 let teamsData = singleMatchupData[0].teams
                 let team1 = teamsData[0]['team']
                 let team2 = teamsData[1]['team']
-                console.log(team1)
 
                 const matchupClass = classNames(matchupStyles.matchupContainer, {
                     [matchupStyles.display]:currentMatchup == key, 

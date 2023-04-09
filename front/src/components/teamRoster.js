@@ -237,6 +237,7 @@ export default function TeamRoster({ data, categories }){
     useEffect(() => {
         if(data){
             setLocalData(data)
+            console.log(data)
         }
     },[data])
 
