@@ -1004,10 +1004,13 @@ def signIn():
     rosterIDs.append(player['player_id'])
   
   rosterDetails = lg.player_details(rosterIDs)
+  print(lg.current_week())
+  # Working on figuring out how to get single week worth of data
+  weekStats = lg.player_stats(rosterIDs, 'date', '2023-04-02:2023-04-05')
 
   for player in rosterDetails:
     playerid = player['player_id']
-    # print(playerid)
+
     index = -1
     for i,x in enumerate(roster):
         if x['player_id'] == int(playerid):
@@ -1018,7 +1021,7 @@ def signIn():
 
   # Call yahoo_fantasy_api with league_id and team_id to get roster data
 
-  response = make_response({'teamData':{'roster': rosterDetails, 'standings': standings, 'matchups': matchups, 'categories': categories, "stat_ids": stat_ids,}, 'leagueData':{"dropped": dropTransactions, "traded":tradeTransactions, "waivers":waivers}})
+  response = make_response({'teamData':{'roster': rosterDetails, 'weekStat':weekStats, 'standings': standings, 'matchups': matchups, 'categories': categories, "stat_ids": stat_ids,}, 'leagueData':{"dropped": dropTransactions, "traded":tradeTransactions, "waivers":waivers}})
   return response
 
 @app.route("/playerStats", methods=["PUT"])

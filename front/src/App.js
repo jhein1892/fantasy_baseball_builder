@@ -18,6 +18,7 @@ function App() {
     .then((response) => {
       let teamData = response.data.teamData
       setTeamData(teamData)
+      console.log(teamData)
 
       let leagueNews = response.data.leagueData      
       setLeagueNews(leagueNews)
