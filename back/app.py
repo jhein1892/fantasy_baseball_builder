@@ -977,6 +977,7 @@ from flask_cors import CORS
 from flask_sslify import SSLify
 from yahoo_api import lg, gm, tm
 import ssl
+import datetime
 
 app = Flask(__name__)
 sslify = SSLify(app)
@@ -1004,9 +1005,27 @@ def signIn():
     rosterIDs.append(player['player_id'])
   
   rosterDetails = lg.player_details(rosterIDs)
-  print(lg.current_week())
-  # Working on figuring out how to get single week worth of data
-  weekStats = lg.player_stats(rosterIDs, 'date', '2023-04-02:2023-04-05')
+  
+  # Section to get the week stats for each player
+  date_range = lg.week_date_range(lg.current_week())
+  # date_range = lg.week_date_range(1)
+  print(lg.week_date_range(1))
+  start_date = date_range[0]
+  # start_date = datetime.date(2023, 3, 30)
+  end_date = date_range[1]
+  # end_date = datetime.date(2023, 4, 9)
+  delta = datetime.timedelta(days=1)
+
+  weekStats = [] # Need to combine them here for easier sending back
+
+  # Each Day we have an array of objects that hold values for that day
+  while start_date <= end_date:
+     print(start_date)
+     data = lg.player_stats(rosterIDs, 'date', start_date)
+
+     weekStats.append(data)
+     start_date += delta
+
 
   for player in rosterDetails:
     playerid = player['player_id']
@@ -1021,7 +1040,7 @@ def signIn():
 
   # Call yahoo_fantasy_api with league_id and team_id to get roster data
 
-  response = make_response({'teamData':{'roster': rosterDetails, 'weekStat':weekStats, 'standings': standings, 'matchups': matchups, 'categories': categories, "stat_ids": stat_ids,}, 'leagueData':{"dropped": dropTransactions, "traded":tradeTransactions, "waivers":waivers}})
+  response = make_response({'teamData':{'roster': rosterDetails, 'weekStats': weekStats, 'standings': standings, 'matchups': matchups, 'categories': categories, "stat_ids": stat_ids,}, 'leagueData':{"dropped": dropTransactions, "traded":tradeTransactions, "waivers":waivers}})
   return response
 
 @app.route("/playerStats", methods=["PUT"])

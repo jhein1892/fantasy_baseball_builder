@@ -16,9 +16,9 @@ function App() {
   useEffect(() => {
     axios.get(`${config.REACT_APP_API_ENDPOINT}/`)
     .then((response) => {
+      console.log(response.data)
       let teamData = response.data.teamData
       setTeamData(teamData)
-      console.log(teamData)
 
       let leagueNews = response.data.leagueData      
       setLeagueNews(leagueNews)
@@ -34,9 +34,11 @@ function App() {
         leagueNews={leagueNews}
       />
       {/* <NewsTicker leagueNews={leagueNews}/> */}
-      <Body 
-        data={teamData}
-      />
+      { teamData &&
+        <Body 
+          data={teamData}
+        />
+      }
     </div>
   );
 }
