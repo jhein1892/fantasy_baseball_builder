@@ -1008,23 +1008,22 @@ def signIn():
   
   # Section to get the week stats for each player
   date_range = lg.week_date_range(lg.current_week())
-  # date_range = lg.week_date_range(1)
-  print(lg.week_date_range(1))
   start_date = date_range[0]
-  # start_date = datetime.date(2023, 3, 30)
-  end_date = date_range[1]
-  # end_date = datetime.date(2023, 4, 9)
+  today = datetime.date.today()
+  # end_date = today if today < date_range[1] else date_range[1]
+  end_date = date_range[0]
   delta = datetime.timedelta(days=1)
-
-  weekStats = [] # Need to combine them here for easier sending back
+  weekStats = {} # Need to combine them here for easier sending back
 
   # Each Day we have an array of objects that hold values for that day
+  # I can recursivesly create an object that uses index as keys and add the values to that key
   while start_date <= end_date:
-     print(start_date)
-     data = lg.player_stats(rosterIDs, 'date', start_date)
-
-     weekStats.append(data)
-     start_date += delta
+    # print(start_date)
+    data = lg.player_stats(rosterIDs, 'date', start_date)
+    for player in data:
+       print(player)
+    # weekStats.append(data)
+    start_date += delta
 
 
   for player in rosterDetails:
