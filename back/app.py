@@ -1018,19 +1018,21 @@ def signIn():
   # Each Day we have an array of objects that hold values for that day
   # I can recursivesly create an object that uses index as keys and add the values to that key
 
-  tempRosterIDs = [9718, 8588]
+  tempRosterIDs = [9718, 8588, 12281, 8758, 8780, 10056, 10465, 10505, 10556]
 
   while start_date <= end_date:
     # print(start_date)
-    data = lg.player_stats(rosterIDs, 'date', start_date)
+    data = lg.player_stats(tempRosterIDs, 'date', start_date)
     for player in data:
       # print(f"New players: {player}\n")
       playerID = player['player_id']
+      weekStats[playerID]['name'] = weekStats[playerID].get('name', player['name'])
       if isinstance(player['G'], float): # If we played a game that day:
 
         for key, value in player.items(): 
           if not isinstance(value, float):
             continue
+
           # print(f"{key}: {value} of type {type(value)}\n")
           ## Need to actually calculate Avg, OBP, OPS, SLG
           weekStats[playerID][key] = weekStats[playerID].get(key, 0.0) + value
