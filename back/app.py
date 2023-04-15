@@ -991,9 +991,9 @@ def signIn():
   standings = lg.standings()
   matchups = lg.matchups()
   categories = lg.stat_categories()
-  dropTransactions = lg.transactions('drop', 10)
-  tradeTransactions = lg.transactions('trade', 10)
-  waivers = lg.waivers()
+  # dropTransactions = lg.transactions('drop', 10)
+  # tradeTransactions = lg.transactions('trade', 10)
+  # waivers = lg.waivers()
 
   matchups = matchups['fantasy_content']['league']
   matchups.append(stat_ids) 
@@ -1022,7 +1022,7 @@ def signIn():
 
   while start_date <= end_date:
     # print(start_date)
-    data = lg.player_stats(tempRosterIDs, 'date', start_date)
+    data = lg.player_stats(rosterIDs, 'date', start_date)
     for player in data:
       # print(f"New players: {player}\n")
       playerID = player['player_id']
@@ -1053,8 +1053,24 @@ def signIn():
 
   # Call yahoo_fantasy_api with league_id and team_id to get roster data
 
-  response = make_response({'teamData':{'roster': rosterDetails, 'weekStats': weekStats, 'standings': standings, 'matchups': matchups, 'categories': categories, "stat_ids": stat_ids,}, 'leagueData':{"dropped": dropTransactions, "traded":tradeTransactions, "waivers":waivers}})
+  response = make_response(
+    {'roster': rosterDetails, 
+      'weekStats': weekStats, 
+      'standings': standings, 
+      'matchups': matchups, 
+      'categories': categories, 
+      'stat_ids': stat_ids,})
   return response
+
+@app.route("/leagueNews", methods=["GET"])
+def getInformation():
+   print('leagueNEws')
+   dropTransactions = lg.transactions('drop', 10)
+   tradeTransactions = lg.transactions('trade', 10)
+   waivers = lg.waivers()
+
+   response = make_response({"dropped": dropTransactions, "traded": tradeTransactions, "waivers": waivers})
+   return response
 
 @app.route("/playerStats", methods=["PUT"])
 def getPlayerStats():
@@ -1112,14 +1128,6 @@ def putTradeResponse():
 
    return make_response({'status': 200})
 
-# @app.route("/leagueNews")
-# def getInformation():
-#    dropTransactions = lg.transactions('drop')
-#    tradeTransactions = lg.transactions('trade')
-#    waivers = lg.waivers()
-
-#    response = make_response(dropTransactions, tradeTransactions, waivers)
-#    return response
 
 ## Making changes to roster
 # Route to Drop a Player

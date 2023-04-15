@@ -14,18 +14,32 @@ function App() {
 
   // Could turn this into a function once I need to not only have my team loading.
   useEffect(() => {
-    axios.get(`${config.REACT_APP_API_ENDPOINT}/`)
-    .then((response) => {
-      console.log(response.data)
-      let teamData = response.data.teamData
-      setTeamData(teamData)
+    const urls = [
+      `${config.REACT_APP_API_ENDPOINT}/`,
+      `${config.REACT_APP_API_ENDPOINT}/leagueNews`,
+    ]
 
-      let leagueNews = response.data.leagueData      
-      setLeagueNews(leagueNews)
-    }) 
+    axios.all(urls.map(url => axios.get(url)))
+    .then(axios.spread((teamResponse, leagueResponse) => {
+      console.dir(teamResponse.data);
+      console.log(leagueResponse.data);
+    }))
     .catch((error) => {
-      console.log(error)
+      console.error(error)
     })
+
+  //   axios.get(`${config.REACT_APP_API_ENDPOINT}/`)
+  //   .then((response) => {
+  //     console.log(response.data)
+  //     let teamData = response.data.teamData
+  //     setTeamData(teamData)
+
+  //     // let leagueNews = response.data.leagueData      
+  //     // setLeagueNews(leagueNews)
+  //   }) 
+  //   .catch((error) => {
+  //     console.log(error)
+  //   })
   },[])
 
   return (
