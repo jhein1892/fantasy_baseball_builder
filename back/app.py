@@ -986,25 +986,25 @@ CORS(app, origins=['https://localhost:3000'], methods=["GET", "POST", "PUT", "DE
 
 # FILE CALLED: App.js
 # Used to get league_id and team_name
+
+def getRosterIds(roster):
+  rosterIDs = []
+
+  for player in roster:
+    rosterIDs.append(player['player_id'])
+    
+  return rosterIDs
+
 @app.route("/")
 def signIn():
   standings = lg.standings()
   matchups = lg.matchups()
   categories = lg.stat_categories()
-  # dropTransactions = lg.transactions('drop', 10)
-  # tradeTransactions = lg.transactions('trade', 10)
-  # waivers = lg.waivers()
-
-  matchups = matchups['fantasy_content']['league']
-  matchups.append(stat_ids) 
-
   roster = tm.roster()
-  rosterIDs = []
 
-  for player in roster:
-    rosterIDs.append(player['player_id'])
-  
+  rosterIDs = getRosterIds(roster)
   rosterDetails = lg.player_details(rosterIDs)
+  
   
   # Section to get the week stats for each player
   date_range = lg.week_date_range(lg.current_week())
@@ -1062,9 +1062,12 @@ def signIn():
       'stat_ids': stat_ids,})
   return response
 
+@app.route("/weekStats", methods=["GET"])
+def  getWeekStats():
+
+
 @app.route("/leagueNews", methods=["GET"])
 def getInformation():
-   print('leagueNEws')
    dropTransactions = lg.transactions('drop', 10)
    tradeTransactions = lg.transactions('trade', 10)
    waivers = lg.waivers()
