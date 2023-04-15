@@ -17,12 +17,14 @@ function App() {
     const urls = [
       `${config.REACT_APP_API_ENDPOINT}/`,
       `${config.REACT_APP_API_ENDPOINT}/leagueNews`,
+      `${config.REACT_APP_API_ENDPOINT}/weekStats`,
     ]
 
     axios.all(urls.map(url => axios.get(url)))
-    .then(axios.spread((teamResponse, leagueResponse) => {
-      console.dir(teamResponse.data);
+    .then(axios.spread((teamResponse, leagueResponse, weeklyResponse) => {
+      console.log(teamResponse.data);
       console.log(leagueResponse.data);
+      console.log(weeklyResponse.data);
     }))
     .catch((error) => {
       console.error(error)

@@ -987,7 +987,7 @@ CORS(app, origins=['https://localhost:3000'], methods=["GET", "POST", "PUT", "DE
 # FILE CALLED: App.js
 # Used to get league_id and team_name
 
-def getRosterIds(roster):
+def getRosterIds(roster = tm.roster()):
   rosterIDs = []
 
   for player in roster:
@@ -1006,19 +1006,76 @@ def signIn():
   rosterDetails = lg.player_details(rosterIDs)
   
   
-  # Section to get the week stats for each player
+  # # Section to get the week stats for each player
+  # date_range = lg.week_date_range(lg.current_week())
+  # start_date = date_range[0]
+  # today = datetime.date.today()
+  # end_date = today if today < date_range[1] else date_range[1]
+  # # end_date = date_range[0]
+  # delta = datetime.timedelta(days=1)
+  # weekStats = {id:{} for id in rosterIDs} # Need to combine them here for easier sending back
+
+  # # Each Day we have an array of objects that hold values for that day
+  # # I can recursivesly create an object that uses index as keys and add the values to that key
+
+  # tempRosterIDs = [9718, 8588, 12281, 8758, 8780, 10056, 10465, 10505, 10556]
+
+  # while start_date <= end_date:
+  #   # print(start_date)
+  #   data = lg.player_stats(rosterIDs, 'date', start_date)
+  #   for player in data:
+  #     # print(f"New players: {player}\n")
+  #     playerID = player['player_id']
+  #     weekStats[playerID]['name'] = weekStats[playerID].get('name', player['name'])
+  #     if isinstance(player['G'], float): # If we played a game that day:
+
+  #       for key, value in player.items(): 
+  #         if not isinstance(value, float):
+  #           continue
+
+  #         # print(f"{key}: {value} of type {type(value)}\n")
+  #         ## Need to actually calculate Avg, OBP, OPS, SLG
+  #         weekStats[playerID][key] = weekStats[playerID].get(key, 0.0) + value
+  #   start_date += delta
+
+
+
+  for player in rosterDetails:
+    playerid = player['player_id']
+
+    index = -1
+    for i,x in enumerate(roster):
+        if x['player_id'] == int(playerid):
+          index = i
+        
+    if index >= 0:
+        player['selected_position'] = roster[index]['selected_position']
+
+  # Call yahoo_fantasy_api with league_id and team_id to get roster data
+
+  response = make_response(
+    {'roster': rosterDetails, 
+      # 'weekStats': weekStats, 
+      'standings': standings, 
+      'matchups': matchups, 
+      'categories': categories, 
+      'stat_ids': stat_ids,})
+  return response
+
+@app.route("/weekStats", methods=["GET"])
+def  getWeekStats():
+    # Section to get the week stats for each player
   date_range = lg.week_date_range(lg.current_week())
   start_date = date_range[0]
   today = datetime.date.today()
-  end_date = today if today < date_range[1] else date_range[1]
-  # end_date = date_range[0]
+  # end_date = today if today < date_range[1] else date_range[1]
+  end_date = date_range[0]
   delta = datetime.timedelta(days=1)
+  rosterIDs = getRosterIds()
   weekStats = {id:{} for id in rosterIDs} # Need to combine them here for easier sending back
 
   # Each Day we have an array of objects that hold values for that day
   # I can recursivesly create an object that uses index as keys and add the values to that key
-
-  tempRosterIDs = [9718, 8588, 12281, 8758, 8780, 10056, 10465, 10505, 10556]
 
   while start_date <= end_date:
     # print(start_date)
@@ -1038,33 +1095,9 @@ def signIn():
           weekStats[playerID][key] = weekStats[playerID].get(key, 0.0) + value
     start_date += delta
 
-
-
-  for player in rosterDetails:
-    playerid = player['player_id']
-
-    index = -1
-    for i,x in enumerate(roster):
-        if x['player_id'] == int(playerid):
-          index = i
-        
-    if index >= 0:
-        player['selected_position'] = roster[index]['selected_position']
-
-  # Call yahoo_fantasy_api with league_id and team_id to get roster data
-
-  response = make_response(
-    {'roster': rosterDetails, 
-      'weekStats': weekStats, 
-      'standings': standings, 
-      'matchups': matchups, 
-      'categories': categories, 
-      'stat_ids': stat_ids,})
+  print(weekStats)
+  response = make_response(weekStats)
   return response
-
-@app.route("/weekStats", methods=["GET"])
-def  getWeekStats():
-
 
 @app.route("/leagueNews", methods=["GET"])
 def getInformation():
