@@ -978,6 +978,8 @@ from flask_sslify import SSLify
 from yahoo_api import lg, gm, tm
 import ssl
 import datetime
+import json
+import math
 
 app = Flask(__name__)
 sslify = SSLify(app)
@@ -1005,41 +1007,6 @@ def signIn():
   rosterIDs = getRosterIds(roster)
   rosterDetails = lg.player_details(rosterIDs)
   
-  
-  # # Section to get the week stats for each player
-  # date_range = lg.week_date_range(lg.current_week())
-  # start_date = date_range[0]
-  # today = datetime.date.today()
-  # end_date = today if today < date_range[1] else date_range[1]
-  # # end_date = date_range[0]
-  # delta = datetime.timedelta(days=1)
-  # weekStats = {id:{} for id in rosterIDs} # Need to combine them here for easier sending back
-
-  # # Each Day we have an array of objects that hold values for that day
-  # # I can recursivesly create an object that uses index as keys and add the values to that key
-
-  # tempRosterIDs = [9718, 8588, 12281, 8758, 8780, 10056, 10465, 10505, 10556]
-
-  # while start_date <= end_date:
-  #   # print(start_date)
-  #   data = lg.player_stats(rosterIDs, 'date', start_date)
-  #   for player in data:
-  #     # print(f"New players: {player}\n")
-  #     playerID = player['player_id']
-  #     weekStats[playerID]['name'] = weekStats[playerID].get('name', player['name'])
-  #     if isinstance(player['G'], float): # If we played a game that day:
-
-  #       for key, value in player.items(): 
-  #         if not isinstance(value, float):
-  #           continue
-
-  #         # print(f"{key}: {value} of type {type(value)}\n")
-  #         ## Need to actually calculate Avg, OBP, OPS, SLG
-  #         weekStats[playerID][key] = weekStats[playerID].get(key, 0.0) + value
-  #   start_date += delta
-
-
-
   for player in rosterDetails:
     playerid = player['player_id']
 
@@ -1055,7 +1022,6 @@ def signIn():
 
   response = make_response(
     {'roster': rosterDetails, 
-      # 'weekStats': weekStats, 
       'standings': standings, 
       'matchups': matchups, 
       'categories': categories, 
@@ -1068,9 +1034,9 @@ def  getWeekStats():
   date_range = lg.week_date_range(lg.current_week())
   start_date = date_range[0]
   today = datetime.date.today()
-  # end_date = today if today < date_range[1] else date_range[1]
-  end_date = date_range[0]
   delta = datetime.timedelta(days=1)
+  end_date = today if today < date_range[1] else date_range[1]
+  # end_date = date_range[0] + delta
   rosterIDs = getRosterIds()
   weekStats = {id:{} for id in rosterIDs} # Need to combine them here for easier sending back
 
@@ -1084,19 +1050,20 @@ def  getWeekStats():
       # print(f"New players: {player}\n")
       playerID = player['player_id']
       weekStats[playerID]['name'] = weekStats[playerID].get('name', player['name'])
-      if isinstance(player['G'], float): # If we played a game that day:
-
+      if isinstance(player['G'], float): # If we played a game that day
         for key, value in player.items(): 
           if not isinstance(value, float):
             continue
+          if math.isinf(value):
+            weekStats[playerID][key] = 'inf'
+          else:
+            weekStats[playerID][key] = round(weekStats[playerID].get(key, 0.0) + value, 3)
 
           # print(f"{key}: {value} of type {type(value)}\n")
           ## Need to actually calculate Avg, OBP, OPS, SLG
-          weekStats[playerID][key] = weekStats[playerID].get(key, 0.0) + value
     start_date += delta
-
-  print(weekStats)
-  response = make_response(weekStats)
+  print(weekStats.keys())
+  response = make_response(json.dumps(weekStats))
   return response
 
 @app.route("/leagueNews", methods=["GET"])

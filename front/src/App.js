@@ -24,6 +24,7 @@ function App() {
     .then(axios.spread((teamResponse, leagueResponse, weeklyResponse) => {
       console.log(teamResponse.data);
       console.log(leagueResponse.data);
+      // let weekStats = JSON.parse(weeklyResponse.data)
       console.log(weeklyResponse.data);
     }))
     .catch((error) => {
