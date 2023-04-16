@@ -4,10 +4,7 @@ import classNames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronCircleLeft, faChevronCircleRight } from '@fortawesome/free-solid-svg-icons'
 
-
-// Once we get live Data, will need to work on showing whose winning categories
-
-export default function Matchups({data}){
+export default function Matchups({data, categories}){
     const [matchupData, setMatchupData] = useState()
     const [statID, setStatID] = useState([])
     const [currentMatchup, setCurrentMatchup] = useState(0)
@@ -15,9 +12,8 @@ export default function Matchups({data}){
 
     useEffect(() => {
         if(data){
-            let relevantData = data[1]['scoreboard'][0]['matchups']
-            let statIDData = data[2]['stat_categories'] 
-            setStatID(statIDData)
+            let relevantData = data['fantasy_content']['league'][1]['scoreboard'][0]['matchups']
+            setStatID(categories)
             setMatchupData(relevantData)
         }
     },[data])
@@ -71,7 +67,7 @@ export default function Matchups({data}){
             let stat_id = category['stat_winner']['stat_id']
             let winner_id = category['stat_winner']['winner_team_key']
             let displayName = statID.find(el => el.stat_id == stat_id)
-            let dataType = displayName['position_types'][0]
+            let dataType = displayName['position_type'];
             displayName = displayName['display_name']
             let stat_value = category['stat_winner']
             

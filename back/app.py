@@ -1044,10 +1044,8 @@ def  getWeekStats():
   # I can recursivesly create an object that uses index as keys and add the values to that key
 
   while start_date <= end_date:
-    # print(start_date)
     data = lg.player_stats(rosterIDs, 'date', start_date)
     for player in data:
-      # print(f"New players: {player}\n")
       playerID = player['player_id']
       weekStats[playerID]['name'] = weekStats[playerID].get('name', player['name'])
       if isinstance(player['G'], float): # If we played a game that day
@@ -1058,9 +1056,8 @@ def  getWeekStats():
             weekStats[playerID][key] = 'inf'
           else:
             weekStats[playerID][key] = round(weekStats[playerID].get(key, 0.0) + value, 3)
-
-          # print(f"{key}: {value} of type {type(value)}\n")
           ## Need to actually calculate Avg, OBP, OPS, SLG
+
     start_date += delta
   print(weekStats.keys())
   response = make_response(json.dumps(weekStats))

@@ -22,10 +22,13 @@ function App() {
 
     axios.all(urls.map(url => axios.get(url)))
     .then(axios.spread((teamResponse, leagueResponse, weeklyResponse) => {
-      console.log(teamResponse.data);
-      console.log(leagueResponse.data);
-      // let weekStats = JSON.parse(weeklyResponse.data)
-      console.log(weeklyResponse.data);
+      let teamData = teamResponse.data
+      console.log(teamData)
+      let leagueNews = leagueResponse.data
+      let weeklyData = weeklyResponse.data
+      
+      setTeamData(teamData)
+      setLeagueNews(leagueNews)
     }))
     .catch((error) => {
       console.error(error)
