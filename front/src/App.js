@@ -23,9 +23,10 @@ function App() {
     axios.all(urls.map(url => axios.get(url)))
     .then(axios.spread((teamResponse, leagueResponse, weeklyResponse) => {
       let teamData = teamResponse.data
-      console.log(teamData)
       let leagueNews = leagueResponse.data
       let weeklyData = weeklyResponse.data
+      
+      console.log(weeklyData)
       
       setTeamData(teamData)
       setLeagueNews(leagueNews)
