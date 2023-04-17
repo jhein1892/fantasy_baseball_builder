@@ -4,9 +4,13 @@ import classNames from 'classnames';
 import axios from 'axios';
 import config from '../config';
 
-export default function TeamRoster({ data, categories }){
+export default function TeamRoster({ data, categories, weeklyStats }){
     const [localData, setLocalData] = useState();
     const [updatedRoster, setUpdatedRoster] = useState([]);
+    const [weeklyData, setWeeklyData]= useState({});
+    const [displayStats, setDisplayStats] = useState('season')
+
+
     const batterPositions = ['C', '1B', '2B', '3B', 'SS','OF','OF','OF','Util', 'Util'];    // Roster Positions for Batters 
     const pitcherPositions = ['SP','SP','SP','RP','RP','P','P','P'];                // Roster Positions for Pitchers
     const additionalPositions = ['BN','BN','BN','IL','IL','IL','IL','NA'];          // Additonal Roster Spots
@@ -130,13 +134,16 @@ export default function TeamRoster({ data, categories }){
         positionSet = positionSet.concat(additionalPositions)
         if(tempData.length > 0){
             return positionSet.map((position, index) => {
+
                 // Find players assigned to current positions
                 let eligiblePlayer = tempData.filter((x) => x.selected_position === position);
-                
+                let weeklyData;
                 // Pick first element and remove from data set for future positions.
                 if(eligiblePlayer.length > 0){
                     eligiblePlayer = eligiblePlayer[0];
                     let newTempData = tempData.filter((x) => x.player_id !== eligiblePlayer.player_id);
+                    weeklyData = weeklyStats[eligiblePlayer.player_id]
+                    console.log("weeklyData: ", weeklyData)
                     tempData = newTempData;
                 } 
                 else {
@@ -152,32 +159,33 @@ export default function TeamRoster({ data, categories }){
 
                 // Building dict that will hold the values/names for stats
                 if(eligiblePlayer && eligiblePlayer['player_stats']){
-                    // console.log(eligiblePlayer)
-                    eligiblePlayer['player_stats']['stats'].forEach((stat) => {
+                    let player_stats = displayStats === 'season' ? eligiblePlayer['player_stats']['stats'] : Object.keys(weeklyData);
+                    // console.log(player_stats)
+                    player_stats.forEach((stat) => {
+                        // console.log(stat)
+                        // if(stat['stat']['stat_id'] == '50'){ // Innings Pitched
+                        //     let value = stat['stat']['value']
+                        //     if(value === '-'){
+                        //         value = '0.0'
+                        //     }
+                        //     statObject['IP'] = {stat: '50',  value: value}
+                        // }
 
-                        if(stat['stat']['stat_id'] == '50'){ // Innings Pitched
-                            let value = stat['stat']['value']
-                            if(value === '-'){
-                                value = '0.0'
-                            }
-                            statObject['IP'] = {stat: '50',  value: value}
-                        }
+                        // if(stat['stat']['stat_id'] == '60'){ // H/AB (AVG)
+                        //     let value = stat['stat']['value'] 
+                        //     value = value.split('/')
+                        //     value = parseFloat(value[0]/value[1]).toFixed(3)
+                        //     if(value === 'NaN'){
+                        //         value = '0.000'
+                        //     }
+                        //     value = value.substring(1)
+                        //     statObject['BA'] = {stat:'60', value: value}
+                        // }
 
-                        if(stat['stat']['stat_id'] == '60'){ // H/AB (AVG)
-                            let value = stat['stat']['value'] 
-                            value = value.split('/')
-                            value = parseFloat(value[0]/value[1]).toFixed(3)
-                            if(value === 'NaN'){
-                                value = '0.000'
-                            }
-                            value = value.substring(1)
-                            statObject['BA'] = {stat:'60', value: value}
-                        }
-
-                        let name = categories.filter((x) => x.stat_id == stat.stat.stat_id)
-                        name = name[0]
-                        let displayName = name ? name['display_name'] : 'NA'
-                        statObject[displayName] = stat.stat
+                        // let name = categories.filter((x) => x.stat_id == stat.stat.stat_id)
+                        // name = name[0]
+                        // let displayName = name ? name['display_name'] : 'NA'
+                        // statObject[displayName] = stat.stat
                     })
                 }
 
@@ -237,7 +245,9 @@ export default function TeamRoster({ data, categories }){
     useEffect(() => {
         if(data){
             setLocalData(data)
-            console.log(data)
+            setWeeklyData(weeklyStats)
+            // console.log(weeklyStats)
+            // console.log(data)
         }
     },[data])
 
@@ -252,7 +262,8 @@ export default function TeamRoster({ data, categories }){
 
     return (
         <div className={rosterStyles.rosterWrapper}>
-
+            <button onClick={() => {setDisplayStats('season')}}>Season</button>
+            <button onClick={() => {setDisplayStats('week')}}>This Week</button>
             <h3>Batters:</h3>
             <div className={batterErrorClasses}>
                 {error.batterLineup &&

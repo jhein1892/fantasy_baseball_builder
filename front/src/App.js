@@ -11,6 +11,7 @@ function App() {
   // Information about the roster for the team
   const [teamData, setTeamData] = useState({})
   const [leagueNews, setLeagueNews] = useState()
+  const [weeklyStats, setWeeklyStats] = useState()
 
   // Could turn this into a function once I need to not only have my team loading.
   useEffect(() => {
@@ -20,33 +21,32 @@ function App() {
       `${config.REACT_APP_API_ENDPOINT}/weekStats`,
     ]
 
+    function standardizeStats(weeklyData){
+      Object.keys(weeklyData).forEach((player) => {
+        let statsArray = []
+        for (let key in weeklyData[player]){
+          statsArray.push({'stat_name': key, 'value': weeklyData[player][key]})
+        }
+        weeklyData[player] = statsArray
+      })
+
+      console.log(weeklyData)
+    }
+-
     axios.all(urls.map(url => axios.get(url)))
     .then(axios.spread((teamResponse, leagueResponse, weeklyResponse) => {
       let teamData = teamResponse.data
       let leagueNews = leagueResponse.data
       let weeklyData = weeklyResponse.data
-      
-      console.log(weeklyData)
-      
+            
       setTeamData(teamData)
       setLeagueNews(leagueNews)
+      standardizeStats(weeklyData)
+      setWeeklyStats(weeklyData)
     }))
     .catch((error) => {
       console.error(error)
     })
-
-  //   axios.get(`${config.REACT_APP_API_ENDPOINT}/`)
-  //   .then((response) => {
-  //     console.log(response.data)
-  //     let teamData = response.data.teamData
-  //     setTeamData(teamData)
-
-  //     // let leagueNews = response.data.leagueData      
-  //     // setLeagueNews(leagueNews)
-  //   }) 
-  //   .catch((error) => {
-  //     console.log(error)
-  //   })
   },[])
 
   return (
@@ -54,10 +54,10 @@ function App() {
       <Header 
         leagueNews={leagueNews}
       />
-      {/* <NewsTicker leagueNews={leagueNews}/> */}
       { teamData &&
         <Body 
           data={teamData}
+          weeklyStats={weeklyStats}
         />
       }
     </div>

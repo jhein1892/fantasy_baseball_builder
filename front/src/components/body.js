@@ -8,7 +8,7 @@ import FreeAgents from './freeAgents';
 import CompareModal from './compareModal';
 import Trades from './trades';
 
-export default function Body({data}) {
+export default function Body({data, weeklyStats}) {
     const [player1Info, setPlayer1Info] = useState()
     const [player2Info, setPlayer2Info] = useState()
     const [viewComparison, setViewComparison] = useState(false)
@@ -43,7 +43,7 @@ export default function Body({data}) {
     return (
         <div className={bodyStyles.bodyWrapper} onScroll={() => console.log('scrolling')}>
             <div className={bodyStyles.rosterSection}>
-                <TeamRoster data={data.roster} categories={data.categories}/>
+                <TeamRoster data={data.roster} categories={data.categories} weeklyStats={weeklyStats}/>
             </div>
             <div className={bodyStyles.leagueSection}>
                 <Standings data={data.standings}/>
