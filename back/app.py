@@ -1031,8 +1031,8 @@ def signIn():
 @app.route("/weekStats", methods=["GET"])
 def  getWeekStats():
     # Section to get the week stats for each player
-  # date_range = lg.week_date_range(lg.current_week())
-  date_range = lg.week_date_range(2)
+  date_range = lg.week_date_range(lg.current_week())
+  # date_range = lg.week_date_range(2)
   start_date = date_range[0]
   today = datetime.date.today()
   delta = datetime.timedelta(days=1)

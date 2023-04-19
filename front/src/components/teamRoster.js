@@ -143,7 +143,7 @@ export default function TeamRoster({ data, categories, weeklyStats }){
                     eligiblePlayer = eligiblePlayer[0];
                     let newTempData = tempData.filter((x) => x.player_id !== eligiblePlayer.player_id);
                     weeklyData = weeklyStats[eligiblePlayer.player_id]
-                    console.log("weeklyData: ", weeklyData)
+                    // console.log("weeklyData: ", weeklyData)
                     tempData = newTempData;
                 } 
                 else {
@@ -159,35 +159,45 @@ export default function TeamRoster({ data, categories, weeklyStats }){
 
                 // Building dict that will hold the values/names for stats
                 if(eligiblePlayer && eligiblePlayer['player_stats']){
-                    let player_stats = displayStats === 'season' ? eligiblePlayer['player_stats']['stats'] : Object.keys(weeklyData);
+                    let player_stats = displayStats === 'season' ? eligiblePlayer['player_stats']['stats'] : weeklyData;
                     // console.log(player_stats)
                     player_stats.forEach((stat) => {
-                        // console.log(stat)
-                        // if(stat['stat']['stat_id'] == '50'){ // Innings Pitched
-                        //     let value = stat['stat']['value']
-                        //     if(value === '-'){
-                        //         value = '0.0'
-                        //     }
-                        //     statObject['IP'] = {stat: '50',  value: value}
-                        // }
+                        if (displayStats === 'season') {
+                            stat = stat['stat']
+                        }
 
-                        // if(stat['stat']['stat_id'] == '60'){ // H/AB (AVG)
-                        //     let value = stat['stat']['value'] 
-                        //     value = value.split('/')
-                        //     value = parseFloat(value[0]/value[1]).toFixed(3)
-                        //     if(value === 'NaN'){
-                        //         value = '0.000'
-                        //     }
-                        //     value = value.substring(1)
-                        //     statObject['BA'] = {stat:'60', value: value}
-                        // }
+                        if(stat['stat_id'] == '50'){ // Innings Pitched
+                            let value = stat['value']
+                            if(value === '-'){
+                                value = '0.0'
+                            }
+                            statObject['IP'] = {stat: '50',  value: value}
+                        }
 
-                        // let name = categories.filter((x) => x.stat_id == stat.stat.stat_id)
-                        // name = name[0]
-                        // let displayName = name ? name['display_name'] : 'NA'
-                        // statObject[displayName] = stat.stat
+                        if(stat['stat_id'] == '60'){ // H/AB (AVG)
+                            let value = stat['value'] 
+                            value = value.split('/')
+                            value = parseFloat(value[0]/value[1]).toFixed(3)
+                            if(value === 'NaN'){
+                                value = '0.000'
+                            }
+                            value = value.substring(1)
+                            statObject['BA'] = {stat:'60', value: value}
+                        }
+                        let displayName
+                        if (displayStats === 'season'){
+                            let name = categories.filter((x) => x.stat_id == stat.stat_id)
+                            name = name[0]
+                            displayName = name ? name['display_name'] : 'NA'
+                        } else {
+                            displayName = stat['stat_name']
+                        }
+                        statObject[displayName] = stat
+
                     })
                 }
+
+                console.log(statObject)
 
                 let additionalProperty = type === 'B' ? statObject['BA'] : statObject['IP']
 
