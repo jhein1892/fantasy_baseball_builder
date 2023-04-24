@@ -25,9 +25,13 @@ function Header({leagueNews}) {
             if (transDetails.type === 'add'){
                 iconSrc = faPlus
                 iconColor = 'green'
-            } else {
+            } else if (transDetails.type ==='drop') {
                 iconSrc = faMinus
                 iconColor = 'red'
+            } else { // Implement a trade option.
+                iconSrc = faMinus
+                iconColor = 'yellow'
+                
             }
             return (
                 <p className={headerStyles.playerName}><FontAwesomeIcon icon={iconSrc} size='xs' color={iconColor}/> {playerName} <span>{playerPosition}</span></p>
@@ -60,7 +64,9 @@ function Header({leagueNews}) {
                             let details;
                             let teamName;
                             let team2Name;
+
                             let transType = news['type']
+                            let count = players['count']
 
                             // Need to find the team Name
                             try{
@@ -82,13 +88,15 @@ function Header({leagueNews}) {
                                 else {
                                     teamName = news['trader_team_name'];
                                     team2Name = news['tradee_team_name'];
+                                    // Create object to store players for each destination
+                                    Object.keys(players).forEach((index) => {
+                                        // let destination = players[index]['player'][1]['transaction_data'][0]['destination_team_name']
+                                        // push player to proper array  
+                                    })
                                 }
                             } catch(error){
                                 console.error(error)
                             }
-
-
-                            let count = players['count']
 
                             let nameContent = team2Name ? teamName + " / " + team2Name : teamName;
 
@@ -96,6 +104,7 @@ function Header({leagueNews}) {
                                 <div className={headerStyles.transaction}>
                                     <p className={headerStyles.teamName}>{nameContent} (<span>{transType}</span>)</p>
                                     <hr />
+                                    {/* Update this to generate multiple options of we have a trade */}
                                     {generateNewsType(count, players)}
                                 </div>
                             )
