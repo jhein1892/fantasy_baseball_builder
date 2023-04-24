@@ -67,7 +67,7 @@ export default function TeamRoster({ data, categories, weeklyStats }){
         let tempLocalData = localData;
         let moveAllowed = true;
         let positionType = type === 'P' ? 'pitcherLineup' : 'batterLineup';
-        console.log(id)
+        // console.log(id)
 
         if(availablePositions[value] === 1){
             if(tempLocalData.some(player => player['selected_position'] === value)){
@@ -197,7 +197,7 @@ export default function TeamRoster({ data, categories, weeklyStats }){
                     })
                 }
 
-                console.log(statObject)
+                // console.log(statObject)
 
                 let additionalProperty = type === 'B' ? statObject['BA'] : statObject['IP']
 

@@ -59,33 +59,42 @@ function Header({leagueNews}) {
                             let keyPrefix;
                             let details;
                             let teamName;
+                            let team2Name;
+                            let transType = news['type']
 
                             // Need to find the team Name
                             try{
-                                if (players[0]['player'][1]['transaction_data'].length){
-                                    details = players[0]['player'][1]['transaction_data'][0]
-                                } else {
-                                    details = players[0]['player'][1]['transaction_data']
+                                if(transType !== 'trade'){
+                                    if (players[0]['player'][1]['transaction_data'].length){
+                                        details = players[0]['player'][1]['transaction_data'][0]
+                                    } else {
+                                        details = players[0]['player'][1]['transaction_data']
+                                    }
+                                    if(details['type'] === 'add'){
+                                        // destination
+                                        keyPrefix = 'destination'
+                                    } else {
+                                        // source
+                                        keyPrefix = 'source'
+                                    }
+                                    teamName = details[`${keyPrefix}_team_name`]
                                 }
-                                if(details['type'] === 'add'){
-                                    // destination
-                                    keyPrefix = 'destination'
-                                } else {
-                                    // source
-                                    keyPrefix = 'source'
+                                else {
+                                    teamName = news['trader_team_name'];
+                                    team2Name = news['tradee_team_name'];
                                 }
-                                teamName = details[`${keyPrefix}_team_name`]
                             } catch(error){
                                 console.error(error)
                             }
 
 
                             let count = players['count']
-                            let transType = news['type']
-                            // console.log(news)
+
+                            let nameContent = team2Name ? teamName + " / " + team2Name : teamName;
+
                             return (
                                 <div className={headerStyles.transaction}>
-                                    <p className={headerStyles.teamName}>{teamName} (<span>{transType}</span>)</p>
+                                    <p className={headerStyles.teamName}>{nameContent} (<span>{transType}</span>)</p>
                                     <hr />
                                     {generateNewsType(count, players)}
                                 </div>
@@ -113,6 +122,7 @@ function Header({leagueNews}) {
  
     useEffect(() => {
         if(leagueNews){
+            console.log(leagueNews)
             setNewsType(Object.keys(leagueNews))
         }
     },[leagueNews])
