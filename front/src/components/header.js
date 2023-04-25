@@ -110,13 +110,14 @@ function Header({leagueNews}) {
                             }
 
                             let nameContent = team2Name ? teamName + " / " + team2Name : teamName;
+                            let playerContent = transType === 'trade' ? tradeObj["RBI'd for his/her Pleasure"] : players
 
                             return (
                                 <div className={headerStyles.transaction}>
                                     <p className={headerStyles.teamName}>{nameContent} (<span>{transType}</span>)</p>
                                     <hr />
                                     {/* Update this to generate multiple options of we have a trade */}
-                                    {generateNewsType(players)}
+                                    {generateNewsType(playerContent)}
                                 </div>
                             )
                         }) : <h3 className={headerStyles.noNews}>Nothing to Report</h3>}
