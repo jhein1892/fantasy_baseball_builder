@@ -8,8 +8,9 @@ function Header({leagueNews}) {
     const [newsType, setNewsType] = useState([]);
     const [displayIndex, setDisplayIndex] = useState(0);
 
-    function generateNewsType(count, players){
-        let arr = Array.from({length: count}, (_,index) => index);
+    function generateNewsType(players){
+        console.log(players)
+        let arr = Array.from({length: players.count}, (_,index) => index);
         return arr.map((i) => {
 
             let playerName = players[i]['player'][0][2]['name']['full']
@@ -62,8 +63,10 @@ function Header({leagueNews}) {
                             let players = news['players']
                             let keyPrefix;
                             let details;
+
                             let teamName;
                             let team2Name;
+                            let tradeObj = {}
 
                             let transType = news['type']
                             let count = players['count']
@@ -88,11 +91,19 @@ function Header({leagueNews}) {
                                 else {
                                     teamName = news['trader_team_name'];
                                     team2Name = news['tradee_team_name'];
-                                    // Create object to store players for each destination
                                     Object.keys(players).forEach((index) => {
-                                        // let destination = players[index]['player'][1]['transaction_data'][0]['destination_team_name']
-                                        // push player to proper array  
+                                        if(index != 'count'){
+                                            let destination = players[index]['player'][1]['transaction_data'][0]['destination_team_name']
+                                            if (tradeObj.hasOwnProperty(destination)){
+                                                tradeObj[destination].push(players[index])
+                                                tradeObj[destination].count++;
+                                            } else {
+                                                tradeObj[destination] = [players[index]]
+                                                tradeObj[destination].count = 1
+                                            }
+                                        }
                                     })
+                                    console.log(tradeObj)
                                 }
                             } catch(error){
                                 console.error(error)
@@ -105,7 +116,7 @@ function Header({leagueNews}) {
                                     <p className={headerStyles.teamName}>{nameContent} (<span>{transType}</span>)</p>
                                     <hr />
                                     {/* Update this to generate multiple options of we have a trade */}
-                                    {generateNewsType(count, players)}
+                                    {generateNewsType(players)}
                                 </div>
                             )
                         }) : <h3 className={headerStyles.noNews}>Nothing to Report</h3>}
