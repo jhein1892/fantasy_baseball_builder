@@ -114,18 +114,25 @@ function Header({leagueNews}) {
 
                             return (
                                 <div className={headerStyles.transaction}>
-                                    <p className={headerStyles.teamName}>{nameContent} (<span>{transType}</span>)</p>
-                                    <hr />
                                     {transType === 'trade' ?
-                                        Object.keys(tradeObj).map((team) => {
-                                            console.log("1", tradeObj["RBI'd for his/her Pleasure"])
-                                            console.log("2", tradeObj[team])
-                                            return generateNewsType(tradeObj[team])   
-                                        })
+                                        <div className={headerStyles.trade}>
+                                        {Object.keys(tradeObj).map((team) => {
+                                            return (
+                                                <div>
+                                                <p className={headerStyles.teamName}>{team} (<span>{transType}</span>)</p>
+                                                <hr />
+                                                    {generateNewsType(tradeObj[team])}
+                                                </div>
+                                            )
+                                        })}
+                                        </div>
                                         :
-                                        generateNewsType(playerContent)
+                                        <div>
+                                            <p className={headerStyles.teamName}>{teamName} (<span>{transType}</span>)</p>
+                                            <hr />
+                                            {generateNewsType(playerContent)}
+                                        </div>
                                     }
-                                    {/* Update this to generate multiple options of we have a trade */}
                                 </div>
                             )
                         }) : <h3 className={headerStyles.noNews}>Nothing to Report</h3>}
