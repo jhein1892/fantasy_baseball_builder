@@ -116,8 +116,16 @@ function Header({leagueNews}) {
                                 <div className={headerStyles.transaction}>
                                     <p className={headerStyles.teamName}>{nameContent} (<span>{transType}</span>)</p>
                                     <hr />
+                                    {transType === 'trade' ?
+                                        Object.keys(tradeObj).map((team) => {
+                                            console.log("1", tradeObj["RBI'd for his/her Pleasure"])
+                                            console.log("2", tradeObj[team])
+                                            return generateNewsType(tradeObj[team])   
+                                        })
+                                        :
+                                        generateNewsType(playerContent)
+                                    }
                                     {/* Update this to generate multiple options of we have a trade */}
-                                    {generateNewsType(playerContent)}
                                 </div>
                             )
                         }) : <h3 className={headerStyles.noNews}>Nothing to Report</h3>}
