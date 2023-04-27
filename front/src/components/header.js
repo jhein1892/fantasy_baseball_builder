@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import headerStyles from '../styles/header.module.sass';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faMinus, faChevronUp, faChevronDown } from '@fortawesome/free-solid-svg-icons'
+import { faPlus, faMinus, faChevronUp, faChevronDown, faRightLeft } from '@fortawesome/free-solid-svg-icons'
 import classNames from 'classnames';
 
 function Header({leagueNews}) {
@@ -116,10 +116,16 @@ function Header({leagueNews}) {
                                 <div className={headerStyles.transaction}>
                                     {transType === 'trade' ?
                                         <div className={headerStyles.trade}>
-                                        {Object.keys(tradeObj).map((team) => {
+                                        {Object.keys(tradeObj).map((team, index) => {
                                             return (
                                                 <div>
-                                                <p className={headerStyles.teamName}>{team} (<span>{transType}</span>)</p>
+                                                <div className={headerStyles.trade_team}>
+                                                    <p className={headerStyles.teamName}>{team}</p>
+                                                    { index%2 === 0 &&
+                                                        <FontAwesomeIcon icon={faRightLeft} size='sm'/>
+                                                    }
+                                                </div>
+
                                                 <hr />
                                                     {generateNewsType(tradeObj[team])}
                                                 </div>
