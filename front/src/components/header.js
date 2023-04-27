@@ -23,7 +23,7 @@ function Header({leagueNews}) {
             }
             let iconSrc;
             let iconColor;
-            if (transDetails.type === 'add'){
+            if (transDetails.type === 'add' || transDetails.type === 'trade'){
                 iconSrc = faPlus
                 iconColor = 'green'
             } else if (transDetails.type ==='drop') {
@@ -122,7 +122,7 @@ function Header({leagueNews}) {
                                                 <div className={headerStyles.trade_team}>
                                                     <p className={headerStyles.teamName}>{team}</p>
                                                     { index%2 === 0 &&
-                                                        <FontAwesomeIcon icon={faRightLeft} size='sm'/>
+                                                        <FontAwesomeIcon icon={faRightLeft} size='sm' color='green'/>
                                                     }
                                                 </div>
 
