@@ -41,6 +41,7 @@ export default function CompareModal({player1, player2, setViewComparison, categ
 
     function generatePlayer(player){
         function generateStats(){
+            console.log(statCategories)
             return statCategories.map((stat) => {
                 let playerStats = player.player_stats.stats.filter((x) => x.stat.stat_id == stat.stat_id)
                 playerStats = playerStats[0]
@@ -54,6 +55,8 @@ export default function CompareModal({player1, player2, setViewComparison, categ
                 )
             })
         }
+
+        console.log(player)
 
         return(
             <>
@@ -103,6 +106,7 @@ export default function CompareModal({player1, player2, setViewComparison, categ
     useEffect(() => {
         try{
             let type = player1.position_type
+            console.log(categories)
             let relevantCategories = categories.filter((x) => x.position_type === type)
             let displayPlayer = player2.filter((x) => x.selected_position == player1.primary_position)
             setCurrentPlayer(displayPlayer[0])
@@ -136,4 +140,4 @@ export default function CompareModal({player1, player2, setViewComparison, categ
 
 // Add_Drop => Drop my player and add the one I'm comparing to
 // Add player => Check if we have room, supply position options for the add
-// Drop player => Drop player
+// Drop player => Drop playerr

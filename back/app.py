@@ -617,6 +617,9 @@ stat_ids = {
       "base_stats": [
         "6",
         "8"
+      ],
+      "position_types":[
+        "B"
       ]
     },
     {
@@ -1002,6 +1005,9 @@ def signIn():
   standings = lg.standings()
   matchups = lg.matchups()
   categories = lg.stat_categories()
+  if 'IP' in categories and "H/AB" in categories: # Need to figure out why we are adding these twice
+    print("Already have innings Pitched")
+  categories.extend([{'display_name':'IP', 'position_type':'P'}, {'display_name':'H/AB', 'position_type':'B'}])
   roster = tm.roster()
 
   rosterIDs = getRosterIds(roster)

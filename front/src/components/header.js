@@ -9,7 +9,6 @@ function Header({leagueNews}) {
     const [displayIndex, setDisplayIndex] = useState(0);
 
     function generateNewsType(players){
-        console.log(players)
         let arr = Array.from({length: players.count}, (_,index) => index);
         return arr.map((i) => {
 
@@ -103,7 +102,6 @@ function Header({leagueNews}) {
                                             }
                                         }
                                     })
-                                    console.log(tradeObj)
                                 }
                             } catch(error){
                                 console.error(error)
@@ -164,7 +162,6 @@ function Header({leagueNews}) {
  
     useEffect(() => {
         if(leagueNews){
-            console.log(leagueNews)
             setNewsType(Object.keys(leagueNews))
         }
     },[leagueNews])
