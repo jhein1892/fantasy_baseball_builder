@@ -114,7 +114,7 @@ export default function TeamRoster({ data, categories, weeklyStats }){
             return cats.map((x,index) => {
                 if(isHeader){
                     return (
-                        <th key={`header-${x['display_name']}-${index}`}>{x.display_name}</th>
+                        <th key={`header-${x['display_name']}-${index}`}>{x.display_name === 'H/AB' ? 'AVG' : x.display_name}</th>
                     )
                 }
                 else {
@@ -166,24 +166,14 @@ export default function TeamRoster({ data, categories, weeklyStats }){
                             stat = stat['stat']
                         }
 
-                        if(stat['stat_id'] == '50'){ // Innings Pitched
-                            let value = stat['value']
-                            if(value === '-'){
-                                value = '0.0'
-                            }
-                            statObject['IP'] = {stat: '50',  value: value}
-                        }
+                        // if(stat['stat_id'] == '50'){ // Innings Pitched
+                        //     let value = stat['value']
+                        //     if(value === '-'){
+                        //         value = '0.0'
+                        //     }
+                        //     statObject['IP'] = {stat: '50',  value: value}
+                        // }
 
-                        if(stat['stat_id'] == '60'){ // H/AB (AVG)
-                            let value = stat['value'] 
-                            value = value.split('/')
-                            value = parseFloat(value[0]/value[1]).toFixed(3)
-                            if(value === 'NaN'){
-                                value = '0.000'
-                            }
-                            value = value.substring(1)
-                            statObject['BA'] = {stat:'60', value: value}
-                        }
                         let displayName
                         if (displayStats === 'season'){
                             let name = categories.filter((x) => x.stat_id == stat.stat_id)
@@ -192,15 +182,22 @@ export default function TeamRoster({ data, categories, weeklyStats }){
                         } else {
                             displayName = stat['stat_name']
                         }
-                        statObject[displayName] = stat
+                        if(stat['stat_id'] == '60'){ // H/AB (AVG)
+                            let value = stat['value'] 
+                            value = value.split('/')
+                            value = parseFloat(value[0]/value[1]).toFixed(3)
+                            if(value === 'NaN'){
+                                value = '0.000'
+                            }
+                            value = value.substring(1)
+                            console.log(value)
+                            statObject['H/AB'] = {stat:'60', value: value}
+                        } else {
+                            statObject[displayName] = stat
+                        }
 
                     })
                 }
-
-                // console.log(statObject)
-
-                let additionalProperty = type === 'B' ? statObject['BA'] : statObject['IP']
-
                 // else return table row with data
                 return(
                     <tr className={rosterStyles.positionSlot} key={`${position}-${index}`} id={eligiblePlayer.player_id}>
@@ -208,7 +205,6 @@ export default function TeamRoster({ data, categories, weeklyStats }){
                         {eligiblePlayer && 
                         <>
                         <td className={rosterStyles.playerName}>{eligiblePlayer.status && <span className={rosterStyles.injuryTag}>{eligiblePlayer.status}</span>}{eligiblePlayer.name ? eligiblePlayer.name['full'] : 'empty' } - <span>{eligiblePlayer.display_position}</span></td>
-                        <td>{additionalProperty ? additionalProperty['value'] : 0}</td>
                         {generateCategories(type, false, statObject)}
                         <td>
                             <select
@@ -256,8 +252,6 @@ export default function TeamRoster({ data, categories, weeklyStats }){
         if(data){
             setLocalData(data)
             setWeeklyData(weeklyStats)
-            // console.log(weeklyStats)
-            // console.log(data)
         }
     },[data])
 
@@ -285,7 +279,6 @@ export default function TeamRoster({ data, categories, weeklyStats }){
                     <tr>
                         <th>Position</th>
                         <th>Name</th>
-                        <th>BA</th>
                         {generateCategories('B', true)}
                         <th>Switch Positions</th>
                         <th></th>
@@ -306,7 +299,6 @@ export default function TeamRoster({ data, categories, weeklyStats }){
                     <tr>
                         <th>Position</th>
                         <th>Name</th>
-                        <th>IP</th>
                         {generateCategories('P', true)}
                         <th>Switch Positions</th>
                         <th></th>

@@ -41,14 +41,12 @@ export default function CompareModal({player1, player2, setViewComparison, categ
 
     function generatePlayer(player){
         function generateStats(){
-            console.log(statCategories)
             return statCategories.map((stat) => {
                 let playerStats = player.player_stats.stats.filter((x) => x.stat.stat_id == stat.stat_id)
                 playerStats = playerStats[0]
-                
                 return (
                     <div className={modalStyles.statWrapper}>
-                        <p className={modalStyles.statName}>{stat.display_name}</p>
+                        <p className={modalStyles.statName}>{stat.display_name}:</p>
                         {/* <hr /> */}
                         <p className={modalStyles.statValue}>{playerStats.stat.value}</p>
                     </div>
