@@ -166,14 +166,6 @@ export default function TeamRoster({ data, categories, weeklyStats }){
                             stat = stat['stat']
                         }
 
-                        // if(stat['stat_id'] == '50'){ // Innings Pitched
-                        //     let value = stat['value']
-                        //     if(value === '-'){
-                        //         value = '0.0'
-                        //     }
-                        //     statObject['IP'] = {stat: '50',  value: value}
-                        // }
-
                         let displayName
                         if (displayStats === 'season'){
                             let name = categories.filter((x) => x.stat_id == stat.stat_id)
@@ -182,7 +174,7 @@ export default function TeamRoster({ data, categories, weeklyStats }){
                         } else {
                             displayName = stat['stat_name']
                         }
-                        if(stat['stat_id'] == '60'){ // H/AB (AVG)
+                        if(stat['stat_id'] == '60'){ // Transform H/AB to AVG
                             let value = stat['value'] 
                             value = value.split('/')
                             value = parseFloat(value[0]/value[1]).toFixed(3)
@@ -190,7 +182,6 @@ export default function TeamRoster({ data, categories, weeklyStats }){
                                 value = '0.000'
                             }
                             value = value.substring(1)
-                            console.log(value)
                             statObject['H/AB'] = {stat:'60', value: value}
                         } else {
                             statObject[displayName] = stat
