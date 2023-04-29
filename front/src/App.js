@@ -38,7 +38,7 @@ function App() {
       let teamData = teamResponse.data
       let leagueNews = leagueResponse.data
       let weeklyData = standardizeStats(weeklyResponse.data)
-            
+      console.log(teamData)
       setTeamData(teamData)
       setLeagueNews(leagueNews)
       setWeeklyStats(weeklyData)

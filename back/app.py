@@ -1005,9 +1005,15 @@ def signIn():
   standings = lg.standings()
   matchups = lg.matchups()
   categories = lg.stat_categories()
-  if 'IP' in categories and "H/AB" in categories: # Need to figure out why we are adding these twice
-    print("Already have innings Pitched")
-  categories.extend([{'display_name':'IP', 'position_type':'P'}, {'display_name':'H/AB', 'position_type':'B'}])
+
+  already_exists = False
+  for cat in categories:
+    if cat['display_name'] == 'IP' or cat['display_name'] == 'H/AB':
+      already_exists = True
+  if not already_exists:  
+    categories.extend([{'display_name':'IP', 'position_type':'P'}, {'display_name':'H/AB', 'position_type':'B'}])
+
+
   roster = tm.roster()
 
   rosterIDs = getRosterIds(roster)

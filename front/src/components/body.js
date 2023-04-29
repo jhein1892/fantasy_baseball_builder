@@ -21,6 +21,7 @@ export default function Body({data, weeklyStats}) {
 
     useEffect(() => {
         if(Object.keys(data).length > 0){
+            console.log('Firing')
             let categories = data.categories
             let ids = data.stat_ids.stat_categories
 
