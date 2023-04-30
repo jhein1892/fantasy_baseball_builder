@@ -242,6 +242,7 @@ export default function TeamRoster({ data, categories, weeklyStats }){
     useEffect(() => {
         if(data){
             setLocalData(data)
+            console.log(weeklyStats)
             setWeeklyData(weeklyStats)
         }
     },[data])

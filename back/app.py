@@ -1070,7 +1070,11 @@ def  getWeekStats():
               if math.isinf(value):
                 weekStats[playerID][key] = 'inf'
               else:
-                weekStats[playerID][key] = round(weekStats[playerID].get(key, 0.0) + value, 3)
+                if key is 'AVG':
+                  avg_float = weekStats[playerID]['H']/weekStats[playerID]['AB']
+                  weekStats[playerID]['H/AB'] = "{:.3f}".format(avg_float) if avg_float >= 1 else "{:.3f}".format(avg_float).lstrip('0')
+                else:
+                  weekStats[playerID][key] = round(weekStats[playerID].get(key, 0.0) + value, 3)
         except:
           print(f"Error with: {key}, value: {value}")
     except:
@@ -1078,7 +1082,7 @@ def  getWeekStats():
           ## Need to actually calculate Avg, OBP, OPS, SLG
 
     start_date += delta
-  print(weekStats.keys())
+
   response = make_response(json.dumps(weekStats))
   return response
 

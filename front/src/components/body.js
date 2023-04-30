@@ -21,7 +21,6 @@ export default function Body({data, weeklyStats}) {
 
     useEffect(() => {
         if(Object.keys(data).length > 0){
-            console.log('Firing')
             let categories = data.categories
             let ids = data.stat_ids.stat_categories
 
@@ -31,7 +30,6 @@ export default function Body({data, weeklyStats}) {
                 }})
                 return info
             }            
-            console.log(categories)
             categories.forEach((x) => {
                 let type = x.position_type
                 let id = findID(x.display_name, type)
