@@ -1081,8 +1081,8 @@ def  getWeekStats():
 
                 elif key is 'OBP':
                   # (H + BB + HBP)/(AB + BB + HBP + SF)
-                  # onBase_float = 
-                  print('On-Base')
+                  onBase_float = (curr_player['H'] + curr_player['BB'] + curr_player['IBB'] + curr_player['HBP'])/(curr_player['AB'] + curr_player['BB'] + curr_player['HBP'] + curr_player['SF'])
+                  curr_player['OBP'] = float("{:.3f}".format(onBase_float))
 
                 elif key is 'OPS':
                   # SLG + OBP
