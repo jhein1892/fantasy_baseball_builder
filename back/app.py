@@ -1043,8 +1043,8 @@ def signIn():
 @app.route("/weekStats", methods=["GET"])
 def  getWeekStats():
     # Section to get the week stats for each player
-  date_range = lg.week_date_range(lg.current_week())
-  # date_range = lg.week_date_range(2)
+  # date_range = lg.week_date_range(lg.current_week())
+  date_range = lg.week_date_range(2)
   start_date = date_range[0]
   today = datetime.date.today()
   delta = datetime.timedelta(days=1)
@@ -1070,9 +1070,24 @@ def  getWeekStats():
               if math.isinf(value):
                 weekStats[playerID][key] = 'inf'
               else:
+                curr_player = weekStats[playerID]
                 if key is 'AVG':
-                  avg_float = weekStats[playerID]['H']/weekStats[playerID]['AB']
-                  weekStats[playerID]['H/AB'] = "{:.3f}".format(avg_float) if avg_float >= 1 else "{:.3f}".format(avg_float).lstrip('0')
+                  avg_float = curr_player['H']/curr_player['AB']
+                  curr_player['H/AB'] = float("{:.3f}".format(avg_float)) if avg_float >= 1 else float("{:.3f}".format(avg_float).lstrip('0'))
+                elif key is 'SLG':
+                  # (1B + 2x2B + 3x3B + 4xHR)/AB
+                  slug_float = (curr_player['1B'] + (2 * curr_player['2B']) + (3 * curr_player['3B']) + (4 * curr_player['HR']))/curr_player['AB']
+                  curr_player['SLG'] = float("{:.3f}".format(slug_float))
+
+                elif key is 'OBP':
+                  # (H + BB + HBP)/(AB + BB + HBP + SF)
+                  # onBase_float = 
+                  print('On-Base')
+
+                elif key is 'OPS':
+                  # SLG + OBP
+                  print('OPS')
+                  
                 else:
                   weekStats[playerID][key] = round(weekStats[playerID].get(key, 0.0) + value, 3)
         except:
