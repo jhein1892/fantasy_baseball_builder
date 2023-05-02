@@ -1065,43 +1065,37 @@ def  getWeekStats():
           weekStats[playerID]['name'] = weekStats[playerID].get('name', player['name'])
           if isinstance(player['G'], float): # If we played a game that day
             for key, value in player.items(): 
+              # print(key, key is 'OPS', key == 'OPS')
               if not isinstance(value, float):
                 continue
               if math.isinf(value):
                 weekStats[playerID][key] = 'inf'
               else:
                 curr_player = weekStats[playerID]
-                if key is 'AVG':
-                  print("AVG", key)
+                if key == 'AVG':
                   avg_float = curr_player['H']/curr_player['AB']
                   curr_player['H/AB'] = float("{:.3f}".format(avg_float)) if avg_float >= 1 else float("{:.3f}".format(avg_float).lstrip('0'))
-                elif key is 'SLG':
-                  print("SLUG", key)
+                elif key == 'SLG':
                   # (1B + 2x2B + 3x3B + 4xHR)/AB
                   slug_float = (curr_player['1B'] + (2 * curr_player['2B']) + (3 * curr_player['3B']) + (4 * curr_player['HR']))/curr_player['AB']
                   curr_player['SLG'] = float("{:.3f}".format(slug_float))
                 
-                elif key is 'OPS': ## NOT FIRING
-                  # SLG + OBP
-                  print("OPS", key)
-                  ops_float = curr_player['SLUG'] + curr_player['OBP']
-                  curr_player['OPS'] = float("{:.3f}").format(ops_float)
+                elif key == 'OPS':
+                  curr_player['OPS'] = 0.000
 
-                elif key is 'OBP':
-                  print("OBP", key)
+                elif key == 'OBP':
                   # (H + BB + HBP)/(AB + BB + HBP + SF)
                   onBase_float = (curr_player['H'] + curr_player['BB'] + curr_player['IBB'] + curr_player['HBP'])/(curr_player['AB'] + curr_player['BB'] + curr_player['HBP'] + curr_player['SF'])
                   curr_player['OBP'] = float("{:.3f}".format(onBase_float))
-
-
+                  
                 else:
                   # print(key == 'OPS')
                   # print("OTHER", key)
                   weekStats[playerID][key] = round(weekStats[playerID].get(key, 0.0) + value, 3)
-        except:
-          print(f"Error with: {key}, value: {value}")
-    except:
-      print("Error")
+        except ValueError as e:
+          print(f"Error with: {key}, value: {value}, {e}")
+    except ValueError as e:
+      print("Error, {e}")
           ## Need to actually calculate Avg, OBP, OPS, SLG
 
     start_date += delta
