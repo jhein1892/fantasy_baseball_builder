@@ -1081,7 +1081,7 @@ def  getWeekStats():
                   curr_player['SLG'] = float("{:.3f}".format(slug_float))
                 
                 elif key == 'OPS':
-                  ops_float = curr_player['SLG'] + curr_player['OBP']
+                  ops_float = round(curr_player['SLG'] + curr_player['OBP'], 3)
                   # curr_player['OPS'] = round(ops_float, 3)
                   curr_player['OPS'] = float("{:.3f}".format(ops_float))
 
