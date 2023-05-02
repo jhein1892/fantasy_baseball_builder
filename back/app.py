@@ -1081,16 +1081,16 @@ def  getWeekStats():
                   curr_player['SLG'] = float("{:.3f}".format(slug_float))
                 
                 elif key == 'OPS':
-                  curr_player['OPS'] = 0.000
+                  ops_float = curr_player['SLG'] + curr_player['OBP']
+                  # curr_player['OPS'] = round(ops_float, 3)
+                  curr_player['OPS'] = float("{:.3f}".format(ops_float))
 
                 elif key == 'OBP':
                   # (H + BB + HBP)/(AB + BB + HBP + SF)
                   onBase_float = (curr_player['H'] + curr_player['BB'] + curr_player['IBB'] + curr_player['HBP'])/(curr_player['AB'] + curr_player['BB'] + curr_player['HBP'] + curr_player['SF'])
                   curr_player['OBP'] = float("{:.3f}".format(onBase_float))
-                  
+
                 else:
-                  # print(key == 'OPS')
-                  # print("OTHER", key)
                   weekStats[playerID][key] = round(weekStats[playerID].get(key, 0.0) + value, 3)
         except ValueError as e:
           print(f"Error with: {key}, value: {value}, {e}")
