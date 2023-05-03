@@ -1006,6 +1006,7 @@ def signIn():
   matchups = lg.matchups()
   categories = lg.stat_categories()
 
+
   already_exists = False
   for cat in categories:
     if cat['display_name'] == 'IP' or cat['display_name'] == 'H/AB':
@@ -1043,8 +1044,8 @@ def signIn():
 @app.route("/weekStats", methods=["GET"])
 def  getWeekStats():
     # Section to get the week stats for each player
-  # date_range = lg.week_date_range(lg.current_week())
-  date_range = lg.week_date_range(2)
+  date_range = lg.week_date_range(lg.current_week())
+  # date_range = lg.week_date_range(2)
   start_date = date_range[0]
   today = datetime.date.today()
   delta = datetime.timedelta(days=1)
@@ -1065,7 +1066,6 @@ def  getWeekStats():
           weekStats[playerID]['name'] = weekStats[playerID].get('name', player['name'])
           if isinstance(player['G'], float): # If we played a game that day
             for key, value in player.items(): 
-              # print(key, key is 'OPS', key == 'OPS')
               if not isinstance(value, float):
                 continue
               if math.isinf(value):
@@ -1096,7 +1096,6 @@ def  getWeekStats():
           print(f"Error with: {key}, value: {value}, {e}")
     except ValueError as e:
       print("Error, {e}")
-          ## Need to actually calculate Avg, OBP, OPS, SLG
 
     start_date += delta
 
