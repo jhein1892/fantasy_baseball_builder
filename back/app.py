@@ -1006,6 +1006,10 @@ def signIn():
   matchups = lg.matchups()
   categories = lg.stat_categories()
 
+  ## Implement this
+  stat_map = lg._get_static_mlb_id_map()
+  
+
 
   already_exists = False
   for cat in categories:
