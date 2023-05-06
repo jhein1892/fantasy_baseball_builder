@@ -19,23 +19,10 @@ export default function Body({data, weeklyStats}) {
         setViewComparison(true)
     }
 
-    useEffect(() => {
-        if(Object.keys(data).length > 0){
-            let categories = data.categories
-            let ids = data.stat_map
-            
-            Object.keys(ids).map((id) => {
-                let details = categories.filter((x) => x.display_name == ids[id])
-                ids[id] = details.length > 0 ? details[0] : ids[id];
-            })
-
-        }
-    },[data])
-
     return (
         <div className={bodyStyles.bodyWrapper} onScroll={() => console.log('scrolling')}>
             <div className={bodyStyles.rosterSection}>
-                <TeamRoster data={data.roster} categories={data.categories} weeklyStats={weeklyStats}/>
+                <TeamRoster data={data.roster} categories={data.stat_map} weeklyStats={weeklyStats}/>
             </div>
             <div className={bodyStyles.leagueSection}>
                 <Standings data={data.standings}/>

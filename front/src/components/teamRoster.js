@@ -110,7 +110,9 @@ export default function TeamRoster({ data, categories, weeklyStats }){
 
     function generateCategories(type, isHeader, data=null){
         if(categories){
-            let cats = categories.filter((x) => x.position_type == type)
+            let cats = Object.values(categories).filter((x) => x.position_type == type)
+            console.log(cats)
+
             return cats.map((x,index) => {
                 if(isHeader){
                     return (

@@ -1033,6 +1033,20 @@ def signIn():
   stat_map[72] = 'PICK'
   stat_map[89] = 'SV+H'
 
+
+  for key, value in stat_map.items():
+    updated = False
+    for cat in categories:
+      if cat['display_name'] == value:
+        stat_map[key] = cat
+        categories.remove(cat)
+        updated = True
+
+        break
+    if not updated:
+      stat_map[key] = {'display_name': value}
+      
+
   already_exists = False
   for cat in categories:
     if cat['display_name'] == 'IP' or cat['display_name'] == 'H/AB':
