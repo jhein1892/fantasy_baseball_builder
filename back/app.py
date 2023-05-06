@@ -1026,6 +1026,12 @@ def signIn():
 
   ## Implement this
   stat_map = lg._get_static_mlb_id_map()
+  stat_map[88] = 'CI'
+  stat_map[30] = 'CG'
+  stat_map[44] = 'BLK'
+  stat_map[46] = 'GIDP'
+  stat_map[72] = 'PICK'
+  stat_map[89] = 'SV+H'
 
   already_exists = False
   for cat in categories:

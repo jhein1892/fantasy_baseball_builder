@@ -66,7 +66,7 @@ export default function Matchups({data, categories}){
         return statData.map((category,index) => {
             let stat_id = category['stat_winner']['stat_id']
             let winner_id = category['stat_winner']['winner_team_key']
-            let displayName = statID.find(el => el.stat_id == stat_id)
+            let displayName = statID[stat_id];
             let dataType = displayName['position_type'];
             displayName = displayName['display_name']
             let stat_value = category['stat_winner']
