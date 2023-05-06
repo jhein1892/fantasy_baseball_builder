@@ -22,20 +22,13 @@ export default function Body({data, weeklyStats}) {
     useEffect(() => {
         if(Object.keys(data).length > 0){
             let categories = data.categories
-            let ids = data.stat_ids.stat_categories
-
-            function findID(name, type){
-                let info = ids.filter((id) => {if(id.display_name == name && id.position_types[0] == type){
-                    return id
-                }})
-                return info
-            }            
-            categories.forEach((x) => {
-                let type = x.position_type
-                let id = findID(x.display_name, type)
-                id = id[0]
-                x['stat_id'] = id.stat_id
+            let ids = data.stat_map
+            
+            Object.keys(ids).map((id) => {
+                let details = categories.filter((x) => x.display_name == ids[id])
+                ids[id] = details.length > 0 ? details[0] : ids[id];
             })
+
         }
     },[data])
 
@@ -51,7 +44,7 @@ export default function Body({data, weeklyStats}) {
                 <FreeAgents generateComparison={generateComparison}/>
             </div>
             <div className={bodyStyles.matchupSection}>
-                <Matchups data={data.matchups} categories={data.categories}/>
+                <Matchups data={data.matchups} categories={data.stat_map}/>
             </div>
             <div className={bodyStyles.tradeSection}>
                 <Trades categories={data.categories}/>

@@ -975,6 +975,24 @@ stat_ids = {
   ]
 }
 
+# stat_map
+# {
+#   0: 'G', 2: 'GS', 3: 'AVG', 4: 'OBP', 5: 'SLG', 6: 'AB', 7: 'R', 8: 'H', 9: '1B', 10: '2B', 
+#   11: '3B', 12: 'HR', 13: 'RBI', 14: 'SH', 15: 'SF', 16: 'SB', 17: 'CS', 18: 'BB', 19: 'IBB', 
+#   20: 'HBP', 21: 'SO', 22: 'GDP', 23: 'TB', 25: 'GS', 26: 'ERA', 27: 'WHIP', 28: 'W', 29: 'L', 32: 'SV', 
+#   34: 'H', 35: 'BF', 36: 'R', 37: 'ER', 38: 'HR', 39: 'BB', 40: 'IBB', 41: 'HBP', 42: 'K', 43: 'BK', 
+#   44: 'WP', 48: 'HLD', 50: 'IP', 51: 'PO', 52: 'A', 53: 'E', 54: 'FLD%', 55: 'OPS', 56: 'SO/W', 
+#   57: 'SO9', 65: 'PA', 84: 'BS', 85: 'NSV', 87: 'DP', 
+
+#   1032: 'FIP', 1021: 'GB%', 1022: 'FB%', 1031: 'BABIP', 1036: 'HR/FB%', 1037: 'GB', 1038: 'FB', 
+#   1020: 'GB/FB', 1018: 'P/IP', 1034: 'ERA-', 1019: 'P/S', 1024: 'STR', 1025: 'IRS%', 1026: 'RS', 
+#   1027: 'RS/9', 1028: 'AVG', 1029: 'OBP', 1030: 'SLG', 1033: 'WAR', 1035: 'HR/FB%', 1008: 'GB/FB', 
+#   1013: 'BABIP', 1002: 'ISO', 1001: 'CT%', 1014: 'wOBA', 1015: 'wRAA', 1011: 'RC', 1005: 'TOB', 
+#   1006: 'GB', 1009: 'GB%', 1007: 'FB', 1010: 'FB%', 1016: 'OPS+', 1004: 'P/PA', 1039: 'SB%', 
+#   1012: 'GDPR', 1003: 'SL', 1017: 'FR', 1040: 'bWAR', 1041: 'brWAR', 1042: 'WAR'
+# }
+
+
 from flask import Flask, make_response, request, jsonify
 from flask_cors import CORS
 from flask_sslify import SSLify
@@ -1008,8 +1026,6 @@ def signIn():
 
   ## Implement this
   stat_map = lg._get_static_mlb_id_map()
-  
-
 
   already_exists = False
   for cat in categories:
@@ -1042,7 +1058,8 @@ def signIn():
       'standings': standings, 
       'matchups': matchups, 
       'categories': categories, 
-      'stat_ids': stat_ids,})
+      'stat_ids': stat_ids,
+      'stat_map': stat_map})
   return response
 
 @app.route("/weekStats", methods=["GET"])
