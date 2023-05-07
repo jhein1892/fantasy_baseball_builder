@@ -110,8 +110,8 @@ export default function TeamRoster({ data, categories, weeklyStats }){
 
     function generateCategories(type, isHeader, data=null){
         if(categories){
+            // console.log(categories)
             let cats = Object.values(categories).filter((x) => x.position_type == type)
-            console.log(cats)
 
             return cats.map((x,index) => {
                 if(isHeader){
@@ -132,6 +132,7 @@ export default function TeamRoster({ data, categories, weeklyStats }){
     }
 
     function generatePositions(positionSet, type){
+        console.log(categories)
         let tempData = localData ?  localData.filter((x) => x.position_type === type) : [];
         positionSet = positionSet.concat(additionalPositions)
         if(tempData.length > 0){
@@ -162,7 +163,6 @@ export default function TeamRoster({ data, categories, weeklyStats }){
                 // Building dict that will hold the values/names for stats
                 if(eligiblePlayer && eligiblePlayer['player_stats']){
                     let player_stats = displayStats === 'season' ? eligiblePlayer['player_stats']['stats'] : weeklyData;
-                    // console.log(player_stats)
                     player_stats.forEach((stat) => {
                         if (displayStats === 'season') {
                             stat = stat['stat']
@@ -170,9 +170,8 @@ export default function TeamRoster({ data, categories, weeklyStats }){
 
                         let displayName
                         if (displayStats === 'season'){
-                            let name = categories.filter((x) => x.stat_id == stat.stat_id)
-                            name = name[0]
-                            displayName = name ? name['display_name'] : 'NA'
+                            let name = categories[stat.stat_id].display_name                            
+                            displayName = name ? name : 'NA'
                         } else {
                             displayName = stat['stat_name']
                         }
@@ -191,6 +190,7 @@ export default function TeamRoster({ data, categories, weeklyStats }){
 
                     })
                 }
+
                 // else return table row with data
                 return(
                     <tr className={rosterStyles.positionSlot} key={`${position}-${index}`} id={eligiblePlayer.player_id}>

@@ -1007,6 +1007,9 @@ sslify = SSLify(app)
 
 CORS(app, origins=['https://localhost:3000'], methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
 
+league_stat_map = None
+league_categories = None
+
 # FILE CALLED: App.js
 # Used to get league_id and team_name
 
@@ -1018,43 +1021,52 @@ def getRosterIds(roster = tm.roster()):
     
   return rosterIDs
 
+def getCategories():
+  global league_categories
+  if league_categories is None:
+    league_categories = lg.stat_categories()
+
+def getStatMap():
+  global league_stat_map
+  if league_stat_map is None:
+    league_stat_map = lg._get_static_mlb_id_map()
+    league_stat_map[30] = 'CG'
+    league_stat_map[44] = 'BLK'
+    league_stat_map[46] = 'GIDP'
+    league_stat_map[60] = 'H/AB'
+    league_stat_map[72] = 'PICK'
+    league_stat_map[88] = 'CI'
+    league_stat_map[89] = 'SV+H'
+
+    temp_cat = league_categories
+
+    for key, value in league_stat_map.items():
+      updated = False
+      for cat in temp_cat:
+        if cat['display_name'] == value:
+          league_stat_map[key] = cat
+          temp_cat.remove(cat)
+          updated = True
+          break
+        else:
+          continue
+      if not updated:
+        league_stat_map[key] = {'display_name': value}
+
 @app.route("/")
 def signIn():
+  global league_stat_map
+  global league_categories
+
   standings = lg.standings()
   matchups = lg.matchups()
-  categories = lg.stat_categories()
 
-  ## Implement this
-  stat_map = lg._get_static_mlb_id_map()
-  stat_map[88] = 'CI'
-  stat_map[30] = 'CG'
-  stat_map[44] = 'BLK'
-  stat_map[46] = 'GIDP'
-  stat_map[72] = 'PICK'
-  stat_map[89] = 'SV+H'
+  if league_categories is None:
+    getCategories()
 
-
-  for key, value in stat_map.items():
-    updated = False
-    for cat in categories:
-      if cat['display_name'] == value:
-        stat_map[key] = cat
-        categories.remove(cat)
-        updated = True
-
-        break
-    if not updated:
-      stat_map[key] = {'display_name': value}
-      
-
-  already_exists = False
-  for cat in categories:
-    if cat['display_name'] == 'IP' or cat['display_name'] == 'H/AB':
-      already_exists = True
-  if not already_exists:  
-    categories.extend([{'display_name':'IP', 'position_type':'P'}, {'display_name':'H/AB', 'position_type':'B'}])
-
-
+  if league_stat_map is None:
+      getStatMap()
+  
   roster = tm.roster()
 
   rosterIDs = getRosterIds(roster)
@@ -1075,11 +1087,11 @@ def signIn():
 
   response = make_response(
     {'roster': rosterDetails, 
-      'standings': standings, 
+      'standings': standings,
       'matchups': matchups, 
-      'categories': categories, 
+      'categories': league_categories, 
       'stat_ids': stat_ids,
-      'stat_map': stat_map})
+      'stat_map': league_stat_map})
   return response
 
 @app.route("/weekStats", methods=["GET"])

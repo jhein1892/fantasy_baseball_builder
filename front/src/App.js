@@ -2,7 +2,7 @@ import Header from './components/header';
 import Body from './components/body';
 import axios from 'axios';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import config from './config';
 import NewsTicker from './components/header';
 
@@ -14,51 +14,62 @@ function App() {
   const [weeklyStats, setWeeklyStats] = useState()
 
   // Could turn this into a function once I need to not only have my team loading.
-  useEffect(() => {
-    const urls = [
-      `${config.REACT_APP_API_ENDPOINT}/`,
-      `${config.REACT_APP_API_ENDPOINT}/leagueNews`,
-      `${config.REACT_APP_API_ENDPOINT}/weekStats`,
-    ]
 
-    function standardizeStats(data){
-      Object.keys(data).forEach((player) => {
-        let statsArray = []
-        for (let key in data[player]){
-          statsArray.push({'stat_name': key, 'value': data[player][key]})
-        }
-        data[player] = statsArray
-      })
-
-     return data
-    }
--
-    axios.all(urls.map(url => axios.get(url)))
-    .then(axios.spread((teamResponse, leagueResponse, weeklyResponse) => {
-      let teamData = teamResponse.data
-      let leagueNews = leagueResponse.data
-      let weeklyData = standardizeStats(weeklyResponse.data)
-      console.log(teamData)
-      setTeamData(teamData)
-      setLeagueNews(leagueNews)
-      setWeeklyStats(weeklyData)
-    }))
-    .catch((error) => {
-      console.error(error)
+  function standardizeStats(data){
+    const newData = {...data}
+    Object.keys(newData).forEach((player) => {
+      let statsArray = []
+      for (let key in data[player]){
+        statsArray.push({'stat_name': key, 'value': newData[player][key]})
+      }
+      newData[player] = statsArray
     })
-  },[])
+    return newData
+
+  }
+
+  const gatherInfo = useCallback((urls) => {
+    axios.all(urls.map(url => axios.get(url)))
+      .then(axios.spread((teamResponse, leagueResponse, weeklyResponse) => {
+        let teamData = teamResponse.data
+        let leagueNews = leagueResponse.data
+        let weeklyData = standardizeStats(weeklyResponse.data)
+        console.log(teamData)
+        setTeamData(teamData)
+        setLeagueNews(leagueNews)
+        setWeeklyStats(weeklyData)
+      }))
+      .catch((error) => {
+        console.error(error)
+      })
+  }, [])
+
+
+
+  useEffect(() => {
+    console.log('firing')
+    if(!weeklyStats || !leagueNews || Object.keys(teamData) == 0){
+      const urls = [
+        `${config.REACT_APP_API_ENDPOINT}/`,
+        `${config.REACT_APP_API_ENDPOINT}/leagueNews`,
+        `${config.REACT_APP_API_ENDPOINT}/weekStats`,
+      ]
+        gatherInfo(urls);
+        
+      }
+      
+     
+    },[])
 
   return (
     <div>
       <Header 
         leagueNews={leagueNews}
       />
-      { teamData &&
         <Body 
           data={teamData}
           weeklyStats={weeklyStats}
         />
-      }
     </div>
   );
 }
