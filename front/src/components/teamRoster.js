@@ -110,9 +110,7 @@ export default function TeamRoster({ data, categories, weeklyStats }){
 
     function generateCategories(type, isHeader, data=null){
         if(categories){
-            // console.log(categories)
             let cats = Object.values(categories).filter((x) => x.position_type == type)
-
             return cats.map((x,index) => {
                 if(isHeader){
                     return (
@@ -132,7 +130,6 @@ export default function TeamRoster({ data, categories, weeklyStats }){
     }
 
     function generatePositions(positionSet, type){
-        console.log(categories)
         let tempData = localData ?  localData.filter((x) => x.position_type === type) : [];
         positionSet = positionSet.concat(additionalPositions)
         if(tempData.length > 0){
@@ -141,12 +138,12 @@ export default function TeamRoster({ data, categories, weeklyStats }){
                 // Find players assigned to current positions
                 let eligiblePlayer = tempData.filter((x) => x.selected_position === position);
                 let weeklyData;
+                
                 // Pick first element and remove from data set for future positions.
                 if(eligiblePlayer.length > 0){
                     eligiblePlayer = eligiblePlayer[0];
                     let newTempData = tempData.filter((x) => x.player_id !== eligiblePlayer.player_id);
                     weeklyData = weeklyStats[eligiblePlayer.player_id]
-                    // console.log("weeklyData: ", weeklyData)
                     tempData = newTempData;
                 } 
                 else {

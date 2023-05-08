@@ -34,7 +34,7 @@ export default function Body({data, weeklyStats}) {
                 <Matchups data={data.matchups} categories={data.stat_map}/>
             </div>
             <div className={bodyStyles.tradeSection}>
-                <Trades categories={data.categories}/>
+                <Trades categories={data.stat_map}/>
             </div>
             {viewComparison &&
                 <CompareModal player1={player1Info} player2={player2Info} setViewComparison={setViewComparison} categories={data.categories}/>

@@ -73,15 +73,14 @@ export default function Trades({ categories }){
     }
 
     function generateTradeDetails(team){
-        // let detailsData = tradeData[displayValue]
         let detailsData = tradeData.filter(x => x.transaction_key == displayValue)
         detailsData = detailsData[0]
-        // console.log("details", detailsData)
         return (
             <>
                 <h3>{detailsData[`${team}_team_key`].name}</h3>
                 {detailsData[`${team}_players`].map((player) => {
-                    let playerCats = categories.filter((x) => x.position_type == player.position_type)
+                    // IF ERROR CHECK THIS
+                    let playerCats = Object.values(categories).filter((x) => x.position_type == player.position_type)
                     return(
                         <table>
                             <thead>
