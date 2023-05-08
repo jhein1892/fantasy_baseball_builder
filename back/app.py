@@ -1041,6 +1041,13 @@ def getStatMap():
     temp_cat = league_categories
 
     for key, value in league_stat_map.items():
+      if key is 60:
+        league_stat_map[key] = {'display_name': value, 'position_type': 'B'}
+        continue
+      if key is 50:
+        league_stat_map[key] = {'display_name': value, 'position_type': 'P'}
+        continue
+
       updated = False
       for cat in temp_cat:
         if cat['display_name'] == value:
@@ -1065,7 +1072,7 @@ def signIn():
     getCategories()
 
   if league_stat_map is None:
-      getStatMap()
+    getStatMap()
   
   roster = tm.roster()
 
@@ -1089,7 +1096,6 @@ def signIn():
     {'roster': rosterDetails, 
       'standings': standings,
       'matchups': matchups, 
-      'categories': league_categories, 
       'stat_ids': stat_ids,
       'stat_map': league_stat_map})
   return response

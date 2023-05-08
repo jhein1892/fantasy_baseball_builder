@@ -37,7 +37,7 @@ export default function Body({data, weeklyStats}) {
                 <Trades categories={data.stat_map}/>
             </div>
             {viewComparison &&
-                <CompareModal player1={player1Info} player2={player2Info} setViewComparison={setViewComparison} categories={data.categories}/>
+                <CompareModal player1={player1Info} player2={player2Info} setViewComparison={setViewComparison} categories={data.stat_map}/>
             }
         </div>
     )

@@ -138,7 +138,7 @@ export default function TeamRoster({ data, categories, weeklyStats }){
                 // Find players assigned to current positions
                 let eligiblePlayer = tempData.filter((x) => x.selected_position === position);
                 let weeklyData;
-                
+
                 // Pick first element and remove from data set for future positions.
                 if(eligiblePlayer.length > 0){
                     eligiblePlayer = eligiblePlayer[0];
@@ -241,7 +241,6 @@ export default function TeamRoster({ data, categories, weeklyStats }){
     useEffect(() => {
         if(data){
             setLocalData(data)
-            console.log(weeklyStats)
             setWeeklyData(weeklyStats)
         }
     },[data])
