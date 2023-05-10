@@ -47,10 +47,8 @@ def formatAdvancedStats(player):
     else:
       return_stats[stat_id] = {'value': stat['value']}
   
-  print(return_stats)
-  return 0
+  return return_stats
   
-
 def getRosterIds(roster = tm.roster()):
   rosterIDs = []
 
@@ -121,6 +119,7 @@ def signIn():
   
   for player in rosterDetails:
     adv_stats = formatAdvancedStats(player)
+    player['player_advanced_stats'] = adv_stats
     playerid = player['player_id']
     index = -1
     for i,x in enumerate(roster):
