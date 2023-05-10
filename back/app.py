@@ -36,6 +36,21 @@ league_categories = None
 # FILE CALLED: App.js
 # Used to get league_id and team_name
 
+def formatAdvancedStats(player):
+  advanced_stats = player['player_advanced_stats']['stats']
+  return_stats = {}
+  for stat in advanced_stats:
+    stat = stat['stat']
+    stat_id = int(stat['stat_id'])
+    if stat_id in league_stat_map:
+      return_stats[stat_id] = {'value': stat['value'], 'display_name': league_stat_map[stat_id]['display_name']}
+    else:
+      return_stats[stat_id] = {'value': stat['value']}
+  
+  print(return_stats)
+  return 0
+  
+
 def getRosterIds(roster = tm.roster()):
   rosterIDs = []
 
@@ -101,10 +116,12 @@ def signIn():
 
   rosterIDs = getRosterIds(roster)
   rosterDetails = lg.player_details(rosterIDs)
+
+
   
   for player in rosterDetails:
+    adv_stats = formatAdvancedStats(player)
     playerid = player['player_id']
-
     index = -1
     for i,x in enumerate(roster):
         if x['player_id'] == int(playerid):
@@ -137,7 +154,6 @@ def  getWeekStats():
 
   # Each Day we have an array of objects that hold values for that day
   # I can recursivesly create an object that uses index as keys and add the values to that key
-
   while start_date <= end_date:
     try:      
       data = lg.player_stats(rosterIDs, 'date', start_date)
@@ -249,7 +265,6 @@ def putTradeResponse():
 
    return make_response({'status': 200})
 
-
 ## Making changes to roster
 # Route to Drop a Player
 @app.route("/dropPlayer", methods=["PUT"])
@@ -295,9 +310,6 @@ def updateRoster():
 
   response = make_response({"status": 200})
   return response
-
-
-
 
 if __name__ == "__main__":
     app.run()
