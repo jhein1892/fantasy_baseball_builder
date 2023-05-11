@@ -20,10 +20,39 @@ from flask import Flask, make_response, request, jsonify
 from flask_cors import CORS
 from flask_sslify import SSLify
 from yahoo_api import lg, gm, tm
+import joblib
 import ssl
 import datetime
 import json
 import math
+
+batter_model = joblib.load('batter_model.pkl')
+
+# league_adv_avgs = { 
+#   'rOBA': .325,
+#   'Rbat+': 100,
+#   'BAbip' -> 1031: .297,
+#   'ISO': .159,
+#   'HR%': 3.0%,
+#   'SO%': 22.8%,
+#   'BB%': 8.8%,
+#   'EV': 88.4,
+#   'HardH%':39.4,
+#   'LD%': 23.7,
+#   'GB%' -> 1021: 42.8%,
+#   'FB%' -> 1022: 25.9,
+#   'GB/FB' -> 1008 : 0.76,
+#   'Pull%': 29.9%,
+#   'Cent%': 51.6%,
+#   'Oppo%': 18.4%,
+#   'WPA': 118,
+#   'cWPA': 60%,
+#   'RE24': 2343,
+#   'RS%' -> 1026: 31%,
+#   'SB%': 78%,
+#   'XBT%': 42%
+# }
+
 
 app = Flask(__name__)
 sslify = SSLify(app)
