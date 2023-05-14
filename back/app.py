@@ -55,7 +55,7 @@ batter_model = joblib.load('batter_model.pkl')
 
 # Batters
 # [
-#   {'stat': {'stat_id': '1035', 'value': '11.8'}},   'HR/FB%' -> HR% with calc  \/
+#   {'stat': {'stat_id': '1035', 'value': '11.8'}},   'HR/FB%' -> HR% with calc (DONE) \/
 #   {'stat': {'stat_id': '1008', 'value': '0.7'}},    'GB/FB'   \/
 #   {'stat': {'stat_id': '1013', 'value': '.336'}},   'BABIP'   \/
 #   {'stat': {'stat_id': '1002', 'value': '.147'}},   'ISO'     \/
@@ -118,13 +118,17 @@ def formatAdvancedStats(player):
   player_type = player['position_type']
   return_stats = {}
 
+  # Get HR%
   def calcHR_perc():
     HR_FB = return_stats['HR/FB%']
     FB_per = return_stats['FB%']
     HR_perc = FB_per * (HR_FB/100)
     return_stats['HR%'] = round(HR_perc, 3)
 
+  # Get BB%
 
+
+  # Calculate RBat+
 
   if player_type == 'B':
     for stat in advanced_stats:
@@ -141,28 +145,7 @@ def formatAdvancedStats(player):
 
   print(return_stats)
 
-  # for stat in advanced_stats:
-    
-  # So I need to calculate my HR%
-
-
-  # Calculate RBat+
-
-
-
-
-
-
-  # return_stats = {}
-  # for stat in advanced_stats:
-  #   stat = stat['stat']
-  #   stat_id = int(stat['stat_id'])
-  #   if stat_id in league_stat_map:
-  #     return_stats[stat_id] = {'value': stat['value'], 'display_name': league_stat_map[stat_id]['display_name']}
-  #   else:
-  #     return_stats[stat_id] = {'value': stat['value']}
-  
-  # return return_stats
+  return return_stats
   
 def getRosterIds(roster = tm.roster()):
   rosterIDs = []
