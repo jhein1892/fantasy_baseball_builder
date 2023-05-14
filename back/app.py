@@ -286,7 +286,8 @@ def  getWeekStats():
 
                 else:
                   weekStats[playerID][key] = round(weekStats[playerID].get(key, 0.0) + value, 3)
-        except ValueError as e:
+        except ValueError and TypeError as e:
+          print(weekStats[playerID][key])
           print(f"Error with: {key}, value: {value}, {e}")
     except ValueError as e:
       print("Error, {e}")
