@@ -55,50 +55,50 @@ batter_model = joblib.load('batter_model.pkl')
 
 # Batters
 # [
-#   {'stat': {'stat_id': '1035', 'value': '11.8'}},   'HR/FB%'
-#   {'stat': {'stat_id': '1008', 'value': '0.7'}},    'GB/FB'
-#   {'stat': {'stat_id': '1013', 'value': '.336'}},   'BABIP'
-#   {'stat': {'stat_id': '1002', 'value': '.147'}},   'ISO'
-#   {'stat': {'stat_id': '1014', 'value': '.304'}},   'wOBA'
-#   {'stat': {'stat_id': '1015', 'value': '-1.9'}},   'wRAA'
+#   {'stat': {'stat_id': '1035', 'value': '11.8'}},   'HR/FB%' -> HR% with calc  \/
+#   {'stat': {'stat_id': '1008', 'value': '0.7'}},    'GB/FB'   \/
+#   {'stat': {'stat_id': '1013', 'value': '.336'}},   'BABIP'   \/
+#   {'stat': {'stat_id': '1002', 'value': '.147'}},   'ISO'     \/
+#   {'stat': {'stat_id': '1014', 'value': '.304'}},   'wOBA' -> 'rOBA' \/
+#   {'stat': {'stat_id': '1015', 'value': '-1.9'}},   'wRAA' -> RBat+, but with a calc.
 #   {'stat': {'stat_id': '1011', 'value': '19'}},     'RC'
 #   {'stat': {'stat_id': '1005', 'value': '51'}},     'TOB'
-#   {'stat': {'stat_id': '1006', 'value': '45'}},     'GB'
-#   {'stat': {'stat_id': '1009', 'value': '39.5'}},   'GB%'
-#   {'stat': {'stat_id': '1007', 'value': '45'}},     'FB'
-#   {'stat': {'stat_id': '1010', 'value': '29.8'}},   'FB%'
-#   {'stat': {'stat_id': '1004', 'value': '3.68'}},   'P/PA'
-#   {'stat': {'stat_id': '1039', 'value': '100.0'}},  'SB%'
+#   {'stat': {'stat_id': '1006', 'value': '45'}},     'GB'      IGNORE
+#   {'stat': {'stat_id': '1009', 'value': '39.5'}},   'GB%'     \/
+#   {'stat': {'stat_id': '1007', 'value': '45'}},     'FB'      IGNORE
+#   {'stat': {'stat_id': '1010', 'value': '29.8'}},   'FB%'     \/
+#   {'stat': {'stat_id': '1004', 'value': '3.68'}},   'P/PA'    IGNORE
+#   {'stat': {'stat_id': '1039', 'value': '100.0'}},  'SB%'     \/
 #   {'stat': {'stat_id': '1003', 'value': '5'}},      'SL'
-#   {'stat': {'stat_id': '1040', 'value': '-2.5'}},   'bWAR'
+#   {'stat': {'stat_id': '1040', 'value': '-2.5'}},   'bWAR'    
 #   {'stat': {'stat_id': '1041', 'value': '2.4'}}     'brWAR'
 # ]    
 
 
 
 # league_adv_avgs_batters = { 
-#   'rOBA': .325,
-#   'Rbat+': 100,
-#   'BAbip': .297,
-#   'ISO': .159,
-#   'HR%': 3.0%,
-#   'SO%': 22.8%,
-#   'BB%': 8.8%,
-#   'EV': 88.4,
-#   'HardH%':39.4,
-#   'LD%': 23.7,
-#   'GB%': 42.8%,
-#   'FB%': 25.9,
-#   'GB/FB': 0.76,
-#   'Pull%': 29.9%,
-#   'Cent%': 51.6%,
-#   'Oppo%': 18.4%,
-#   'WPA': 118,
-#   'cWPA': 60%,
-#   'RE24': 2343,
-#   'RS%': 31%,
-#   'SB%': 78%,
-#   'XBT%': 42%
+#   'rOBA': .325,       \/
+#   'Rbat+': 100,       \/
+#   'BAbip': .297,      \/
+#   'ISO': .159,        \/
+#   'HR%': 3.0%,        \/        
+#   'SO%': 22.8%,       X
+#   'BB%': 8.8%,        X
+#   'EV': 88.4,         X
+#   'HardH%':39.4,      X
+#   'LD%': 23.7,        X
+#   'GB%': 42.8%,       \/
+#   'FB%': 25.9,        \/
+#   'GB/FB': 0.76,      \/
+#   'Pull%': 29.9%,     X
+#   'Cent%': 51.6%,     X
+#   'Oppo%': 18.4%,     X
+#   'WPA': 118,         X
+#   'cWPA': 60%,        X
+#   'RE24': 2343,       X
+#   'RS%': 31%,         X
+#   'SB%': 78%,         \/
+#   'XBT%': 42%         X 
 # }
 
 
@@ -114,9 +114,45 @@ league_categories = None
 # Used to get league_id and team_name
 
 def formatAdvancedStats(player):
-  print(player['player_advanced_stats']['stats'])
-  print(player['name']['full'])
-  # advanced_stats = player['player_advanced_stats']['stats']
+  advanced_stats = player['player_advanced_stats']['stats']
+  player_type = player['position_type']
+  return_stats = {}
+
+  def calcHR_perc():
+    HR_FB = return_stats['HR/FB%']
+    FB_per = return_stats['FB%']
+    HR_perc = FB_per * (HR_FB/100)
+    return_stats['HR%'] = round(HR_perc, 3)
+
+
+
+  if player_type == 'B':
+    for stat in advanced_stats:
+      stat = stat['stat']
+      stat_id = int(stat['stat_id'])
+      stat_name = league_stat_map[stat_id]['display_name']
+
+      if stat_id in league_stat_map:
+        return_stats[stat_name] = float(stat['value'])
+      else:
+        return_stats[stat_id] = float(stat['value'])    
+    
+    calcHR_perc()
+
+  print(return_stats)
+
+  # for stat in advanced_stats:
+    
+  # So I need to calculate my HR%
+
+
+  # Calculate RBat+
+
+
+
+
+
+
   # return_stats = {}
   # for stat in advanced_stats:
   #   stat = stat['stat']
