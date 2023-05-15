@@ -16,11 +16,23 @@ function App() {
   // Could turn this into a function once I need to not only have my team loading.
 
   function standardizeStats(data){
+    
     const newData = {...data}
     Object.keys(newData).forEach((player) => {
+
+      const calcStat = {
+       'ERA': newData[player]['ER'] / newData[player]['IP'],
+       'WHIP': (newData[player]['BB'] + newData[player]['H']) / newData[player]['IP'],
+       'SO/W': newData[player]['K'] / newData[player]['BB']
+      }
+
       let statsArray = []
-      for (let key in data[player]){
-        statsArray.push({'stat_name': key, 'value': newData[player][key]})
+      for (let key in newData[player]){
+        if(newData[player][key] === 'inf'){
+          statsArray.push({'stat_name': key, 'value': calcStat[key]})
+        } else {
+          statsArray.push({'stat_name': key, 'value': newData[player][key]})
+        }
       }
       newData[player] = statsArray
     })
@@ -34,7 +46,8 @@ function App() {
         let teamData = teamResponse.data
         let leagueNews = leagueResponse.data
         let weeklyData = standardizeStats(weeklyResponse.data)
-        console.log(teamData)
+        // console.log(teamData)
+        // console.log(weeklyData)
         setTeamData(teamData)
         setLeagueNews(leagueNews)
         setWeeklyStats(weeklyData)
