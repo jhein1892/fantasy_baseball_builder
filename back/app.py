@@ -126,6 +126,23 @@ def formatAdvancedStats(player):
     return_stats['HR%'] = round(HR_perc, 3)
 
   # Get BB%
+  def calcBB_perc():
+    stats = player['player_stats']['stats']
+    for stat in stats:
+      print(stat['stat'])
+      # if stat['stat']['stat_id'] == '18':
+      # Add all Free Passes
+    # 18 is BB
+    # 19 is IBB
+    # 20 is HBP
+    # 88 is CI
+
+    # split H/AB
+    # 60 is H/AB
+
+    # Add free passes to AB portion.
+
+    # Divide free passes by new PA value * 100 for percentage
 
 
   # Calculate RBat+
@@ -142,8 +159,9 @@ def formatAdvancedStats(player):
         return_stats[stat_id] = float(stat['value'])    
     
     calcHR_perc()
+    calcBB_perc()
 
-  print(return_stats)
+  # print(return_stats)
 
   return return_stats
   
@@ -260,6 +278,9 @@ def  getWeekStats():
           weekStats[playerID]['name'] = weekStats[playerID].get('name', player['name'])
           if isinstance(player['G'], float): # If we played a game that day
             for key, value in player.items(): 
+
+              # Create a Stat Object to hold all the calculations
+
               if not isinstance(value, float):
                 continue
               if math.isinf(value):
