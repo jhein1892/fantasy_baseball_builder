@@ -129,6 +129,7 @@ def formatAdvancedStats(player):
     FB_per = return_stats['FB%']
     HR_perc = FB_per * (HR_FB/100)
     return_stats['HR%'] = round(HR_perc, 3)
+    del return_stats['HR/FB%']
 
   # Get BB%
   # Pretty Close, but not exact.
@@ -139,6 +140,11 @@ def formatAdvancedStats(player):
     for stat in stats:
       stat_id = stat['stat']['stat_id']
       # Add all Free Passes
+      if stat_id == '7':
+        return_stats['AB'] = int(stat['stat']['value'])
+      if stat_id == '55':
+        return_stats['OPS+'] = float(stat['stat']['value'])
+
       if stat_id in ['18', '19', '20', '88']:
         freePasses += int(stat['stat']['value'])
 
@@ -162,8 +168,9 @@ def formatAdvancedStats(player):
         return_stats['TB'] = value
         continue
       
-      # 1005 -> Rename to TB
-      # 1015 1011 1006 1007 1004 1003 1040 1041 -> Remove From Object
+      if stat_id in [1015, 1011, 1006, 1007, 1004, 1003, 1040, 1041]:
+        continue
+
       if stat_id in league_stat_map:
         return_stats[stat_name] = value
       else:
@@ -224,8 +231,8 @@ def getStatMap():
 
 # Will probably need to move this to another file for clarity
 def getBatterPredictions(stats):
-  print(stats)
-  player_stats = pd.DataFrame(stats, index=[0])
+  print()
+  player_stats = pd.DataFrame(stats)
   imputer = SimpleImputer(strategy='median')
   X = imputer.fit_transform(player_stats)
   batting_tr = pd.DataFrame(X, columns=player_stats.columns, index=player_stats.index)
@@ -245,7 +252,14 @@ def getBatterPredictions(stats):
   model = batter_model
 
   final_predictions = model.predict(batting_prepared)
-  print('Predictions', final_predictions)
+  prediction_labels = ['H', 'R', 'HR', 'RBI','SB','BB', 'IBB','HBP','OPS']
+  for i in enumerate(final_predictions):
+      for j, prediction in enumerate(i[1]):
+        print(f"{prediction_labels[j]}, {prediction}")
+        
+    # for j, prediction in enumerate(final_predictions[i]):
+
+  # print('Predictions', final_predictions)
 
 
 @app.route("/")
@@ -268,11 +282,12 @@ def signIn():
   rosterDetails = lg.player_details(rosterIDs)
 
 
-  
+  adv_stats = []
   for player in rosterDetails:
-    adv_stats = formatAdvancedStats(player)
     if player['position_type'] == 'B':
-      getBatterPredictions(adv_stats)
+      adv_stats.append(formatAdvancedStats(player))
+      # print(player['name']['full'])
+      # print(adv_stats)
     # player['player_advanced_stats'] = adv_stats
     playerid = player['player_id']
     index = -1
@@ -282,6 +297,10 @@ def signIn():
         
     if index >= 0:
         player['selected_position'] = roster[index]['selected_position']
+  
+  getBatterPredictions(adv_stats)
+
+
 
   # Call yahoo_fantasy_api with league_id and team_id to get roster data
 
