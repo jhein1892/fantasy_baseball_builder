@@ -126,18 +126,25 @@ def formatAdvancedStats(player):
     return_stats['HR%'] = round(HR_perc, 3)
 
   # Get BB%
+  # Pretty Close, but not exact.
   def calcBB_perc():
     stats = player['player_stats']['stats']
+    freePasses = 0
+    PA = 0
     for stat in stats:
-      print(stat['stat'])
-      # if stat['stat']['stat_id'] == '18':
+      stat_id = stat['stat']['stat_id']
       # Add all Free Passes
-    # 18 is BB
-    # 19 is IBB
-    # 20 is HBP
-    # 88 is CI
+      if stat_id in ['18', '19', '20', '88']:
+        freePasses += int(stat['stat']['value'])
 
-    # split H/AB
+      # split H/AB
+      if stat_id == '60':
+        abVals = stat['stat']['value'].split('/', 1)
+        PA += int(abVals[1])
+
+    PA += freePasses
+    bb_perc = round(float(freePasses/PA) * 100, 2)
+    return_stats['BB%'] = bb_perc
     # 60 is H/AB
 
     # Add free passes to AB portion.
