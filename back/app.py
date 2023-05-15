@@ -83,7 +83,7 @@ batter_model = joblib.load('batter_model.pkl')
 #   'ISO': .159,        \/
 #   'HR%': 3.0%,        \/        
 #   'SO%': 22.8%,       X
-#   'BB%': 8.8%,        X
+#   'BB%': 8.8%,        \/
 #   'EV': 88.4,         X
 #   'HardH%':39.4,      X
 #   'LD%': 23.7,        X
@@ -145,14 +145,10 @@ def formatAdvancedStats(player):
     PA += freePasses
     bb_perc = round(float(freePasses/PA) * 100, 2)
     return_stats['BB%'] = bb_perc
-    # 60 is H/AB
-
-    # Add free passes to AB portion.
-
-    # Divide free passes by new PA value * 100 for percentage
-
 
   # Calculate RBat+
+  def calcRBat():
+    print('Calc RBat+')
 
   if player_type == 'B':
     for stat in advanced_stats:
