@@ -14,20 +14,6 @@
 #   1006: 'GB', 1009: 'GB%', 1007: 'FB', 1010: 'FB%', 1016: 'OPS+', 1004: 'P/PA', 1039: 'SB%', 
 #   1012: 'GDPR', 1003: 'SL', 1017: 'FR', 1040: 'bWAR', 1041: 'brWAR', 1042: 'WAR'
 # }
-
-
-from flask import Flask, make_response, request, jsonify
-from flask_cors import CORS
-from flask_sslify import SSLify
-from yahoo_api import lg, gm, tm
-import joblib
-import ssl
-import datetime
-import json
-import math
-
-batter_model = joblib.load('batter_model.pkl')
-
 ###############################################################
 ## STATS WE ARE GETTING FROM YAHOO
 ###############################################################
@@ -60,9 +46,9 @@ batter_model = joblib.load('batter_model.pkl')
 #   {'stat': {'stat_id': '1013', 'value': '.336'}},   'BABIP'   \/
 #   {'stat': {'stat_id': '1002', 'value': '.147'}},   'ISO'     \/
 #   {'stat': {'stat_id': '1014', 'value': '.304'}},   'wOBA' -> 'rOBA' \/
-#   {'stat': {'stat_id': '1015', 'value': '-1.9'}},   'wRAA' -> RBat+, but with a calc.
+#   {'stat': {'stat_id': '1015', 'value': '-1.9'}},   'wRAA'    X
 #   {'stat': {'stat_id': '1011', 'value': '19'}},     'RC'
-#   {'stat': {'stat_id': '1005', 'value': '51'}},     'TOB'
+#   {'stat': {'stat_id': '1005', 'value': '51'}},     'TOB' -> TB
 #   {'stat': {'stat_id': '1006', 'value': '45'}},     'GB'      IGNORE
 #   {'stat': {'stat_id': '1009', 'value': '39.5'}},   'GB%'     \/
 #   {'stat': {'stat_id': '1007', 'value': '45'}},     'FB'      IGNORE
@@ -78,7 +64,7 @@ batter_model = joblib.load('batter_model.pkl')
 
 # league_adv_avgs_batters = { 
 #   'rOBA': .325,       \/
-#   'Rbat+': 100,       \/
+#   'Rbat+': 100,       X
 #   'BAbip': .297,      \/
 #   'ISO': .159,        \/
 #   'HR%': 3.0%,        \/        
@@ -100,6 +86,25 @@ batter_model = joblib.load('batter_model.pkl')
 #   'SB%': 78%,         \/
 #   'XBT%': 42%         X 
 # }
+
+
+from flask import Flask, make_response, request, jsonify
+from flask_cors import CORS
+from flask_sslify import SSLify
+from yahoo_api import lg, gm, tm
+import pandas as pd
+from sklearn.pipeline import Pipeline
+from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import StandardScaler
+from sklearn.compose import ColumnTransformer
+import joblib
+import ssl
+import datetime
+import json
+import math
+
+batter_model = joblib.load('batter_model.pkl')
+
 
 
 app = Flask(__name__)
@@ -145,26 +150,27 @@ def formatAdvancedStats(player):
     PA += freePasses
     bb_perc = round(float(freePasses/PA) * 100, 2)
     return_stats['BB%'] = bb_perc
-
-  # Calculate RBat+
-  def calcRBat():
-    print('Calc RBat+')
+    return_stats['PA'] = PA
 
   if player_type == 'B':
     for stat in advanced_stats:
       stat = stat['stat']
       stat_id = int(stat['stat_id'])
+      value = float(stat['value'])
       stat_name = league_stat_map[stat_id]['display_name']
-
+      if stat_id == 1005:
+        return_stats['TB'] = value
+        continue
+      
+      # 1005 -> Rename to TB
+      # 1015 1011 1006 1007 1004 1003 1040 1041 -> Remove From Object
       if stat_id in league_stat_map:
-        return_stats[stat_name] = float(stat['value'])
+        return_stats[stat_name] = value
       else:
-        return_stats[stat_id] = float(stat['value'])    
+        return_stats[stat_id] = value
     
     calcHR_perc()
     calcBB_perc()
-
-  # print(return_stats)
 
   return return_stats
   
@@ -215,6 +221,33 @@ def getStatMap():
       if not updated:
         league_stat_map[key] = {'display_name': value}
 
+
+# Will probably need to move this to another file for clarity
+def getBatterPredictions(stats):
+  print(stats)
+  player_stats = pd.DataFrame(stats, index=[0])
+  imputer = SimpleImputer(strategy='median')
+  X = imputer.fit_transform(player_stats)
+  batting_tr = pd.DataFrame(X, columns=player_stats.columns, index=player_stats.index)
+
+  num_pipeline = Pipeline([
+    ('imputer', SimpleImputer(strategy='median')),
+    ('std_scaler', StandardScaler())
+  ])
+
+  num_attribs = list(player_stats)
+
+  full_pipeline = ColumnTransformer([
+    ('num', num_pipeline, num_attribs)
+  ])
+
+  batting_prepared = full_pipeline.fit_transform(batting_tr)
+  model = batter_model
+
+  final_predictions = model.predict(batting_prepared)
+  print('Predictions', final_predictions)
+
+
 @app.route("/")
 def signIn():
   global league_stat_map
@@ -238,6 +271,8 @@ def signIn():
   
   for player in rosterDetails:
     adv_stats = formatAdvancedStats(player)
+    if player['position_type'] == 'B':
+      getBatterPredictions(adv_stats)
     # player['player_advanced_stats'] = adv_stats
     playerid = player['player_id']
     index = -1
