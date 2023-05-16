@@ -139,11 +139,10 @@ def formatAdvancedStats(player):
     freePasses = 0
     PA = 0
     for stat in stats:
-      print(stat)
       stat_id = stat['stat']['stat_id']
       # Add all Free Passes
       if stat_id == '55':
-        return_stats['OPS+'] = float(stat['stat']['value'])
+        return_stats['OPS+'] = round(float(stat['stat']['value'])/.728 * 100, 2)
 
       if stat_id in ['18', '19', '20', '88']:
         freePasses += int(stat['stat']['value'])
@@ -182,6 +181,7 @@ def formatAdvancedStats(player):
     calcBB_perc()
     # return_stats['G'] = 162
     stat_order = ['PA', 'wOBA', 'BABIP','ISO','HR%', 'BB%', 'GB%', 'FB%', 'GB/FB', 'SB%', 'AB', 'OPS+', 'TB']
+    
     for stat in stat_order:
       return_list.append(return_stats[stat])
     
@@ -239,12 +239,12 @@ def getStatMap():
 
 # Will probably need to move this to another file for clarity
 def getBatterPredictions(stats, names):
-  print()
   player_stats = pd.DataFrame(stats)
   imputer = SimpleImputer(strategy='median')
   X = imputer.fit_transform(player_stats)
-  batting_tr = pd.DataFrame(X, columns=player_stats.columns, index=player_stats.index)
-
+  stat_order = ['PA', 'rOBA', 'BAbip','ISO','HR%', 'BB%', 'GB%', 'FB%', 'GB/FB', 'SB%', 'AB', 'OPS+', 'TB']
+  batting_tr = pd.DataFrame(X, columns=stat_order, index=player_stats.index)
+  print(batting_tr)
   num_pipeline = Pipeline([
     ('imputer', SimpleImputer(strategy='median')),
     ('std_scaler', StandardScaler())
@@ -270,6 +270,7 @@ def getBatterPredictions(stats, names):
           print(f"{prediction_labels[j]}, {round(prediction, 3)}")
         else:
           print(f"{prediction_labels[j]}, {round(prediction*player_scale, 3)}")
+          print(f"{prediction_labels[j]}, {round(prediction, 3)}")
 
 
 
@@ -311,7 +312,7 @@ def signIn():
         
     if index >= 0:
         player['selected_position'] = roster[index]['selected_position']
-  
+  print(adv_stats)
   getBatterPredictions(adv_stats, player_names)
 
 
