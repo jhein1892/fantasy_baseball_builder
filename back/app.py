@@ -122,6 +122,7 @@ def formatAdvancedStats(player):
   advanced_stats = player['player_advanced_stats']['stats']
   player_type = player['position_type']
   return_stats = {}
+  return_list = []
 
   # Get HR%
   def calcHR_perc():
@@ -138,10 +139,9 @@ def formatAdvancedStats(player):
     freePasses = 0
     PA = 0
     for stat in stats:
+      print(stat)
       stat_id = stat['stat']['stat_id']
       # Add all Free Passes
-      if stat_id == '7':
-        return_stats['AB'] = int(stat['stat']['value'])
       if stat_id == '55':
         return_stats['OPS+'] = float(stat['stat']['value'])
 
@@ -152,6 +152,8 @@ def formatAdvancedStats(player):
       if stat_id == '60':
         abVals = stat['stat']['value'].split('/', 1)
         PA += int(abVals[1])
+        return_stats['AB'] = int(abVals[1])
+
 
     PA += freePasses
     bb_perc = round(float(freePasses/PA) * 100, 2)
@@ -178,8 +180,14 @@ def formatAdvancedStats(player):
     
     calcHR_perc()
     calcBB_perc()
+    # return_stats['G'] = 162
+    stat_order = ['PA', 'wOBA', 'BABIP','ISO','HR%', 'BB%', 'GB%', 'FB%', 'GB/FB', 'SB%', 'AB', 'OPS+', 'TB']
+    for stat in stat_order:
+      return_list.append(return_stats[stat])
+    
 
-  return return_stats
+    
+  return return_list
   
 def getRosterIds(roster = tm.roster()):
   rosterIDs = []
@@ -230,7 +238,7 @@ def getStatMap():
 
 
 # Will probably need to move this to another file for clarity
-def getBatterPredictions(stats):
+def getBatterPredictions(stats, names):
   print()
   player_stats = pd.DataFrame(stats)
   imputer = SimpleImputer(strategy='median')
@@ -253,8 +261,10 @@ def getBatterPredictions(stats):
 
   final_predictions = model.predict(batting_prepared)
   prediction_labels = ['H', 'R', 'HR', 'RBI','SB','BB', 'IBB','HBP','OPS']
-  for i in enumerate(final_predictions):
-      for j, prediction in enumerate(i[1]):
+  for i, playerPrediction in enumerate(final_predictions):
+      print(names[i])
+      print(stats[i])
+      for j, prediction in enumerate(playerPrediction):
         print(f"{prediction_labels[j]}, {prediction}")
         
     # for j, prediction in enumerate(final_predictions[i]):
@@ -283,9 +293,12 @@ def signIn():
 
 
   adv_stats = []
+  player_names = []
   for player in rosterDetails:
     if player['position_type'] == 'B':
+      player_names.append(player['name']['full'])
       adv_stats.append(formatAdvancedStats(player))
+      
       # print(player['name']['full'])
       # print(adv_stats)
     # player['player_advanced_stats'] = adv_stats
@@ -298,7 +311,7 @@ def signIn():
     if index >= 0:
         player['selected_position'] = roster[index]['selected_position']
   
-  getBatterPredictions(adv_stats)
+  getBatterPredictions(adv_stats, player_names)
 
 
 
