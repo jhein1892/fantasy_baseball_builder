@@ -239,12 +239,14 @@ def getStatMap():
 
 # Will probably need to move this to another file for clarity
 def getBatterPredictions(stats, names):
-  player_stats = pd.DataFrame(stats)
-  imputer = SimpleImputer(strategy='median')
-  X = imputer.fit_transform(player_stats)
   stat_order = ['PA', 'rOBA', 'BAbip','ISO','HR%', 'BB%', 'GB%', 'FB%', 'GB/FB', 'SB%', 'AB', 'OPS+', 'TB']
-  batting_tr = pd.DataFrame(X, columns=stat_order, index=player_stats.index)
-  print(batting_tr)
+  player_stats = pd.DataFrame(stats, columns=stat_order)
+  print(player_stats)
+  imputer = SimpleImputer(strategy='median')
+  imputer.fit(player_stats)
+  X = imputer.transform(player_stats)
+  
+  batting_tr = pd.DataFrame(X, columns=player_stats.columns, index=player_stats.index)
   num_pipeline = Pipeline([
     ('imputer', SimpleImputer(strategy='median')),
     ('std_scaler', StandardScaler())
@@ -312,7 +314,6 @@ def signIn():
         
     if index >= 0:
         player['selected_position'] = roster[index]['selected_position']
-  print(adv_stats)
   getBatterPredictions(adv_stats, player_names)
 
 
