@@ -262,14 +262,15 @@ def getBatterPredictions(stats, names):
   final_predictions = model.predict(batting_prepared)
   prediction_labels = ['H', 'R', 'HR', 'RBI','SB','BB', 'IBB','HBP','OPS']
   for i, playerPrediction in enumerate(final_predictions):
-      print(names[i])
+      print(f"\n{names[i]}")
       print(stats[i])
+      player_scale = 600/stats[i][0]
       for j, prediction in enumerate(playerPrediction):
-        print(f"{prediction_labels[j]}, {prediction}")
-        
-    # for j, prediction in enumerate(final_predictions[i]):
+        if prediction_labels[j] == 'OPS':
+          print(f"{prediction_labels[j]}, {round(prediction, 3)}")
+        else:
+          print(f"{prediction_labels[j]}, {round(prediction*player_scale, 3)}")
 
-  # print('Predictions', final_predictions)
 
 
 @app.route("/")
