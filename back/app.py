@@ -314,7 +314,7 @@ def signIn():
         
     if index >= 0:
         player['selected_position'] = roster[index]['selected_position']
-  getBatterPredictions(adv_stats, player_names)
+  # getBatterPredictions(adv_stats, player_names)
 
 
 
