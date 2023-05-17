@@ -88,11 +88,37 @@
 # }
 
 
+# Average over 600PA
+# league_std_avgs_batters = {
+#   'R': 73,
+#   'H' : 132,
+#   '2B': 27,
+#   '3B': 2,
+#   'HR': 18,
+#   'RBI': 70,
+#   'SB': 11,
+#   'CS': 3,
+#   'BB': 53,
+#   'SO':136,
+#   'BA': .248,
+#   'OBP': .321,
+#   'SLG': .408,
+#   'OPS': .728,
+#   'TB': 218,
+#   'GDP': 11,
+#   'HBP': 7,
+#   'SH': 1,
+#   'SF': 4,
+#   'IBB':1
+# }
+
+
 from flask import Flask, make_response, request, jsonify
 from flask_cors import CORS
 from flask_sslify import SSLify
 from yahoo_api import lg, gm, tm
 import pandas as pd
+from stat_scraper import findLeagueAvg
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
@@ -278,6 +304,7 @@ def getBatterPredictions(stats, names):
 
 @app.route("/")
 def signIn():
+  # findLeagueAvg()
   global league_stat_map
   global league_categories
 
