@@ -133,24 +133,17 @@ export default function TeamRoster({ data, categories, weeklyStats, league_avg }
                     let category = data[x['display_name']]
                     if(type === 'B'){
                         if(league_avg[type][x['display_name']] != null && calc_perc != null){    
+                            let std_dev;
                             if(!['OPS', 'H/AB'].includes(x['display_name'])){
                                 let standardized_val = league_avg[type][x['display_name']] * calc_perc
-                                let std_dev = category.value / standardized_val
-                                if (std_dev > 1){
-                                    perc_dev = (std_dev - 1) * 100;
-                                } else {
-                                    isPos = false;
-                                    perc_dev = (1 - std_dev) * 100;
-                                }
+                                std_dev = category.value / standardized_val
                             } else {
-                                let std_dev = category.value / league_avg[type][x['display_name']] 
-                                if (std_dev > 1){
-                                    perc_dev = (std_dev - 1) * 100;
-                                } else {
-                                    isPos = false;
-                                    perc_dev = (1 - std_dev) * 100;
-                                }
+                                std_dev = category.value / league_avg[type][x['display_name']] 
                             }
+                            if (std_dev < 1){
+                                isPos = false;
+                            }
+                            perc_dev = Math.abs(1 - std_dev) * 100
                         }
                     } if(type === 'P'){
                         if (calc_perc != null){
@@ -160,55 +153,39 @@ export default function TeamRoster({ data, categories, weeklyStats, league_avg }
                                 case 'ERA':
                                     std_dev = category.value / league_avg[type][x['display_name']]
                                     console.log(`ERA: ${std_dev}`)
-                                    if(std_dev > 1){
-                                        perc_dev = (std_dev - 1) * 100;
+                                    if (std_dev > 1){
                                         isPos = false;
-                                    } else {
-                                        perc_dev = (1 - std_dev) * 100;
                                     }
                                     break;
                                 case 'WHIP':
                                     std_dev = category.value / league_avg[type][x['display_name']]
                                     console.log(`WHIP: ${std_dev}`)
                                     if(std_dev > 1){
-                                        perc_dev = (std_dev - 1) * 100;
                                         isPos = false;
-                                    } else {
-                                        perc_dev = (1 - std_dev) * 100;
-                                    }
+                                    } 
                                     break;
                                 case 'BLK':
                                     standardized_val = league_avg[type][x['display_name']] * calc_perc;
                                     std_dev = category.value / standardized_val;
                                     if (std_dev > 1){
-                                        perc_dev = (std_dev - 1) * 100;
                                         isPos = false;
-                                    } else {
-                                        perc_dev = (1 - std_dev) * 100;
-                                    }
+                                    } 
                                     break;
                                 case 'L':
                                     standardized_val = league_avg[type][x['display_name']] * calc_perc;
                                     std_dev = category.value / standardized_val;
                                     if (std_dev > 1){
-                                        perc_dev = (std_dev - 1) * 100;
                                         isPos = false;
-                                    } else {
-                                        perc_dev = (1 - std_dev) * 100;
-                                    }
+                                    } 
                                     break;
                                 default:
                                     standardized_val = league_avg[type][x['display_name']] * calc_perc;
                                     std_dev = category.value / standardized_val;
-                                    if (std_dev > 1){
-                                        perc_dev = (std_dev - 1) * 100;
-                                    } else {
+                                    if (std_dev < 1){
                                         isPos = false;
-                                        perc_dev = (1 - std_dev) * 100;
                                     }
-                                    console.log(perc_dev, x['display_name'])
                             }
-
+                            perc_dev = Math.abs(1 - std_dev) * 100
                         }
                     }
                     const statClass = classNames({
