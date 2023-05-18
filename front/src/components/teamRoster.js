@@ -111,22 +111,47 @@ export default function TeamRoster({ data, categories, weeklyStats, league_avg }
     function generateCategories(type, isHeader, data=null){
         if(categories){
             let cats = Object.values(categories).filter((x) => x.position_type == type)
+            let calc_perc = null;
+            if ( data && type === 'B'){
+                calc_perc = parseFloat(data['PA']['value'])
+            }
             return cats.map((x,index) => {
                 if(isHeader){
                     return (
                         <th key={`header-${x['display_name']}-${index}`}>{x.display_name === 'H/AB' ? 'AVG' : x.display_name}</th>
-                    )
-                }
-                else {
-                    let category = data[x['display_name']]
-                    if(league_avg[type][x['display_name']] != null){                
-                        console.log(league_avg[type][x['display_name']])
-                    } else {
-                        console.log(x)
+                        )
                     }
+                    else {
+                    let perc_dev = null;
+                    let category = data[x['display_name']]
+                    if(league_avg[type][x['display_name']] != null && calc_perc != null){    
+                        if(!['OPS', 'H/AB'].includes(x['display_name'])){
+                            let standardized_val = league_avg[type][x['display_name']] * calc_perc
+                            let std_dev = category.value / standardized_val
+                            console.log(`${x['display_name']}: ${standardized_val} vs ${category.value}: ${std_dev}`)
+                            if (std_dev > 1){
+                                perc_dev = (std_dev - 1) * 100;
+                            } else {
+                                perc_dev = (1 - std_dev) * -100;
+                            }
+                        } else {
+                            
+                        }
+                    }
+                    
+                    const statClass = classNames({
+                        [rosterStyles.sm_pos] : perc_dev <= 30 && perc_dev > 0,
+                        [rosterStyles.md_pos] : perc_dev <= 60 && perc_dev > 30,
+                        [rosterStyles.lg_pos] : perc_dev > 60,
+                        [rosterStyles.sm_neg] : perc_dev >= -30 && perc_dev < 0,
+                        [rosterStyles.md_neg] : perc_dev >= -60 && perc_dev < 30,
+                        [rosterStyles.lg_neg] : perc_dev < -60,
+
+
+                    });
                 
                     return (
-                        <td key={`body-${x['display_name']}-${index}`}>{category ? category.value : "-"}</td>
+                        <td className={statClass} key={`body-${x['display_name']}-${index}`}>{category ? category.value : "-"}</td>
                     )
                 }
             })

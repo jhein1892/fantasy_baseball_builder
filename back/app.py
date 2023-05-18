@@ -198,30 +198,25 @@ league_avgs = {
 
 #   # Get BB%
 #   # Pretty Close, but not exact.
-#   def calcBB_perc():
-#     stats = player['player_stats']['stats']
-#     freePasses = 0
-#     PA = 0
-#     for stat in stats:
-#       stat_id = stat['stat']['stat_id']
-#       # Add all Free Passes
-#       if stat_id == '55':
-#         return_stats['OPS+'] = round(float(stat['stat']['value'])/.728 * 100, 2)
+def calc_PA(player):
+  stats = player['player_stats']['stats']
+  freePasses = 0
+  PA = 0
+  for stat in stats:
+    stat_id = stat['stat']['stat_id']
+    # Add all Free Passes
+    if stat_id in ['18', '19', '20', '88']:
+      freePasses += int(stat['stat']['value'])
 
-#       if stat_id in ['18', '19', '20', '88']:
-#         freePasses += int(stat['stat']['value'])
+    # split H/AB
+    if stat_id == '60':
+      abVals = stat['stat']['value'].split('/', 1)
+      PA += int(abVals[1])
 
-#       # split H/AB
-#       if stat_id == '60':
-#         abVals = stat['stat']['value'].split('/', 1)
-#         PA += int(abVals[1])
-#         return_stats['AB'] = int(abVals[1])
-
-
-#     PA += freePasses
+    PA += freePasses
+    return float(PA/600)
 #     bb_perc = round(float(freePasses/PA) * 100, 2)
 #     return_stats['BB%'] = bb_perc
-#     return_stats['PA'] = PA
 
 #   if player_type == 'B':
 #     for stat in advanced_stats:
@@ -359,6 +354,8 @@ def signIn():
   rosterDetails = lg.player_details(rosterIDs)
 
   for player in rosterDetails:
+    PAVal = calc_PA(player)
+    player['player_stats']['stats'].append({'stat':{'stat_id': '65', 'value':f'{PAVal}'}})
     playerid = player['player_id']
     index = -1
     for i,x in enumerate(roster):
