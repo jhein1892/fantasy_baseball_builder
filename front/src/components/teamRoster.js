@@ -123,31 +123,40 @@ export default function TeamRoster({ data, categories, weeklyStats, league_avg }
                     }
                     else {
                     let perc_dev = null;
+                    let isPos = true;
                     let category = data[x['display_name']]
                     if(league_avg[type][x['display_name']] != null && calc_perc != null){    
                         if(!['OPS', 'H/AB'].includes(x['display_name'])){
                             let standardized_val = league_avg[type][x['display_name']] * calc_perc
                             let std_dev = category.value / standardized_val
-                            console.log(`${x['display_name']}: ${standardized_val} vs ${category.value}: ${std_dev}`)
                             if (std_dev > 1){
                                 perc_dev = (std_dev - 1) * 100;
                             } else {
-                                perc_dev = (1 - std_dev) * -100;
+                                isPos = false;
+                                perc_dev = (1 - std_dev) * 100;
                             }
                         } else {
-                            
+                            let std_dev = category.value / league_avg[type][x['display_name']] 
+                            if (std_dev > 1){
+                                perc_dev = (std_dev - 1) * 100;
+                            } else {
+                                isPos = false;
+                                perc_dev = (1 - std_dev) * 100;
+                            }
+                            console.log(perc_dev)
+                            console.log(perc_dev <= 30 && perc_dev > 0)
+                            // console.log(`${x['display_name']}: ${league_avg[type][x['display_name']]} vs ${category.value}`)
                         }
                     }
-                    
+                    console.log(`${x['display_name']}: ${perc_dev}, ${isPos && perc_dev > 0}`)
                     const statClass = classNames({
-                        [rosterStyles.sm_pos] : perc_dev <= 30 && perc_dev > 0,
-                        [rosterStyles.md_pos] : perc_dev <= 60 && perc_dev > 30,
-                        [rosterStyles.lg_pos] : perc_dev > 60,
-                        [rosterStyles.sm_neg] : perc_dev >= -30 && perc_dev < 0,
-                        [rosterStyles.md_neg] : perc_dev >= -60 && perc_dev < 30,
-                        [rosterStyles.lg_neg] : perc_dev < -60,
-
-
+                        [rosterStyles.avg]: perc_dev <= 5,
+                        [rosterStyles.sm_pos] : isPos && (perc_dev <=30 && perc_dev > 5),
+                        [rosterStyles.md_pos] : isPos && (perc_dev > 30 && perc_dev <= 60),
+                        [rosterStyles.lg_pos] : isPos && perc_dev > 60,
+                        [rosterStyles.sm_neg] : !isPos && (perc_dev <=30 && perc_dev > 5),
+                        [rosterStyles.md_neg] : !isPos && (perc_dev > 30 && perc_dev <= 60) ,
+                        [rosterStyles.lg_neg] : !isPos && perc_dev > 60,
                     });
                 
                     return (
