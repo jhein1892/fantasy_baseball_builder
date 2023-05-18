@@ -88,28 +88,8 @@
 # }
 
 
-# Average over 600PA
 # league_std_avgs_batters = {
-#   'R': 73,
-#   'H' : 132,
-#   '2B': 27,
-#   '3B': 2,
-#   'HR': 18,
-#   'RBI': 70,
-#   'SB': 11,
-#   'CS': 3,
-#   'BB': 53,
-#   'SO':136,
-#   'BA': .248,
-#   'OBP': .321,
-#   'SLG': .408,
-#   'OPS': .728,
-#   'TB': 218,
-#   'GDP': 11,
-#   'HBP': 7,
-#   'SH': 1,
-#   'SF': 4,
-#   'IBB':1
+
 # }
 
 
@@ -118,7 +98,6 @@ from flask_cors import CORS
 from flask_sslify import SSLify
 from yahoo_api import lg, gm, tm
 import pandas as pd
-from stat_scraper import findLeagueAvg
 from sklearn.pipeline import Pipeline
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import StandardScaler
@@ -140,80 +119,139 @@ CORS(app, origins=['https://localhost:3000'], methods=["GET", "POST", "PUT", "DE
 
 league_stat_map = None
 league_categories = None
+league_avgs = {
+  # Average over 600PA
+  'B':{
+    'R': 73,
+    'H' : 132,
+    '2B': 27,
+    '3B': 2,
+    'HR': 18,
+    'RBI': 70,
+    'SB': 11,
+    'CS': 3,
+    'BB': 53,
+    'SO':136,
+    'BA': .248,
+    'OBP': .321,
+    'SLG': .408,
+    'OPS': .728,
+    'TB': 218,
+    'GDP': 11,
+    'HBP': 7,
+    'SH': 1,
+    'SF': 4,
+    'IBB':1
+  },
+  # Average per 180IP
+  'P':{
+    'W': 10,
+    'L': 10,
+    'W-L%': .500,
+    'ERA': 4.32,
+    'G': 86,
+    'GS': 20,
+    'GF': 20,
+    'CG': 0,
+    'SHO': 0,
+    'SV': 5,
+    'IP': 180,
+    'H': 170,
+    'R':93,
+    'ER':86,
+    'HR': 23,
+    'BB': 68,
+    'IBB': 2,
+    'SO': 175,
+    'HBP': 9,
+    'BK': 1,
+    'WP': 7,
+    'BF': 770,
+    'ERA+': 102,
+    'FIP': 4.32,
+    'WHIP':1.321,
+    'H9': 8.5,
+    'HR9': 1.2,
+    'BB9': 3.4,
+    'SO9': 8.7,
+    'SO/W': 2.58
+  }
+}
+
 
 # FILE CALLED: App.js
 # Used to get league_id and team_name
 
-def formatAdvancedStats(player):
-  advanced_stats = player['player_advanced_stats']['stats']
-  player_type = player['position_type']
-  return_stats = {}
-  return_list = []
+# def formatAdvancedStats(player):
+#   advanced_stats = player['player_advanced_stats']['stats']
+#   player_type = player['position_type']
+#   return_stats = {}
+#   return_list = []
 
-  # Get HR%
-  def calcHR_perc():
-    HR_FB = return_stats['HR/FB%']
-    FB_per = return_stats['FB%']
-    HR_perc = FB_per * (HR_FB/100)
-    return_stats['HR%'] = round(HR_perc, 3)
-    del return_stats['HR/FB%']
+#   # Get HR%
+#   def calcHR_perc():
+#     HR_FB = return_stats['HR/FB%']
+#     FB_per = return_stats['FB%']
+#     HR_perc = FB_per * (HR_FB/100)
+#     return_stats['HR%'] = round(HR_perc, 3)
+#     del return_stats['HR/FB%']
 
-  # Get BB%
-  # Pretty Close, but not exact.
-  def calcBB_perc():
-    stats = player['player_stats']['stats']
-    freePasses = 0
-    PA = 0
-    for stat in stats:
-      stat_id = stat['stat']['stat_id']
-      # Add all Free Passes
-      if stat_id == '55':
-        return_stats['OPS+'] = round(float(stat['stat']['value'])/.728 * 100, 2)
+#   # Get BB%
+#   # Pretty Close, but not exact.
+#   def calcBB_perc():
+#     stats = player['player_stats']['stats']
+#     freePasses = 0
+#     PA = 0
+#     for stat in stats:
+#       stat_id = stat['stat']['stat_id']
+#       # Add all Free Passes
+#       if stat_id == '55':
+#         return_stats['OPS+'] = round(float(stat['stat']['value'])/.728 * 100, 2)
 
-      if stat_id in ['18', '19', '20', '88']:
-        freePasses += int(stat['stat']['value'])
+#       if stat_id in ['18', '19', '20', '88']:
+#         freePasses += int(stat['stat']['value'])
 
-      # split H/AB
-      if stat_id == '60':
-        abVals = stat['stat']['value'].split('/', 1)
-        PA += int(abVals[1])
-        return_stats['AB'] = int(abVals[1])
+#       # split H/AB
+#       if stat_id == '60':
+#         abVals = stat['stat']['value'].split('/', 1)
+#         PA += int(abVals[1])
+#         return_stats['AB'] = int(abVals[1])
 
 
-    PA += freePasses
-    bb_perc = round(float(freePasses/PA) * 100, 2)
-    return_stats['BB%'] = bb_perc
-    return_stats['PA'] = PA
+#     PA += freePasses
+#     bb_perc = round(float(freePasses/PA) * 100, 2)
+#     return_stats['BB%'] = bb_perc
+#     return_stats['PA'] = PA
 
-  if player_type == 'B':
-    for stat in advanced_stats:
-      stat = stat['stat']
-      stat_id = int(stat['stat_id'])
-      value = float(stat['value'])
-      stat_name = league_stat_map[stat_id]['display_name']
-      if stat_id == 1005:
-        return_stats['TB'] = value
-        continue
+#   if player_type == 'B':
+#     for stat in advanced_stats:
+#       stat = stat['stat']
+#       stat_id = int(stat['stat_id'])
+#       value = float(stat['value'])
+#       stat_name = league_stat_map[stat_id]['display_name']
+#       if stat_id == 1005:
+#         return_stats['TB'] = value
+#         continue
       
-      if stat_id in [1015, 1011, 1006, 1007, 1004, 1003, 1040, 1041]:
-        continue
+#       if stat_id in [1015, 1011, 1006, 1007, 1004, 1003, 1040, 1041]:
+#         continue
 
-      if stat_id in league_stat_map:
-        return_stats[stat_name] = value
-      else:
-        return_stats[stat_id] = value
+#       if stat_id in league_stat_map:
+#         return_stats[stat_name] = value
+#       else:
+#         return_stats[stat_id] = value
     
-    calcHR_perc()
-    calcBB_perc()
-    # return_stats['G'] = 162
-    stat_order = ['PA', 'wOBA', 'BABIP','ISO','HR%', 'BB%', 'GB%', 'FB%', 'GB/FB', 'SB%', 'AB', 'OPS+', 'TB']
+#     calcHR_perc()
+#     calcBB_perc()
+#     # return_stats['G'] = 162
+#     stat_order = ['PA', 'wOBA', 'BABIP','ISO','HR%', 'BB%', 'GB%', 'FB%', 'GB/FB', 'SB%', 'AB', 'OPS+', 'TB']
     
-    for stat in stat_order:
-      return_list.append(return_stats[stat])
+#     for stat in stat_order:
+#       return_list.append(return_stats[stat])
     
 
     
-  return return_list
+#   return return_list
   
 def getRosterIds(roster = tm.roster()):
   rosterIDs = []
@@ -264,49 +302,47 @@ def getStatMap():
 
 
 # Will probably need to move this to another file for clarity
-def getBatterPredictions(stats, names):
-  stat_order = ['PA', 'rOBA', 'BAbip','ISO','HR%', 'BB%', 'GB%', 'FB%', 'GB/FB', 'SB%', 'AB', 'OPS+', 'TB']
-  player_stats = pd.DataFrame(stats, columns=stat_order)
-  print(player_stats)
-  imputer = SimpleImputer(strategy='median')
-  imputer.fit(player_stats)
-  X = imputer.transform(player_stats)
+# def getBatterPredictions(stats, names):
+#   stat_order = ['PA', 'rOBA', 'BAbip','ISO','HR%', 'BB%', 'GB%', 'FB%', 'GB/FB', 'SB%', 'AB', 'OPS+', 'TB']
+#   player_stats = pd.DataFrame(stats, columns=stat_order)
+#   print(player_stats)
+#   imputer = SimpleImputer(strategy='median')
+#   imputer.fit(player_stats)
+#   X = imputer.transform(player_stats)
   
-  batting_tr = pd.DataFrame(X, columns=player_stats.columns, index=player_stats.index)
-  num_pipeline = Pipeline([
-    ('imputer', SimpleImputer(strategy='median')),
-    ('std_scaler', StandardScaler())
-  ])
+#   batting_tr = pd.DataFrame(X, columns=player_stats.columns, index=player_stats.index)
+#   num_pipeline = Pipeline([
+#     ('imputer', SimpleImputer(strategy='median')),
+#     ('std_scaler', StandardScaler())
+#   ])
 
-  num_attribs = list(player_stats)
+#   num_attribs = list(player_stats)
 
-  full_pipeline = ColumnTransformer([
-    ('num', num_pipeline, num_attribs)
-  ])
+#   full_pipeline = ColumnTransformer([
+#     ('num', num_pipeline, num_attribs)
+#   ])
 
-  batting_prepared = full_pipeline.fit_transform(batting_tr)
-  model = batter_model
+#   batting_prepared = full_pipeline.fit_transform(batting_tr)
+#   model = batter_model
 
-  final_predictions = model.predict(batting_prepared)
-  prediction_labels = ['H', 'R', 'HR', 'RBI','SB','BB', 'IBB','HBP','OPS']
-  for i, playerPrediction in enumerate(final_predictions):
-      print(f"\n{names[i]}")
-      print(stats[i])
-      player_scale = 600/stats[i][0]
-      for j, prediction in enumerate(playerPrediction):
-        if prediction_labels[j] == 'OPS':
-          print(f"{prediction_labels[j]}, {round(prediction, 3)}")
-        else:
-          print(f"{prediction_labels[j]}, {round(prediction*player_scale, 3)}")
-          print(f"{prediction_labels[j]}, {round(prediction, 3)}")
-
-
+#   final_predictions = model.predict(batting_prepared)
+#   prediction_labels = ['H', 'R', 'HR', 'RBI','SB','BB', 'IBB','HBP','OPS']
+#   for i, playerPrediction in enumerate(final_predictions):
+#       print(f"\n{names[i]}")
+#       print(stats[i])
+#       player_scale = 600/stats[i][0]
+#       for j, prediction in enumerate(playerPrediction):
+#         if prediction_labels[j] == 'OPS':
+#           print(f"{prediction_labels[j]}, {round(prediction, 3)}")
+#         else:
+#           print(f"{prediction_labels[j]}, {round(prediction*player_scale, 3)}")
+#           print(f"{prediction_labels[j]}, {round(prediction, 3)}")
 
 @app.route("/")
 def signIn():
-  # findLeagueAvg()
   global league_stat_map
   global league_categories
+  global league_avgs
 
   standings = lg.standings()
   matchups = lg.matchups()
@@ -322,17 +358,7 @@ def signIn():
   rosterIDs = getRosterIds(roster)
   rosterDetails = lg.player_details(rosterIDs)
 
-
-  adv_stats = []
-  player_names = []
   for player in rosterDetails:
-    if player['position_type'] == 'B':
-      player_names.append(player['name']['full'])
-      adv_stats.append(formatAdvancedStats(player))
-      
-      # print(player['name']['full'])
-      # print(adv_stats)
-    # player['player_advanced_stats'] = adv_stats
     playerid = player['player_id']
     index = -1
     for i,x in enumerate(roster):
@@ -341,9 +367,6 @@ def signIn():
         
     if index >= 0:
         player['selected_position'] = roster[index]['selected_position']
-  # getBatterPredictions(adv_stats, player_names)
-
-
 
   # Call yahoo_fantasy_api with league_id and team_id to get roster data
 
@@ -351,7 +374,8 @@ def signIn():
     {'roster': rosterDetails, 
       'standings': standings,
       'matchups': matchups, 
-      'stat_map': league_stat_map})
+      'stat_map': league_stat_map,
+      'league_avg': league_avgs})
   return response
 
 @app.route("/weekStats", methods=["GET"])
@@ -377,6 +401,7 @@ def  getWeekStats():
           playerID = player['player_id']
           weekStats[playerID]['name'] = weekStats[playerID].get('name', player['name'])
           if isinstance(player['G'], float): # If we played a game that day
+
             for key, value in player.items(): 
 
               # Create a Stat Object to hold all the calculations
