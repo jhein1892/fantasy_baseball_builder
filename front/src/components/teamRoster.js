@@ -112,8 +112,14 @@ export default function TeamRoster({ data, categories, weeklyStats, league_avg }
         if(categories){
             let cats = Object.values(categories).filter((x) => x.position_type == type)
             let calc_perc = null;
-            if ( data && type === 'B'){
-                calc_perc = parseFloat(data['PA']['value'])
+            if (data){
+                if(type === 'B'){
+                    calc_perc = parseFloat(data['PA']['value'])
+                }
+                if(type === 'P'){
+                    // 180IP standardized
+                    calc_perc = data['IP'] ?  parseFloat(data['IP']['value'])/180 : null;
+                }
             }
             return cats.map((x,index) => {
                 if(isHeader){
@@ -125,30 +131,86 @@ export default function TeamRoster({ data, categories, weeklyStats, league_avg }
                     let perc_dev = null;
                     let isPos = true;
                     let category = data[x['display_name']]
-                    if(league_avg[type][x['display_name']] != null && calc_perc != null){    
-                        if(!['OPS', 'H/AB'].includes(x['display_name'])){
-                            let standardized_val = league_avg[type][x['display_name']] * calc_perc
-                            let std_dev = category.value / standardized_val
-                            if (std_dev > 1){
-                                perc_dev = (std_dev - 1) * 100;
+                    if(type === 'B'){
+                        if(league_avg[type][x['display_name']] != null && calc_perc != null){    
+                            if(!['OPS', 'H/AB'].includes(x['display_name'])){
+                                let standardized_val = league_avg[type][x['display_name']] * calc_perc
+                                let std_dev = category.value / standardized_val
+                                if (std_dev > 1){
+                                    perc_dev = (std_dev - 1) * 100;
+                                } else {
+                                    isPos = false;
+                                    perc_dev = (1 - std_dev) * 100;
+                                }
                             } else {
-                                isPos = false;
-                                perc_dev = (1 - std_dev) * 100;
+                                let std_dev = category.value / league_avg[type][x['display_name']] 
+                                if (std_dev > 1){
+                                    perc_dev = (std_dev - 1) * 100;
+                                } else {
+                                    isPos = false;
+                                    perc_dev = (1 - std_dev) * 100;
+                                }
                             }
-                        } else {
-                            let std_dev = category.value / league_avg[type][x['display_name']] 
-                            if (std_dev > 1){
-                                perc_dev = (std_dev - 1) * 100;
-                            } else {
-                                isPos = false;
-                                perc_dev = (1 - std_dev) * 100;
+                        }
+                    } if(type === 'P'){
+                        if (calc_perc != null){
+                            let std_dev;
+                            let standardized_val;
+                            switch(x['display_name']){
+                                case 'ERA':
+                                    std_dev = category.value / league_avg[type][x['display_name']]
+                                    console.log(`ERA: ${std_dev}`)
+                                    if(std_dev > 1){
+                                        perc_dev = (std_dev - 1) * 100;
+                                        isPos = false;
+                                    } else {
+                                        perc_dev = (1 - std_dev) * 100;
+                                    }
+                                    break;
+                                case 'WHIP':
+                                    std_dev = category.value / league_avg[type][x['display_name']]
+                                    console.log(`WHIP: ${std_dev}`)
+                                    if(std_dev > 1){
+                                        perc_dev = (std_dev - 1) * 100;
+                                        isPos = false;
+                                    } else {
+                                        perc_dev = (1 - std_dev) * 100;
+                                    }
+                                    break;
+                                case 'BLK':
+                                    standardized_val = league_avg[type][x['display_name']] * calc_perc;
+                                    std_dev = category.value / standardized_val;
+                                    if (std_dev > 1){
+                                        perc_dev = (std_dev - 1) * 100;
+                                        isPos = false;
+                                    } else {
+                                        perc_dev = (1 - std_dev) * 100;
+                                    }
+                                    break;
+                                case 'L':
+                                    standardized_val = league_avg[type][x['display_name']] * calc_perc;
+                                    std_dev = category.value / standardized_val;
+                                    if (std_dev > 1){
+                                        perc_dev = (std_dev - 1) * 100;
+                                        isPos = false;
+                                    } else {
+                                        perc_dev = (1 - std_dev) * 100;
+                                    }
+                                    break;
+                                default:
+                                    standardized_val = league_avg[type][x['display_name']] * calc_perc;
+                                    std_dev = category.value / standardized_val;
+                                    if (std_dev > 1){
+                                        perc_dev = (std_dev - 1) * 100;
+                                    } else {
+                                        isPos = false;
+                                        perc_dev = (1 - std_dev) * 100;
+                                    }
+                                    console.log(perc_dev, x['display_name'])
                             }
-                            console.log(perc_dev)
-                            console.log(perc_dev <= 30 && perc_dev > 0)
-                            // console.log(`${x['display_name']}: ${league_avg[type][x['display_name']]} vs ${category.value}`)
+
                         }
                     }
-                    console.log(`${x['display_name']}: ${perc_dev}, ${isPos && perc_dev > 0}`)
                     const statClass = classNames({
                         [rosterStyles.avg]: perc_dev <= 5,
                         [rosterStyles.sm_pos] : isPos && (perc_dev <=30 && perc_dev > 5),
