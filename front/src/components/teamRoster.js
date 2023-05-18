@@ -140,6 +140,7 @@ export default function TeamRoster({ data, categories, weeklyStats, league_avg }
                             } else {
                                 std_dev = category.value / league_avg[type][x['display_name']] 
                             }
+                            
                             if (std_dev < 1){
                                 isPos = false;
                             }
@@ -149,42 +150,21 @@ export default function TeamRoster({ data, categories, weeklyStats, league_avg }
                         if (calc_perc != null){
                             let std_dev;
                             let standardized_val;
-                            switch(x['display_name']){
-                                case 'ERA':
-                                    std_dev = category.value / league_avg[type][x['display_name']]
-                                    console.log(`ERA: ${std_dev}`)
-                                    if (std_dev > 1){
-                                        isPos = false;
-                                    }
-                                    break;
-                                case 'WHIP':
-                                    std_dev = category.value / league_avg[type][x['display_name']]
-                                    console.log(`WHIP: ${std_dev}`)
-                                    if(std_dev > 1){
-                                        isPos = false;
-                                    } 
-                                    break;
-                                case 'BLK':
-                                    standardized_val = league_avg[type][x['display_name']] * calc_perc;
-                                    std_dev = category.value / standardized_val;
-                                    if (std_dev > 1){
-                                        isPos = false;
-                                    } 
-                                    break;
-                                case 'L':
-                                    standardized_val = league_avg[type][x['display_name']] * calc_perc;
-                                    std_dev = category.value / standardized_val;
-                                    if (std_dev > 1){
-                                        isPos = false;
-                                    } 
-                                    break;
-                                default:
-                                    standardized_val = league_avg[type][x['display_name']] * calc_perc;
-                                    std_dev = category.value / standardized_val;
-                                    if (std_dev < 1){
-                                        isPos = false;
-                                    }
-                            }
+
+                            if (['ERA', 'WHIP'].includes(x['display_name'])){
+                                std_dev = category.value / league_avg[type][x['display_name']]
+                                if (std_dev > 1){
+                                    isPos = false;
+                                }
+                            } 
+                            else {
+                                standardized_val = league_avg[type][x['display_name']] * calc_perc;
+                                std_dev = category.value / standardized_val;
+                                // If blk or l and more than average, or not blk or l and less than average
+                                if ((['BLK','L'].includes(x['display_name']) && std_dev > 1) || !['BLK','L'].includes(x['display_name']) && std_dev < 1){
+                                    isPos = false;
+                                }
+                            }                            
                             perc_dev = Math.abs(1 - std_dev) * 100
                         }
                     }
