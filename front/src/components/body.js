@@ -22,7 +22,7 @@ export default function Body({data, weeklyStats}) {
     return (
         <div className={bodyStyles.bodyWrapper} onScroll={() => console.log('scrolling')}>
             <div className={bodyStyles.rosterSection}>
-                <TeamRoster data={data.roster} categories={data.stat_map} weeklyStats={weeklyStats}/>
+                <TeamRoster data={data.roster} categories={data.stat_map} weeklyStats={weeklyStats} league_avg={data.league_avg}/>
             </div>
             <div className={bodyStyles.leagueSection}>
                 <Standings data={data.standings}/>

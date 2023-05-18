@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import axios from 'axios';
 import config from '../config';
 
-export default function TeamRoster({ data, categories, weeklyStats }){
+export default function TeamRoster({ data, categories, weeklyStats, league_avg }){
     const [localData, setLocalData] = useState();
     const [updatedRoster, setUpdatedRoster] = useState([]);
     const [weeklyData, setWeeklyData]= useState({});
@@ -119,6 +119,11 @@ export default function TeamRoster({ data, categories, weeklyStats }){
                 }
                 else {
                     let category = data[x['display_name']]
+                    if(league_avg[type][x['display_name']] != null){                
+                        console.log(league_avg[type][x['display_name']])
+                    } else {
+                        console.log(x)
+                    }
                 
                     return (
                         <td key={`body-${x['display_name']}-${index}`}>{category ? category.value : "-"}</td>
