@@ -212,7 +212,7 @@ export default function TeamRoster({ data, categories, weeklyStats, league_avg }
                         }
                     }
                     const statClass = classNames({
-                        [rosterStyles.avg]: perc_dev <= 5,
+                        [rosterStyles.avg]: perc_dev <= 5 || !perc_dev,
                         [rosterStyles.sm_pos] : isPos && (perc_dev <=30 && perc_dev > 5),
                         [rosterStyles.md_pos] : isPos && (perc_dev > 30 && perc_dev <= 60),
                         [rosterStyles.lg_pos] : isPos && perc_dev > 60,
