@@ -164,7 +164,6 @@ class CustomThread(threading.Thread):
     
 
 def get_standings():
-    print('here')
     standings = lg.standings()
     return standings
 
@@ -173,36 +172,23 @@ def get_matchups():
     return matchups
 
 def getLeagueInfo():
+    threads = {}
+    standings_thread = CustomThread(target=get_standings)
+    threads['standings'] = standings_thread
+    matchups_thread = CustomThread(target=get_matchups)
+    threads['matchups'] = matchups_thread
 
-    thread = CustomThread(target=get_standings)
-    thread.start()
-    thread.join()
-    value = thread.result
-    print(value)
-#     threads = []
+    for name in threads:
+      threads[name].start()
 
-#     standings_thread = threading.Thread(target=get_standings)
-#     threads.append(standings_thread)
+    for name in threads: 
+      threads[name].join()
+    results = {}
+    for name in threads:
+      value = threads[name].result
+      results[name] = value
 
-#     matchups_thread = threading.Thread(target=get_matchups)
-#     threads.append(matchups_thread)
-# # Start each thread
-#     for thread in threads:
-#         thread.start()
-
-#     # Wait for all the threads to complete
-#     for thread in threads:
-#         thread.join()
-
-#     results = []
-#     for thread in threads:
-#         result = thread._return_value   # Call the target function to get the result
-#         results.append(result)
-
-#     print(results)
-
-
-
+    return results
 
 @app.route("/")
 def signIn():
@@ -210,14 +196,9 @@ def signIn():
   global league_categories
   global league_avgs
 
-
-
-
   response = getLeagueInfo()
-
-
-  # standings = lg.standings()
-  # matchups = lg.matchups()
+  standings = response['standings']
+  matchups = response['matchups']
 
   if league_categories is None:
     getCategories()
