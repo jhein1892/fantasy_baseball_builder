@@ -170,6 +170,14 @@ def get_matchups():
     matchups = lg.matchups()
     return matchups
 
+def get_transactions(type):
+  transaction = lg.transactions(type, 10)
+  return transaction
+
+def get_waivers():
+  waivers = lg.waivers()
+  return waivers
+
 def getLeagueInfo():
     threads = {}
     standings_thread = CustomThread(target=get_standings)
@@ -192,6 +200,8 @@ def getLeagueInfo():
         results[name] = None
 
     return results
+
+
 
 @app.route("/")
 def signIn():
@@ -300,12 +310,30 @@ def  getWeekStats():
 
 @app.route("/leagueNews", methods=["GET"])
 def getInformation():
-   dropTransactions = lg.transactions('drop', 10)
-   tradeTransactions = lg.transactions('trade', 10)
-   waivers = lg.waivers()
+  threads = {}
+  drop_thread = CustomThread(target=get_transactions, type='drop')
+  threads['dropped'] = drop_thread
+  traded_thread = CustomThread(target=get_transactions, type='trade')
+  threads['traded'] = traded_thread
+  waivers_thread = CustomThread(target=get_waivers)
+  threads['waivers'] = waivers_thread
 
-   response = make_response({"dropped": dropTransactions, "traded": tradeTransactions, "waivers": waivers})
-   return response
+  for name in threads:
+   threads[name].start()
+  
+  for name in threads:
+   threads[name].join()
+  
+  results = {}
+  for name in threads:
+    if hasattr(threads[name], 'result'):
+      value = threads[name].result
+      results[name] = value
+    else:
+      results[name] = None
+
+  response = make_response({"dropped": results['dropped'], "traded": results['traded'], "waivers": results['waivers']})
+  return response
 
 @app.route("/playerStats", methods=["PUT"])
 def getPlayerStats():
