@@ -131,10 +131,10 @@ def getStatMap():
   temp_cat = league_categories
 
   for key, value in league_stat_map.items():
-    if key is 60:
+    if key == 60:
       league_stat_map[key] = {'display_name': value, 'position_type': 'B'}
       continue
-    if key is 50:
+    if key == 50:
       league_stat_map[key] = {'display_name': value, 'position_type': 'P'}
       continue
 
@@ -149,7 +149,6 @@ def getStatMap():
         continue
     if not updated:
       league_stat_map[key] = {'display_name': value}
-
 
 class CustomThread(threading.Thread):
   def __init__(self, target, *args, **kwargs):
@@ -170,6 +169,10 @@ def get_matchups():
     matchups = lg.matchups()
     return matchups
 
+def get_roster():
+  roster = tm.roster()
+  return roster
+
 def get_transactions(type):
   transaction = lg.transactions(type, 10)
   return transaction
@@ -178,12 +181,18 @@ def get_waivers():
   waivers = lg.waivers()
   return waivers
 
+def get_playerDetails(players):
+  player_details = lg.player_details(players)
+  return player_details
+
 def getLeagueInfo():
     threads = {}
     standings_thread = CustomThread(target=get_standings)
     threads['standings'] = standings_thread
     matchups_thread = CustomThread(target=get_matchups)
     threads['matchups'] = matchups_thread
+    roster_thread = CustomThread(target=get_roster)
+    threads['roster'] = roster_thread
 
     for name in threads:
       threads[name].start()
@@ -201,8 +210,6 @@ def getLeagueInfo():
 
     return results
 
-
-
 @app.route("/")
 def signIn():
   global league_stat_map
@@ -212,14 +219,14 @@ def signIn():
   response = getLeagueInfo()
   standings = response['standings']
   matchups = response['matchups']
+  roster = response['roster']
 
   if league_categories is None:
     getStatMap()
   
-  roster = tm.roster()
-
   rosterIDs = getRosterIds(roster)
-  rosterDetails = lg.player_details(rosterIDs)
+  # rosterDetails = lg.player_details(rosterIDs)
+  rosterDetails = get_playerDetails(rosterIDs)
 
   for player in rosterDetails:
     PAVal = calc_PA(player)
@@ -339,8 +346,8 @@ def getInformation():
 def getPlayerStats():
   data = request.get_json()
   data = data['data']
-  # playerStats = lg.player_stats(data, 'season', season=2022)
-  playerDetails = lg.player_details(data)
+  # playerDetails = lg.player_details(data)
+  playerDetails = get_playerDetails(data)
 
   response = make_response({"player_details": playerDetails})
   return response
@@ -377,8 +384,30 @@ def getTrades():
       for player in trader_players:
         trader_ids.append(int(player['player_id']))
       
-      trade['tradee_players'] = lg.player_details(tradee_ids)
-      trade['trader_players'] = lg.player_details(trader_ids)
+      threads = {}
+      tradee_thread = CustomThread(target=get_playerDetails, player=tradee_ids)
+      threads['tradee_players'] = tradee_thread
+      trader_thread = CustomThread(target=get_playerDetails, player=trader_ids)
+      threads['trader_players'] = trader_thread
+
+      for name in threads:
+        threads[name].start()
+      for name in threads:
+        threads[name].join()
+      
+      for name in threads:
+        if hasattr(threads[name], 'result'):
+          value = threads[name].result
+          trade[name] = value
+        else:
+          trade[name] = None
+
+      
+
+      
+
+      # trade['tradee_players'] = lg.player_details(tradee_ids)
+      # trade['trader_players'] = lg.player_details(trader_ids)
 
 
   # print(teams)
