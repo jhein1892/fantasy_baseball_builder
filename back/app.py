@@ -110,14 +110,14 @@ def getRosterIds(roster = tm.roster()):
     
   return rosterIDs
 
-def getCategories():
-  print('Categories')
-  global league_categories
-  league_categories = lg.stat_categories()
+# def getCategories():
+#   global league_categories
 
 def getStatMap():
+  print('Categories')
   global league_stat_map
   global league_categories
+  league_categories = lg.stat_categories()
 
   league_stat_map = lg._get_static_mlb_id_map()
   league_stat_map[30] = 'CG'
@@ -162,8 +162,6 @@ class CustomThread(threading.Thread):
   def run(self):
     self.result = self.target(*self.args, **self.kwargs)
 
-    
-
 def get_standings():
     standings = lg.standings()
     return standings
@@ -184,6 +182,7 @@ def getLeagueInfo():
 
     for name in threads: 
       threads[name].join()
+
     results = {}
     for name in threads:
       if hasattr(threads[name], 'result'):
@@ -205,9 +204,6 @@ def signIn():
   matchups = response['matchups']
 
   if league_categories is None:
-    getCategories()
-
-  if league_stat_map is None:
     getStatMap()
   
   roster = tm.roster()
