@@ -111,43 +111,44 @@ def getRosterIds(roster = tm.roster()):
   return rosterIDs
 
 def getCategories():
+  print('Categories')
   global league_categories
-  if league_categories is None:
-    league_categories = lg.stat_categories()
+  league_categories = lg.stat_categories()
 
 def getStatMap():
   global league_stat_map
-  if league_stat_map is None:
-    league_stat_map = lg._get_static_mlb_id_map()
-    league_stat_map[30] = 'CG'
-    league_stat_map[44] = 'BLK'
-    league_stat_map[46] = 'GIDP'
-    league_stat_map[60] = 'H/AB'
-    league_stat_map[72] = 'PICK'
-    league_stat_map[88] = 'CI'
-    league_stat_map[89] = 'SV+H'
+  global league_categories
 
-    temp_cat = league_categories
+  league_stat_map = lg._get_static_mlb_id_map()
+  league_stat_map[30] = 'CG'
+  league_stat_map[44] = 'BLK'
+  league_stat_map[46] = 'GIDP'
+  league_stat_map[60] = 'H/AB'
+  league_stat_map[72] = 'PICK'
+  league_stat_map[88] = 'CI'
+  league_stat_map[89] = 'SV+H'
 
-    for key, value in league_stat_map.items():
-      if key is 60:
-        league_stat_map[key] = {'display_name': value, 'position_type': 'B'}
+  temp_cat = league_categories
+
+  for key, value in league_stat_map.items():
+    if key is 60:
+      league_stat_map[key] = {'display_name': value, 'position_type': 'B'}
+      continue
+    if key is 50:
+      league_stat_map[key] = {'display_name': value, 'position_type': 'P'}
+      continue
+
+    updated = False
+    for cat in temp_cat:
+      if cat['display_name'] == value:
+        league_stat_map[key] = cat
+        temp_cat.remove(cat)
+        updated = True
+        break
+      else:
         continue
-      if key is 50:
-        league_stat_map[key] = {'display_name': value, 'position_type': 'P'}
-        continue
-
-      updated = False
-      for cat in temp_cat:
-        if cat['display_name'] == value:
-          league_stat_map[key] = cat
-          temp_cat.remove(cat)
-          updated = True
-          break
-        else:
-          continue
-      if not updated:
-        league_stat_map[key] = {'display_name': value}
+    if not updated:
+      league_stat_map[key] = {'display_name': value}
 
 
 class CustomThread(threading.Thread):
@@ -185,8 +186,11 @@ def getLeagueInfo():
       threads[name].join()
     results = {}
     for name in threads:
-      value = threads[name].result
-      results[name] = value
+      if hasattr(threads[name], 'result'):
+        value = threads[name].result
+        results[name] = value
+      else:
+        results[name] = None
 
     return results
 
