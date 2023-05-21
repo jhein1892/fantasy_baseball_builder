@@ -1,98 +1,3 @@
-# stat_map
-# {
-#   0: 'G', 2: 'GS', 3: 'AVG', 4: 'OBP', 5: 'SLG', 6: 'AB', 7: 'R', 8: 'H', 9: '1B', 10: '2B', 
-#   11: '3B', 12: 'HR', 13: 'RBI', 14: 'SH', 15: 'SF', 16: 'SB', 17: 'CS', 18: 'BB', 19: 'IBB', 
-#   20: 'HBP', 21: 'SO', 22: 'GDP', 23: 'TB', 25: 'GS', 26: 'ERA', 27: 'WHIP', 28: 'W', 29: 'L', 32: 'SV', 
-#   34: 'H', 35: 'BF', 36: 'R', 37: 'ER', 38: 'HR', 39: 'BB', 40: 'IBB', 41: 'HBP', 42: 'K', 43: 'BK', 
-#   44: 'WP', 48: 'HLD', 50: 'IP', 51: 'PO', 52: 'A', 53: 'E', 54: 'FLD%', 55: 'OPS', 56: 'SO/W', 
-#   57: 'SO9', 65: 'PA', 84: 'BS', 85: 'NSV', 87: 'DP', 
-
-#   1032: 'FIP', 1021: 'GB%', 1022: 'FB%', 1031: 'BABIP', 1036: 'HR/FB%', 1037: 'GB', 1038: 'FB', 
-#   1020: 'GB/FB', 1018: 'P/IP', 1034: 'ERA-', 1019: 'P/S', 1024: 'STR', 1025: 'IRS%', 1026: 'RS', 
-#   1027: 'RS/9', 1028: 'AVG', 1029: 'OBP', 1030: 'SLG', 1033: 'WAR', 1035: 'HR/FB%', 1008: 'GB/FB', 
-#   1013: 'BABIP', 1002: 'ISO', 1001: 'CT%', 1014: 'wOBA', 1015: 'wRAA', 1011: 'RC', 1005: 'TOB', 
-#   1006: 'GB', 1009: 'GB%', 1007: 'FB', 1010: 'FB%', 1016: 'OPS+', 1004: 'P/PA', 1039: 'SB%', 
-#   1012: 'GDPR', 1003: 'SL', 1017: 'FR', 1040: 'bWAR', 1041: 'brWAR', 1042: 'WAR'
-# }
-###############################################################
-## STATS WE ARE GETTING FROM YAHOO
-###############################################################
-# Pitchers
-# [
-#   {'stat': {'stat_id': '1032', 'value': '3.97'}},    'FIP'
-#   {'stat': {'stat_id': '1021', 'value': '42.4'}},    'GB%'
-#   {'stat': {'stat_id': '1022', 'value': '23.2'}},    'FB%'
-#   {'stat': {'stat_id': '1031', 'value': '.372'}},    'BABIP'
-#   {'stat': {'stat_id': '1036', 'value': '21.7'}},    'HR/FB%'
-#   {'stat': {'stat_id': '1037', 'value': '42'}},      'GB'
-#   {'stat': {'stat_id': '1038', 'value': '29'}},      'FB'
-#   {'stat': {'stat_id': '1020', 'value': '1.1'}},     'GB/FB'
-#   {'stat': {'stat_id': '1018', 'value': '17.04'}},   'P/IP'
-#   {'stat': {'stat_id': '1034', 'value': '140'}},     'ERA-'
-#   {'stat': {'stat_id': '1019', 'value': '86.0'}},    'P/S'
-#   {'stat': {'stat_id': '1023', 'value': '0'}},       '?'
-#   {'stat': {'stat_id': '1024', 'value': '0'}},       'STR'
-#   {'stat': {'stat_id': '1025', 'value': '-'}},       'IRS%'
-#   {'stat': {'stat_id': '1028', 'value': '.282'}},    'AVG'
-#   {'stat': {'stat_id': '1029', 'value': '.350'}},    'OBP'
-#   {'stat': {'stat_id': '1030', 'value': '.465'}},    'SLG'
-#   {'stat': {'stat_id': '1033', 'value': '0.6'}}      'WAR'
-# ]
-
-# Batters
-# [
-#   {'stat': {'stat_id': '1035', 'value': '11.8'}},   'HR/FB%' -> HR% with calc (DONE) \/
-#   {'stat': {'stat_id': '1008', 'value': '0.7'}},    'GB/FB'   \/
-#   {'stat': {'stat_id': '1013', 'value': '.336'}},   'BABIP'   \/
-#   {'stat': {'stat_id': '1002', 'value': '.147'}},   'ISO'     \/
-#   {'stat': {'stat_id': '1014', 'value': '.304'}},   'wOBA' -> 'rOBA' \/
-#   {'stat': {'stat_id': '1015', 'value': '-1.9'}},   'wRAA'    X
-#   {'stat': {'stat_id': '1011', 'value': '19'}},     'RC'
-#   {'stat': {'stat_id': '1005', 'value': '51'}},     'TOB' -> TB
-#   {'stat': {'stat_id': '1006', 'value': '45'}},     'GB'      IGNORE
-#   {'stat': {'stat_id': '1009', 'value': '39.5'}},   'GB%'     \/
-#   {'stat': {'stat_id': '1007', 'value': '45'}},     'FB'      IGNORE
-#   {'stat': {'stat_id': '1010', 'value': '29.8'}},   'FB%'     \/
-#   {'stat': {'stat_id': '1004', 'value': '3.68'}},   'P/PA'    IGNORE
-#   {'stat': {'stat_id': '1039', 'value': '100.0'}},  'SB%'     \/
-#   {'stat': {'stat_id': '1003', 'value': '5'}},      'SL'
-#   {'stat': {'stat_id': '1040', 'value': '-2.5'}},   'bWAR'    
-#   {'stat': {'stat_id': '1041', 'value': '2.4'}}     'brWAR'
-# ]    
-
-
-
-# league_adv_avgs_batters = { 
-#   'rOBA': .325,       \/
-#   'Rbat+': 100,       X
-#   'BAbip': .297,      \/
-#   'ISO': .159,        \/
-#   'HR%': 3.0%,        \/        
-#   'SO%': 22.8%,       X
-#   'BB%': 8.8%,        \/
-#   'EV': 88.4,         X
-#   'HardH%':39.4,      X
-#   'LD%': 23.7,        X
-#   'GB%': 42.8%,       \/
-#   'FB%': 25.9,        \/
-#   'GB/FB': 0.76,      \/
-#   'Pull%': 29.9%,     X
-#   'Cent%': 51.6%,     X
-#   'Oppo%': 18.4%,     X
-#   'WPA': 118,         X
-#   'cWPA': 60%,        X
-#   'RE24': 2343,       X
-#   'RS%': 31%,         X
-#   'SB%': 78%,         \/
-#   'XBT%': 42%         X 
-# }
-
-
-# league_std_avgs_batters = {
-
-# }
-
-
 from flask import Flask, make_response, request, jsonify
 from flask_cors import CORS
 from flask_sslify import SSLify
@@ -107,8 +12,9 @@ import ssl
 import datetime
 import json
 import math
+import threading
 
-batter_model = joblib.load('batter_model.pkl')
+# batter_model = joblib.load('batter_model.pkl')
 
 
 
@@ -178,26 +84,6 @@ league_avgs = {
   }
 }
 
-
-# FILE CALLED: App.js
-# Used to get league_id and team_name
-
-# def formatAdvancedStats(player):
-#   advanced_stats = player['player_advanced_stats']['stats']
-#   player_type = player['position_type']
-#   return_stats = {}
-#   return_list = []
-
-#   # Get HR%
-#   def calcHR_perc():
-#     HR_FB = return_stats['HR/FB%']
-#     FB_per = return_stats['FB%']
-#     HR_perc = FB_per * (HR_FB/100)
-#     return_stats['HR%'] = round(HR_perc, 3)
-#     del return_stats['HR/FB%']
-
-#   # Get BB%
-#   # Pretty Close, but not exact.
 def calc_PA(player):
   stats = player['player_stats']['stats']
   freePasses = 0
@@ -215,38 +101,6 @@ def calc_PA(player):
 
     PA += freePasses
     return float(PA/600)
-#     bb_perc = round(float(freePasses/PA) * 100, 2)
-#     return_stats['BB%'] = bb_perc
-
-#   if player_type == 'B':
-#     for stat in advanced_stats:
-#       stat = stat['stat']
-#       stat_id = int(stat['stat_id'])
-#       value = float(stat['value'])
-#       stat_name = league_stat_map[stat_id]['display_name']
-#       if stat_id == 1005:
-#         return_stats['TB'] = value
-#         continue
-      
-#       if stat_id in [1015, 1011, 1006, 1007, 1004, 1003, 1040, 1041]:
-#         continue
-
-#       if stat_id in league_stat_map:
-#         return_stats[stat_name] = value
-#       else:
-#         return_stats[stat_id] = value
-    
-#     calcHR_perc()
-#     calcBB_perc()
-#     # return_stats['G'] = 162
-#     stat_order = ['PA', 'wOBA', 'BABIP','ISO','HR%', 'BB%', 'GB%', 'FB%', 'GB/FB', 'SB%', 'AB', 'OPS+', 'TB']
-    
-#     for stat in stat_order:
-#       return_list.append(return_stats[stat])
-    
-
-    
-#   return return_list
   
 def getRosterIds(roster = tm.roster()):
   rosterIDs = []
@@ -296,42 +150,59 @@ def getStatMap():
         league_stat_map[key] = {'display_name': value}
 
 
-# Will probably need to move this to another file for clarity
-# def getBatterPredictions(stats, names):
-#   stat_order = ['PA', 'rOBA', 'BAbip','ISO','HR%', 'BB%', 'GB%', 'FB%', 'GB/FB', 'SB%', 'AB', 'OPS+', 'TB']
-#   player_stats = pd.DataFrame(stats, columns=stat_order)
-#   print(player_stats)
-#   imputer = SimpleImputer(strategy='median')
-#   imputer.fit(player_stats)
-#   X = imputer.transform(player_stats)
-  
-#   batting_tr = pd.DataFrame(X, columns=player_stats.columns, index=player_stats.index)
-#   num_pipeline = Pipeline([
-#     ('imputer', SimpleImputer(strategy='median')),
-#     ('std_scaler', StandardScaler())
-#   ])
+class CustomThread(threading.Thread):
+  def __init__(self, target, *args, **kwargs):
+    super().__init__()
+    self.target = target
+    self.args = args
+    self.kwargs = kwargs
+    self.result = None
 
-#   num_attribs = list(player_stats)
+  def run(self):
+    self.result = self.target(*self.args, **self.kwargs)
 
-#   full_pipeline = ColumnTransformer([
-#     ('num', num_pipeline, num_attribs)
-#   ])
+    
 
-#   batting_prepared = full_pipeline.fit_transform(batting_tr)
-#   model = batter_model
+def get_standings():
+    print('here')
+    standings = lg.standings()
+    return standings
 
-#   final_predictions = model.predict(batting_prepared)
-#   prediction_labels = ['H', 'R', 'HR', 'RBI','SB','BB', 'IBB','HBP','OPS']
-#   for i, playerPrediction in enumerate(final_predictions):
-#       print(f"\n{names[i]}")
-#       print(stats[i])
-#       player_scale = 600/stats[i][0]
-#       for j, prediction in enumerate(playerPrediction):
-#         if prediction_labels[j] == 'OPS':
-#           print(f"{prediction_labels[j]}, {round(prediction, 3)}")
-#         else:
-#           print(f"{prediction_labels[j]}, {round(prediction*player_scale, 3)}")
-#           print(f"{prediction_labels[j]}, {round(prediction, 3)}")
+def get_matchups():
+    matchups = lg.matchups()
+    return matchups
+
+def getLeagueInfo():
+
+    thread = CustomThread(target=get_standings)
+    thread.start()
+    thread.join()
+    value = thread.result
+    print(value)
+#     threads = []
+
+#     standings_thread = threading.Thread(target=get_standings)
+#     threads.append(standings_thread)
+
+#     matchups_thread = threading.Thread(target=get_matchups)
+#     threads.append(matchups_thread)
+# # Start each thread
+#     for thread in threads:
+#         thread.start()
+
+#     # Wait for all the threads to complete
+#     for thread in threads:
+#         thread.join()
+
+#     results = []
+#     for thread in threads:
+#         result = thread._return_value   # Call the target function to get the result
+#         results.append(result)
+
+#     print(results)
+
+
+
 
 @app.route("/")
 def signIn():
@@ -339,8 +210,14 @@ def signIn():
   global league_categories
   global league_avgs
 
-  standings = lg.standings()
-  matchups = lg.matchups()
+
+
+
+  response = getLeagueInfo()
+
+
+  # standings = lg.standings()
+  # matchups = lg.matchups()
 
   if league_categories is None:
     getCategories()
