@@ -181,8 +181,8 @@ def get_waivers():
   waivers = lg.waivers()
   return waivers
 
-def get_playerDetails(players):
-  player_details = lg.player_details(players)
+def get_playerDetails(args):
+  player_details = lg.player_details(args)
   return player_details
 
 def create_threads(names, funcs, args=None, vals=None):
@@ -364,24 +364,10 @@ def getTrades():
       for player in trader_players:
         trader_ids.append(int(player['player_id']))
       
-      threads = {}
-      tradee_thread = CustomThread(target=get_playerDetails, player=tradee_ids)
-      threads['tradee_players'] = tradee_thread
-      trader_thread = CustomThread(target=get_playerDetails, player=trader_ids)
-      threads['trader_players'] = trader_thread
-
-      for name in threads:
-        threads[name].start()
-      for name in threads:
-        threads[name].join()
-      
-      for name in threads:
-        if hasattr(threads[name], 'result'):
-          value = threads[name].result
-          trade[name] = value
-        else:
-          trade[name] = None
-
+      results = create_threads(['tradee_players', 'trader_players'], [get_playerDetails, get_playerDetails], args=[True, True], vals=[tradee_ids, trader_ids])
+      for name in results:
+        trade[name] = results[name]
+        
   return make_response({"pending_trades": pendingTrades})
 
 @app.route("/availableTrades", methods=["PUT"])
