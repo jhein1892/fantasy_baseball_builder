@@ -173,8 +173,8 @@ def get_roster():
   roster = tm.roster()
   return roster
 
-def get_transactions(type):
-  transaction = lg.transactions(type, 10)
+def get_transactions(args):
+  transaction = lg.transactions(args, 10)
   return transaction
 
 def get_waivers():
@@ -185,30 +185,30 @@ def get_playerDetails(players):
   player_details = lg.player_details(players)
   return player_details
 
-def getLeagueInfo():
-    threads = {}
-    standings_thread = CustomThread(target=get_standings)
-    threads['standings'] = standings_thread
-    matchups_thread = CustomThread(target=get_matchups)
-    threads['matchups'] = matchups_thread
-    roster_thread = CustomThread(target=get_roster)
-    threads['roster'] = roster_thread
+def create_threads(names, funcs, args=None, vals=None):
+  threads = {}
+  for i, name in enumerate(names):
+    if args and vals and args[i]:
+      thread = CustomThread(target=funcs[i], args=vals[i])
+    else:
+      thread = CustomThread(target=funcs[i])
+    threads[name] = thread
+  
+  for name in threads:
+    threads[name].start()
+  
+  for name in threads:
+    threads[name].join()
+  
+  results = {}
+  for name in threads:
+    if hasattr(threads[name], 'result'):
+      value = threads[name].result
+      results[name] = value
+    else:
+      results[name] = None
 
-    for name in threads:
-      threads[name].start()
-
-    for name in threads: 
-      threads[name].join()
-
-    results = {}
-    for name in threads:
-      if hasattr(threads[name], 'result'):
-        value = threads[name].result
-        results[name] = value
-      else:
-        results[name] = None
-
-    return results
+  return results
 
 @app.route("/")
 def signIn():
@@ -216,7 +216,8 @@ def signIn():
   global league_categories
   global league_avgs
 
-  response = getLeagueInfo()
+  response = create_threads(['standings', 'matchups', 'roster'], [get_standings, get_matchups, get_roster])
+  # response = getLeagueInfo()
   standings = response['standings']
   matchups = response['matchups']
   roster = response['roster']
@@ -317,28 +318,7 @@ def  getWeekStats():
 
 @app.route("/leagueNews", methods=["GET"])
 def getInformation():
-  threads = {}
-  drop_thread = CustomThread(target=get_transactions, type='drop')
-  threads['dropped'] = drop_thread
-  traded_thread = CustomThread(target=get_transactions, type='trade')
-  threads['traded'] = traded_thread
-  waivers_thread = CustomThread(target=get_waivers)
-  threads['waivers'] = waivers_thread
-
-  for name in threads:
-   threads[name].start()
-  
-  for name in threads:
-   threads[name].join()
-  
-  results = {}
-  for name in threads:
-    if hasattr(threads[name], 'result'):
-      value = threads[name].result
-      results[name] = value
-    else:
-      results[name] = None
-
+  results = create_threads(['dropped', 'traded', 'waivers'], [get_transactions, get_transactions, get_waivers], args=[True, True, False], vals=['drop', 'trade', None])
   response = make_response({"dropped": results['dropped'], "traded": results['traded'], "waivers": results['waivers']})
   return response
 
@@ -401,16 +381,6 @@ def getTrades():
           trade[name] = value
         else:
           trade[name] = None
-
-      
-
-      
-
-      # trade['tradee_players'] = lg.player_details(tradee_ids)
-      # trade['trader_players'] = lg.player_details(trader_ids)
-
-
-  # print(teams)
 
   return make_response({"pending_trades": pendingTrades})
 
