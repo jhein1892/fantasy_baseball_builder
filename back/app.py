@@ -1,22 +1,12 @@
 from flask import Flask, make_response, request, jsonify
 from flask_cors import CORS
 from flask_sslify import SSLify
-from yahoo_api import lg, gm, tm
-import pandas as pd
-from sklearn.pipeline import Pipeline
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import StandardScaler
-from sklearn.compose import ColumnTransformer
-import joblib
-import ssl
+from yahoo_api import lg, gm, tm, get_roster, get_transactions, get_waivers, get_playerDetails, get_matchups, get_standings
+from customThread import create_threads
 import datetime
 import json
 import math
-import threading
-
-# batter_model = joblib.load('batter_model.pkl')
-
-
+# import threading
 
 app = Flask(__name__)
 sslify = SSLify(app)
@@ -110,9 +100,6 @@ def getRosterIds(roster = tm.roster()):
     
   return rosterIDs
 
-# def getCategories():
-#   global league_categories
-
 def getStatMap():
   print('Categories')
   global league_stat_map
@@ -149,66 +136,6 @@ def getStatMap():
         continue
     if not updated:
       league_stat_map[key] = {'display_name': value}
-
-class CustomThread(threading.Thread):
-  def __init__(self, target, *args, **kwargs):
-    super().__init__()
-    self.target = target
-    self.args = args
-    self.kwargs = kwargs
-    self.result = None
-
-  def run(self):
-    self.result = self.target(*self.args, **self.kwargs)
-
-def get_standings():
-    standings = lg.standings()
-    return standings
-
-def get_matchups():
-    matchups = lg.matchups()
-    return matchups
-
-def get_roster():
-  roster = tm.roster()
-  return roster
-
-def get_transactions(args):
-  transaction = lg.transactions(args, 10)
-  return transaction
-
-def get_waivers():
-  waivers = lg.waivers()
-  return waivers
-
-def get_playerDetails(args):
-  player_details = lg.player_details(args)
-  return player_details
-
-def create_threads(names, funcs, args=None, vals=None):
-  threads = {}
-  for i, name in enumerate(names):
-    if args and vals and args[i]:
-      thread = CustomThread(target=funcs[i], args=vals[i])
-    else:
-      thread = CustomThread(target=funcs[i])
-    threads[name] = thread
-  
-  for name in threads:
-    threads[name].start()
-  
-  for name in threads:
-    threads[name].join()
-  
-  results = {}
-  for name in threads:
-    if hasattr(threads[name], 'result'):
-      value = threads[name].result
-      results[name] = value
-    else:
-      results[name] = None
-
-  return results
 
 @app.route("/")
 def signIn():
@@ -367,7 +294,7 @@ def getTrades():
       results = create_threads(['tradee_players', 'trader_players'], [get_playerDetails, get_playerDetails], args=[True, True], vals=[tradee_ids, trader_ids])
       for name in results:
         trade[name] = results[name]
-        
+
   return make_response({"pending_trades": pendingTrades})
 
 @app.route("/availableTrades", methods=["PUT"])

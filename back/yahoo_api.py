@@ -16,3 +16,28 @@ gm = yfa.Game(oauth, 'mlb')
 
 lg = gm.to_league('422.l.21846')
 tm = lg.to_team('422.l.21846.t.11') 
+
+
+def get_roster():
+  roster = tm.roster()
+  return roster
+
+def get_transactions(args):
+  transaction = lg.transactions(args, 10)
+  return transaction
+
+def get_waivers():
+  waivers = lg.waivers()
+  return waivers
+
+def get_playerDetails(args):
+  player_details = lg.player_details(args)
+  return player_details
+
+def get_matchups():
+    matchups = lg.matchups()
+    return matchups
+
+def get_standings():
+    standings = lg.standings()
+    return standings
