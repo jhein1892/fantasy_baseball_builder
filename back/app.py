@@ -259,19 +259,20 @@ def getPlayerStats():
   response = make_response({"player_details": playerDetails})
   return response
 
-def percent_owned(e):
-   return e['percent_owned']
-
 @app.route("/freeAgents", methods=["PUT"])
 def getFreeAgents():
-   data = request.get_json()
-   positionRequested = data['data']
 
-   freeAgents = lg.free_agents(positionRequested)
-   freeAgents.sort(reverse=True, key=percent_owned)
-   response = make_response({'availablePlayers': freeAgents})
-   
-   return response
+  def percent_owned(e):
+    return e['percent_owned']
+  
+  data = request.get_json()
+  positionRequested = data['data']
+
+  freeAgents = lg.free_agents(positionRequested)
+  freeAgents.sort(reverse=True, key=percent_owned)
+  response = make_response({'availablePlayers': freeAgents})
+  
+  return response
 
 @app.route("/availableTrades")
 def getTrades():
